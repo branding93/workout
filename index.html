@@ -1129,29 +1129,20 @@
 }
 
 
-    /* ====== Minimal requested UX tweaks (Training done + Counter pulse) ====== */
-    @media (prefers-reduced-motion: no-preference){
-      .summaryBox.trainingItem{ transition: opacity .18s ease, filter .18s ease; }
-      .summaryBox.trainingItem.done{ opacity: .62; filter: grayscale(.15); }
-      .summaryBox.trainingItem.done .doneTitle,
-      .summaryBox.trainingItem.done .doneDetails{
-        text-decoration: line-through;
-        text-decoration-thickness: 2px;
-        text-decoration-color: rgba(15,23,42,.35);
-      }
-      #selectedBadge{ transition: box-shadow .22s ease, transform .22s ease, filter .22s ease; }
-      #selectedBadge.pulse{
-        box-shadow: 0 0 0 4px var(--ring), 0 18px 55px rgba(2,6,23,.12);
-        transform: translateY(-1px);
-        filter: brightness(1.03);
-      }
-    }
-    @media (prefers-reduced-motion: reduce){
-      .summaryBox.trainingItem.done .doneTitle,
-      .summaryBox.trainingItem.done .doneDetails{ text-decoration: line-through; }
-    }
-
-  </style>
+/* ===== Training: Done state & Counter Pulse (required) ===== */
+@media (prefers-reduced-motion: no-preference){
+  .summaryBox.trainingItem{ transition: opacity .18s ease, filter .18s ease; }
+  .summaryBox.trainingItem.done{ opacity:.6; filter: grayscale(.15); }
+  .summaryBox.trainingItem.done .doneTitle,
+  .summaryBox.trainingItem.done .doneDetails{ text-decoration: line-through; }
+  #selectedBadge{ transition: box-shadow .22s ease, transform .22s ease; }
+  #selectedBadge.pulse{ box-shadow:0 0 0 4px var(--ring); transform:translateY(-1px); }
+}
+@media (prefers-reduced-motion: reduce){
+  .summaryBox.trainingItem.done .doneTitle,
+  .summaryBox.trainingItem.done .doneDetails{ text-decoration: line-through; }
+}
+</style>
 </head>
 
 <body>
@@ -1529,10 +1520,10 @@
   </div>
 
   <script>
-    (function () {
+    (() => {
       // TKD
-      var TKD_VARIATIONS = ['normal', 'Rückwärts', 'gespiegelt', 'front', 'gesprungen', 'Gegenbewegung'];
-      var TKD_BELTS = {
+      const TKD_VARIATIONS = ['normal', 'Rückwärts', 'gespiegelt', 'front', 'gesprungen', 'Gegenbewegung'];
+      const TKD_BELTS = {
         white: { label: 'Weiß', emoji: '⚪️', cls: '' },
         yellow: { label: 'Gelb', emoji: '🟡', cls: 'yellow' },
         green: { label: 'Grün', emoji: '🟢', cls: 'green' },
@@ -1540,7 +1531,7 @@
         red: { label: 'Rot', emoji: '🔴', cls: 'red' },
         black: { label: 'Schwarz', emoji: '⚫️', cls: 'black' }
       };
-      var HYONGS = [
+      const HYONGS = [
         { id: 'I', name: 'Chon-Ji Hyong', moves: 19, belt: 'white' },
         { id: 'II', name: 'Tan-Gun Hyong', moves: 21, belt: 'yellow' },
         { id: 'III', name: 'To-San Hyong', moves: 23, belt: 'yellow' },
@@ -1552,7 +1543,7 @@
         { id: 'IX', name: 'Chung-Mu Hyong', moves: 30, belt: 'red' },
         { id: 'X', name: 'Gwang-Gae Hyong', moves: 39, belt: 'black' }
       ];
-      var COMBOS = [
+      const COMBOS = [
         'Übung 1-8',
         'Kombination 1-8',
         'Kombination 1-14',
@@ -1560,15 +1551,15 @@
         'Vierrichtungsstoß 1-4',
         'Vierrichtungs-Handkante mit Block/Schlag/Kick'
       ];
-      var SPARRING = ['Einschrittkampf (ilbo daeryeon)'];
-      var BASICS = {
+      const SPARRING = ['Einschrittkampf (ilbo daeryeon)'];
+      const BASICS = {
         overview: ['15 Grundübungen (5x Blöcke, 5x Schläge, 5x Kicks)'],
         kicks: ['Ap Chagui', 'Naeryo Chagui', 'Dollyo Chagui', 'Yop Chagui', 'Pandae Dollyo Chagui', 'Tui Chagui', 'Twio Yop Chagui'],
         blocks: ['Unteren Block', 'Mittleren Block', 'Oberen Block', 'Sudo Daebi Magki', 'Palmok Daebi Magki'],
         strikes: ['Stich', 'Lang', 'Faust', 'Ballen', 'Ellbogen'],
         stances: ['Vorwärts-Stellung (jeongul seogi)', 'Rückwärts-Stellung (hugul seogi)']
       };
-      var TKD_MOTIVATION = [
+      const TKD_MOTIVATION = [
         'Heute zählt Qualität: sauber → schnell → stark.',
         'Atmung ruhig, Blick klar – Technik gewinnt.',
         'Ein guter Stand macht jeden Kick besser.',
@@ -1582,18 +1573,18 @@
       ];
 
       // WC
-      var WC_VARIATIONS = ['normal', 'langsam', 'Struktur', 'Power', 'Mittellinie', 'Timing'];
-      var WC_LEVELS = {
+      const WC_VARIATIONS = ['normal', 'langsam', 'Struktur', 'Power', 'Mittellinie', 'Timing'];
+      const WC_LEVELS = {
         white: { label: 'Basis', emoji: '⚪️', cls: 'white' },
         yellow: { label: 'Aufbau', emoji: '🟡', cls: 'yellow' },
         green: { label: 'Vertiefung', emoji: '🟢', cls: 'green' }
       };
-      var FORMS = [
+      const FORMS = [
         { id: 'I', code: 'SNT', name: 'Siu Nim Tao', note: 'Kleine Idee Form', parts: '8 Sätze', level: 'white' },
         { id: 'II', code: 'CK', name: 'Chum Kiu', note: 'Arme suchende Form', parts: '3 Teile', level: 'yellow' },
         { id: 'III', code: 'BT', name: 'Biu Tze', note: 'Stossende Finger', parts: '—', level: 'green' }
       ];
-      var GRUNDLAGEN = [
+      const GRUNDLAGEN = [
         { t: 'Kampfstellung / Vorwärts-Stoß-Stellung', d: 'Stand & Struktur' },
         { t: 'Boden-Kampf-Stellung', d: 'Stabilität am Boden' },
         { t: 'Boden-Liegend-Kampf-Stellung', d: 'Kontrolle & Sicherheit' },
@@ -1606,7 +1597,7 @@
         { t: 'Beidarmiges Pon Sao', d: 'Vorstufe Chi Sao' },
         { t: 'Chi Sao („Klebende Hände")', d: 'Sensitivität · Reflexe · Gefühl für den Gegner' }
       ];
-      var ARM_HAND = [
+      const ARM_HAND = [
         { t: 'Fook Sao', d: '„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.' },
         { t: 'Pak Sao', d: '„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).' },
         { t: 'Tan Sao', d: '„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).' },
@@ -1617,25 +1608,25 @@
         { t: 'Gum Sao', d: '„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.' },
         { t: 'Scheren-Gaun', d: 'Kombination aus Gaun Sao und hohem Jam Sao.' }
       ];
-      var BEINE = [
+      const BEINE = [
         { t: 'Jing Gerk', d: 'Fronttritt.' },
         { t: 'Yap Gerk', d: '„Abdrückendes Bein“ – nach außen abwehrend.' },
         { t: 'Bong Gerk', d: '„Schwingenbein“ – nach innen abwehrend.' }
       ];
-      var WEITERE_HAND = [
+      const WEITERE_HAND = [
         { t: 'Lap Sao', d: '„Greifende und ziehende Hand“ – greifen/ziehen, Öffnung schaffen.' },
         { t: 'Man Sao', d: '„Suchende Hand/Fragehand“ – Distanz fühlen, Mittellinie schützen.' },
         { t: 'Wu Sao', d: '„schützende/rückwärtige Hand“ – Schutzposition in der Haltung.' },
         { t: 'Huen Sao', d: '„Zirkelhand“ – zirkelnd ableiten/öffnen.' },
         { t: 'Lan Sao', d: '„Riegelarm/Schildarm“ – abriegeln, seitlich abfangen.' }
       ];
-      var WEAPON = [
+      const WEAPON = [
         { t: 'Kampfstellung', d: 'Grundposition' },
         { t: 'Pak Cuan', d: 'Technik' },
         { t: 'Fook Cuan', d: 'Technik' },
         { t: 'Bong Cuan', d: 'Technik' }
       ];
-      var WC_MOTIVATION = [
+      const WC_MOTIVATION = [
         'Mittellinie zuerst – der Rest folgt.',
         'Locker bleiben. Struktur halten. Timing finden.',
         'Fühle die Lücke – nicht die Kraft.',
@@ -1649,44 +1640,44 @@
       ];
 
       // OTHER
-      var OTHER_KRAFT = [
+      const OTHER_KRAFT = [
         { t: 'Liegestütz', d: 'Oberkörper · Rumpfspannung' },
         { t: 'Kniebeuge', d: 'Beine · Hüfte · Stabilität' },
         { t: 'Plank', d: 'Core · Struktur halten' },
         { t: 'Crunches', d: 'Bauch · kontrollierte Wiederholungen' },
         { t: 'Klimmzüge (optional)', d: 'Rücken · Griffkraft' }
       ];
-      var OTHER_BOXEN = [
+      const OTHER_BOXEN = [
         { t: 'Jab-Cross', d: 'Grundkombination · Rhythmus' },
         { t: 'Hook-Hook', d: 'Rotation · Balance' },
         { t: 'Slip-Roll', d: 'Kopfbewegung · Timing' },
         { t: 'Shadowboxing Runden', d: 'Footwork · Flow' },
         { t: 'Pratzen (optional)', d: 'Trefferbild · Reaktion' }
       ];
-      var OTHER_SONST = [
+      const OTHER_SONST = [
         { t: 'Mobility (Hüfte/Schulter)', d: 'Beweglichkeit · Gelenke' },
         { t: 'Seilspringen', d: 'Warm-up · Kondition' },
         { t: 'Dehnen (Cooldown)', d: 'Regeneration · Range' }
       ];
-      var OTHER_MOTIVATION = [
+      const OTHER_MOTIVATION = [
         'Stabiler Körper = bessere Technik.',
         'Kleine Ergänzung, großer Effekt.',
         'Kontrolle vor Tempo – dann beschleunigen.'
       ];
 
-      var STORAGE_KEY = 'martial-repertoire-html-v1';
-      var DONE_KEY = STORAGE_KEY + ':done';
-      var TIMER_KEY = STORAGE_KEY + ':timer';
+      const STORAGE_KEY = 'martial-repertoire-html-v1';
+      const DONE_KEY = STORAGE_KEY + ':done';
+      const TIMER_KEY = STORAGE_KEY + ':timer';
 
       function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
       function prettyDateDE(d) {
-        var dd = String(d.getDate()).padStart(2, '0');
-        var mm = String(d.getMonth() + 1).padStart(2, '0');
-        var yyyy = d.getFullYear();
+        let dd = String(d.getDate()).padStart(2, '0');
+        let mm = String(d.getMonth() + 1).padStart(2, '0');
+        let yyyy = d.getFullYear();
         return dd + '.' + mm + '.' + yyyy;
       }
       function toast(msg) {
-        var t = document.getElementById('toast');
+        let t = document.getElementById('toast');
         t.textContent = msg;
         t.style.display = 'block';
         clearTimeout(toast._t);
@@ -1703,23 +1694,23 @@
       function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
 
       function defaultHyongSelection() {
-        var v = {}; TKD_VARIATIONS.forEach(function (x) { v[x] = false; });
+        let v = {}; TKD_VARIATIONS.forEach(function (x) { v[x] = false; });
         return { variations: v, rounds: 1 };
       }
       function defaultFormSelection() {
-        var v = {}; WC_VARIATIONS.forEach(function (x) { v[x] = false; });
+        let v = {}; WC_VARIATIONS.forEach(function (x) { v[x] = false; });
         return { variations: v, rounds: 1 };
       }
-      function mapForStrings(arr) { var m = {}; arr.forEach(function (x) { m[x] = false; }); return m; }
-      function mapForItems(arr) { var m = {}; arr.forEach(function (x) { m[x.t] = false; }); return m; }
+      function mapForStrings(arr) { let m = {}; arr.forEach(function (x) { m[x] = false; }); return m; }
+      function mapForItems(arr) { let m = {}; arr.forEach(function (x) { m[x.t] = false; }); return m; }
 
       function makeInitialState() {
-        var tkdHy = {}; HYONGS.forEach(function (h) { tkdHy[h.id] = defaultHyongSelection(); });
-        var wcFo = {}; FORMS.forEach(function (f) { wcFo[f.id] = defaultFormSelection(); });
+        let tkdHy = {}; HYONGS.forEach(function (h) { tkdHy[h.id] = defaultHyongSelection(); });
+        let wcFo = {}; FORMS.forEach(function (f) { wcFo[f.id] = defaultFormSelection(); });
         return {
           tkd: {
             hyongs: tkdHy, combos: mapForStrings(COMBOS), sparring: mapForStrings(SPARRING), basics: (function () {
-              var b = {}; Object.keys(BASICS).forEach(function (k) { BASICS[k].forEach(function (i) { b[i] = false; }); }); return b;
+              let b = {}; Object.keys(BASICS).forEach(function (k) { BASICS[k].forEach(function (i) { b[i] = false; }); }); return b;
             })(), note: ''
           },
           wc: { forms: wcFo, grundlagen: mapForItems(GRUNDLAGEN), armhand: mapForItems(ARM_HAND), beine: mapForItems(BEINE), weitere: mapForItems(WEITERE_HAND), weapon: mapForItems(WEAPON), note: '' },
@@ -1729,18 +1720,18 @@
 
       function safeParseJSON(raw, fallback) { try { return JSON.parse(raw); } catch (e) { return fallback; } }
       function mergeBoolMap(baseMap, parsedMap) {
-        var out = Object.assign({}, baseMap, parsedMap || {});
+        let out = Object.assign({}, baseMap, parsedMap || {});
         Object.keys(out).forEach(function (k) { if (typeof out[k] !== 'boolean') out[k] = false; });
         return out;
       }
       function safeLoad() {
-        var base = makeInitialState();
-        var raw = localStorage.getItem(STORAGE_KEY);
+        let base = makeInitialState();
+        let raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return base;
-        var parsed = safeParseJSON(raw, null);
+        let parsed = safeParseJSON(raw, null);
         if (!parsed || typeof parsed !== 'object') return base;
 
-        var merged = {
+        let merged = {
           tkd: {
             hyongs: Object.assign({}, base.tkd.hyongs, (parsed.tkd && parsed.tkd.hyongs) || {}),
             combos: mergeBoolMap(base.tkd.combos, parsed.tkd && parsed.tkd.combos),
@@ -1788,8 +1779,8 @@
       function getDoneMap() { return safeParseJSON(localStorage.getItem(DONE_KEY) || '{}', {}); }
       function saveDoneMap(m) { try { localStorage.setItem(DONE_KEY, JSON.stringify(m)); } catch (e) { } }
       function ensureDoneKeys(keys) {
-        var map = getDoneMap();
-        var present = {};
+        let map = getDoneMap();
+        let present = {};
         keys.forEach(function (k) { present[k] = true; });
         Object.keys(map).forEach(function (k) { if (!present[k]) delete map[k]; });
         keys.forEach(function (k) { if (typeof map[k] !== 'boolean') map[k] = false; });
@@ -1798,12 +1789,12 @@
       }
 
       // ========= Glossary =========
-      var glossary = {};
+      const glossary = {};
       function normTermKey(s) { return String(s || '').trim(); }
 
       // NOTE: this avoids ES2018 Unicode codepoint escapes (\u{...}) to prevent syntax errors in some editors/browsers.
       function canonicalTerm(term) {
-        var s = String(term || '').trim();
+        let s = String(term || '').trim();
 
         // Remove leading emoji/symbol (surrogate pair or BMP symbols)
         s = s.replace(/^(?:[\u2600-\u27BF]|[\uD83C-\uDBFF][\uDC00-\uDFFF])\s*/, '');
@@ -1813,13 +1804,13 @@
         s = s.replace(/^(?:[IVX]+)\s+/i, '');
 
         // Strip some trailing meta parentheses (keep romanization parentheses like "(jeongul seogi)")
-        var m = s.match(/\s*\(([^)]+)\)\s*$/);
+        let m = s.match(/\s*\(([^)]+)\)\s*$/);
         if (m) {
-          var inside = String(m[1] || '').trim();
-          var looksCode = /^[A-Z0-9\-]{1,8}$/.test(inside);
-          var hasDigits = /[0-9]/.test(inside);
-          var hasMetaWords = /(Sätze|Teile|x|—)/i.test(inside);
-          var looksLowerRomanization = /^[a-zäöüß\s\-]+$/i.test(inside) && inside.toLowerCase() === inside && inside.indexOf(' ') !== -1;
+          let inside = String(m[1] || '').trim();
+          let looksCode = /^[A-Z0-9\-]{1,8}$/.test(inside);
+          let hasDigits = /[0-9]/.test(inside);
+          let hasMetaWords = /(Sätze|Teile|x|—)/i.test(inside);
+          let looksLowerRomanization = /^[a-zäöüß\s\-]+$/i.test(inside) && inside.toLowerCase() === inside && inside.indexOf(' ') !== -1;
           if ((looksCode || hasDigits || hasMetaWords) && !looksLowerRomanization) {
             s = s.replace(/\s*\([^)]+\)\s*$/, '').trim();
           }
@@ -1838,8 +1829,8 @@
       });
 
       function tkdKickEntry(term) {
-        var t = canonicalTerm(term);
-        var map = {
+        let t = canonicalTerm(term);
+        let map = {
           'Ap Chagui': { t: 'Fronttritt (nach vorn)', m: 'Knie hoch, Fußballen/Spann einsetzen; gerade nach vorn stoßen und sauber zurückziehen.', z: 'Distanz aufbauen, Timing für direkte Treffer, Kontrolle und Schnelligkeit.', p: 'Hüftvorschub, stabile Achse, Recoil – Präzision vor Power.' },
           'Naeryo Chagui': { t: 'Axttritt / Abwärtstritt', m: 'Bein hoch anheben und kontrolliert von oben nach unten „fällen“ (Ferse/Spann je nach Stil).', z: 'Abwärtsdruck, Guard brechen, Reichweite nutzen.', p: 'Balance, kontrollierte Hüfte, gerader Oberkörper – sauberer Winkel.' },
           'Dollyo Chagui': { t: 'Rundtritt', m: 'Knie anheben, Hüfte drehen, rund zur Seite einschlagen (Spann/Rist).', z: 'Treffer aus Winkel, Speed-Power, Hüftrotation trainieren.', p: 'Hüftrotation + Standstabilität + schnelles Recoil.' },
@@ -1852,8 +1843,8 @@
       }
 
       function wcTechEntry(term) {
-        var t = canonicalTerm(term);
-        var map = {
+        let t = canonicalTerm(term);
+        let map = {
           'Fook Sao': { t: '„Kontrollierende/leitende Hand“', m: 'Unterarm führt kontrolliert, hält Kontakt und „fühlt“ Druck.', z: 'Kontakt halten, Linie kontrollieren, Übergänge vorbereiten.', p: 'Entspannte Struktur, Ellenbogenlinie, fühlen statt drücken.' },
           'Pak Sao': { t: '„Klatsch-/Schlaghand“', m: 'Kurzes Abklatschen/Abschlagen zur Öffnung, oft mit Gegenhand treffen.', z: 'Linie öffnen, Trefferfenster erzeugen.', p: 'Kurzer Weg, Timing, kein Ausholen.' },
           'Tan Sao': { t: '„Tragende Hand“', m: 'Handfläche oben; lenkt ab und schützt die Mittellinie.', z: 'Umlenken + direkt kontern.', p: 'Ellenbogen tief, Kraft leiten statt blocken.' },
@@ -1877,12 +1868,12 @@
       function looksWC(term) { return /\bSao\b|\bGerk\b|\bCuan\b|Siu Nim Tao|Chum Kiu|Biu Tze|Dan Chi|Pon Sao|Mittellinie/i.test(term); }
 
       function autoEntry(term, ctxHint) {
-        var raw = normTermKey(term);
-        var canon = canonicalTerm(raw);
-        var ctx = ctxHint || (looksWC(canon) ? 'Wing Chun' : (looksKorean(canon) ? 'Taekwondo' : 'Weiteres'));
+        let raw = normTermKey(term);
+        let canon = canonicalTerm(raw);
+        let ctx = ctxHint || (looksWC(canon) ? 'Wing Chun' : (looksKorean(canon) ? 'Taekwondo' : 'Weiteres'));
 
         if (ctx === 'Taekwondo') {
-          var k = tkdKickEntry(canon);
+          let k = tkdKickEntry(canon);
           if (k) return { ctx: 'Taekwondo', t: k.t, m: k.m, z: k.z, p: k.p };
 
           if (/Vorwärts-Stellung/i.test(canon) || /jeongul seogi/i.test(raw)) {
@@ -1912,7 +1903,7 @@
         }
 
         if (ctx === 'Wing Chun') {
-          var wc = wcTechEntry(canon);
+          let wc = wcTechEntry(canon);
           if (wc) return { ctx: 'Wing Chun', t: wc.t, m: wc.m, z: wc.z, p: wc.p };
 
           if (/Siu Nim Tao/i.test(canon)) {
@@ -1962,20 +1953,20 @@
       }
 
       function ensureGlossary(term, ctxHint) {
-        var raw = normTermKey(term);
+        let raw = normTermKey(term);
         if (!raw) return null;
-        var canon = canonicalTerm(raw) || raw;
+        let canon = canonicalTerm(raw) || raw;
         if (!glossary[canon]) glossary[canon] = autoEntry(raw, ctxHint);
         return glossary[canon];
       }
 
       function openGlossary(term, ctxHint) {
-        var raw = normTermKey(term);
+        let raw = normTermKey(term);
         if (!raw) return;
-        var canon = canonicalTerm(raw) || raw;
-        var entry = ensureGlossary(raw, ctxHint);
+        let canon = canonicalTerm(raw) || raw;
+        let entry = ensureGlossary(raw, ctxHint);
 
-        var back = document.getElementById('glossaryBack');
+        let back = document.getElementById('glossaryBack');
         document.getElementById('glossTitle').textContent = raw;
         document.getElementById('glossSub').textContent = 'Kontext: ' + (entry.ctx || ctxHint || '—');
         document.getElementById('glossT').textContent = entry.t || '—';
@@ -1988,7 +1979,7 @@
         glossary[canon] = entry;
       }
       function closeGlossary() {
-        var back = document.getElementById('glossaryBack');
+        let back = document.getElementById('glossaryBack');
         back.classList.remove('show');
         back.setAttribute('aria-hidden', 'true');
       }
@@ -1997,31 +1988,30 @@
       document.getElementById('glossaryBack').addEventListener('click', function (e) { if (e.target === this) closeGlossary(); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeGlossary(); });
 
-      function makeTermUI(term, ctxHint, prefixIcon) {
-        var safe = escapeHtml(term);
-        var icon = prefixIcon ? (prefixIcon + ' ') : '';
-        return '' +
-          '<span class="termWrap">' +
-          '<button class="termBtn js-term" type="button" data-term="' + escapeAttr(term) + '" data-ctx="' + escapeAttr(ctxHint || '') + '">' +
-          icon + safe +
-          '</button>' +
-          '<button class="infoBtn js-term" type="button" aria-label="Erklärung" data-term="' + escapeAttr(term) + '" data-ctx="' + escapeAttr(ctxHint || '') + '">ⓘ</button>' +
-          '</span>';
-      }
+      const makeTermUI = (term, ctxHint, prefixIcon) => {
+  const safe = escapeHtml(term);
+  const icon = prefixIcon ? `${prefixIcon} ` : '';
+  return `
+<span class="termWrap">
+  <button class="termBtn js-term" type="button" data-term="${escapeAttr(term)}" data-ctx="${escapeAttr(ctxHint || '')}">${icon}${safe}</button>
+  <button class="infoBtn js-term" type="button" aria-label="Erklärung" data-term="${escapeAttr(term)}" data-ctx="${escapeAttr(ctxHint || '')}">ⓘ</button>
+</span>
+`.trim();
+};
 
       // ========= Router + Swipe =========
-      var viewOrder = ['tkd', 'wc', 'other', 'training', 'timer'];
-      var currentView = 'tkd';
+      const viewOrder = ['tkd', 'wc', 'other', 'training', 'timer'];
+      let currentView = 'tkd';
       function setNavActive(id) {
         ['navTKD', 'navWC', 'navOTHER', 'navTRAIN', 'navTIMER'].forEach(function (b) {
-          var el = document.getElementById(b);
+          let el = document.getElementById(b);
           el.classList.toggle('active', b === id);
           el.setAttribute('aria-selected', b === id ? 'true' : 'false');
         });
       }
       function showView(name) {
         currentView = name;
-  var _root = document.getElementById('appRoot');
+  let _root = document.getElementById('appRoot');
   if (_root) _root.setAttribute('data-theme', (name === 'tkd') ? 'tkd' : ((name === 'wc') ? 'wc' : ''));
         ['tkd', 'wc', 'other', 'training', 'timer'].forEach(function (v) {
           document.getElementById('view-' + v).classList.toggle('active', v === name);
@@ -2035,30 +2025,30 @@
         if (name === 'timer') timerUpdate();
         setBadge();
       }
-      document.getElementById('navTKD').addEventListener('click', function () { showView('tkd'); });
-      document.getElementById('navWC').addEventListener('click', function () { showView('wc'); });
-      document.getElementById('navOTHER').addEventListener('click', function () { showView('other'); });
-      document.getElementById('navTRAIN').addEventListener('click', function () { showView('training'); });
-      document.getElementById('navTIMER').addEventListener('click', function () { showView('timer'); });
+      document.getElementById('navTKD').addEventListener('click', () => { showView('tkd'); });
+      document.getElementById('navWC').addEventListener('click', () => { showView('wc'); });
+      document.getElementById('navOTHER').addEventListener('click', () => { showView('other'); });
+      document.getElementById('navTRAIN').addEventListener('click', () => { showView('training'); });
+      document.getElementById('navTIMER').addEventListener('click', () => { showView('timer'); });
 
-      var swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, locked: null, t0: 0 };
+      const swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, locked: null, t0: 0 };
       function isInteractiveTarget(t) {
         if (!t) return false;
-        var tag = (t.tagName || '').toLowerCase();
+        let tag = (t.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'textarea' || tag === 'select' || tag === 'button' || tag === 'label') return true;
         if (t.closest && t.closest('input,textarea,select,button,label,.chips,.miniBtns,.tabs,.termWrap')) return true;
         return false;
       }
       function canSwipeStart(e) {
-        var ae = document.activeElement;
+        let ae = document.activeElement;
         if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return false;
         if (isInteractiveTarget(e.target)) return false;
         return true;
       }
       function goNext(dir) {
-        var idx = viewOrder.indexOf(currentView);
+        let idx = viewOrder.indexOf(currentView);
         if (idx < 0) idx = 0;
-        var next = idx + dir;
+        let next = idx + dir;
         if (next < 0 || next >= viewOrder.length) return;
         showView(viewOrder[next]);
       }
@@ -2077,8 +2067,8 @@
         if (!swipe.active || !e.touches || e.touches.length !== 1) return;
         swipe.x1 = e.touches[0].clientX;
         swipe.y1 = e.touches[0].clientY;
-        var dx = swipe.x1 - swipe.x0;
-        var dy = swipe.y1 - swipe.y0;
+        let dx = swipe.x1 - swipe.x0;
+        let dy = swipe.y1 - swipe.y0;
         if (!swipe.locked) {
           if (Math.abs(dx) > 12 || Math.abs(dy) > 12) {
             swipe.locked = (Math.abs(dy) > Math.abs(dx)) ? 'scroll' : 'swipe';
@@ -2090,20 +2080,20 @@
         if (!swipe.active) return;
         swipe.active = false;
         if (swipe.locked !== 'swipe') return;
-        var dx = swipe.x1 - swipe.x0;
-        var dy = swipe.y1 - swipe.y0;
+        let dx = swipe.x1 - swipe.x0;
+        let dy = swipe.y1 - swipe.y0;
         if (Math.abs(dy) > Math.abs(dx)) return;
         if (Math.abs(dx) < 70) return;
         if (Date.now() - swipe.t0 < 80) return;
         if (dx < 0) goNext(+1); else goNext(-1);
       }, { passive: true });
-      var wheelLock = { last: 0 };
+      const wheelLock = { last: 0 };
       document.addEventListener('wheel', function (e) {
         if (Date.now() - wheelLock.last < 650) return;
         if (Math.abs(e.deltaX) < 70) return;
         if (Math.abs(e.deltaY) > 25) return;
         if (isInteractiveTarget(e.target)) return;
-        var ae = document.activeElement;
+        let ae = document.activeElement;
         if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return;
         wheelLock.last = Date.now();
         if (e.deltaX > 0) goNext(+1); else goNext(-1);
@@ -2111,11 +2101,11 @@
 
       // ========= Counts =========
       function countSelectedAll() {
-        var tkd = 0, wc = 0, other = 0;
+        let tkd = 0, wc = 0, other = 0;
 
         HYONGS.forEach(function (h) {
-          var sel = state.tkd.hyongs[h.id];
-          var any = false;
+          let sel = state.tkd.hyongs[h.id];
+          let any = false;
           TKD_VARIATIONS.forEach(function (v) { if (sel && sel.variations && sel.variations[v]) any = true; });
           if (any) tkd += 1;
         });
@@ -2124,12 +2114,12 @@
         Object.keys(state.tkd.basics).forEach(function (k) { if (state.tkd.basics[k]) tkd += 1; });
 
         FORMS.forEach(function (f) {
-          var sel = state.wc.forms[f.id];
-          var any = false;
+          let sel = state.wc.forms[f.id];
+          let any = false;
           WC_VARIATIONS.forEach(function (v) { if (sel && sel.variations && sel.variations[v]) any = true; });
           if (any) wc += 1;
         });
-        function countMap(m) { var c = 0; Object.keys(m).forEach(function (k) { if (m[k]) c += 1; }); return c; }
+        function countMap(m) { let c = 0; Object.keys(m).forEach(function (k) { if (m[k]) c += 1; }); return c; }
         wc += countMap(state.wc.grundlagen);
         wc += countMap(state.wc.armhand);
         wc += countMap(state.wc.beine);
@@ -2142,30 +2132,22 @@
 
         return { tkd: tkd, wc: wc, other: other, all: (tkd + wc + other) };
       }
-      
-      var _lastBadgeTotal = null;
+      let _lastBadgeTotal = null;
       function pulseSelectedBadge(){
-        var el = document.getElementById('selectedBadge');
+        let el=document.getElementById('selectedBadge');
         if(!el) return;
-        el.classList.remove('pulse');
-        void el.offsetWidth;
-        el.classList.add('pulse');
-        clearTimeout(pulseSelectedBadge._t);
-        pulseSelectedBadge._t = setTimeout(function(){ el.classList.remove('pulse'); }, 260);
+        el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse');
+        setTimeout(function(){el.classList.remove('pulse');},260);
       }
-
-function setBadge() {
-        var counts = countSelectedAll();
-        var total = counts.all;
-        var _changed = (_lastBadgeTotal !== null && total !== _lastBadgeTotal);
+      function setBadge() {
+        let counts = countSelectedAll();
+        let total = counts.all; let _changed = (_lastBadgeTotal!==null && total!==_lastBadgeTotal);
         document.getElementById('selectedBadge').textContent = '📋 ' + total + ' Auswahl' + (total === 1 ? '' : 'en');
         document.getElementById('kpi-tkd').textContent = String(counts.tkd);
         document.getElementById('kpi-wc').textContent = String(counts.wc);
         document.getElementById('kpi-other').textContent = String(counts.other);
         document.getElementById('kpi-all').textContent = String(total);
-        document.getElementById('train-selectedCount').textContent = String(total);
-        if (_changed) pulseSelectedBadge();
-        _lastBadgeTotal = total;
+        document.getElementById('train-selectedCount').textContent = String(total); if(_changed) pulseSelectedBadge(); _lastBadgeTotal=total;
       }
 
       // ========= TKD Tabs =========
@@ -2182,50 +2164,51 @@ function setBadge() {
       });
 
       function tkdRenderHyongs(filter) {
-        var host = document.getElementById('tkd-hyongList');
+        let host = document.getElementById('tkd-hyongList');
         host.innerHTML = '';
-        var q = (filter || '').toLowerCase().trim();
-        var shown = 0;
+        let q = (filter || '').toLowerCase().trim();
+        let shown = 0;
 
         HYONGS.forEach(function (h) {
-          var text = (h.id + ' ' + h.name + ' ' + h.moves).toLowerCase();
+          let text = (h.id + ' ' + h.name + ' ' + h.moves).toLowerCase();
           if (q && text.indexOf(q) === -1) return;
           shown++;
 
-          var sel = state.tkd.hyongs[h.id];
-          var chosen = [];
+          let sel = state.tkd.hyongs[h.id];
+          let chosen = [];
           TKD_VARIATIONS.forEach(function (v) { if (sel.variations[v]) chosen.push(v); });
-          var active = chosen.length > 0;
-          var belt = TKD_BELTS[h.belt];
+          let active = chosen.length > 0;
+          let belt = TKD_BELTS[h.belt];
 
-          var el = document.createElement('div');
+          let el = document.createElement('div');
           el.className = 'item';
-          el.innerHTML =
-            '<div class="itemTop">' +
-            '<div>' +
-            '<div class="row" style="gap:8px">' +
-            '<div class="title">' + makeTermUI(h.id + ' ' + h.name, 'Taekwondo', '') + '</div>' +
-            '<span class="pill belt ' + (belt.cls || '') + '">' + belt.emoji + ' ' + belt.label + '</span>' +
-            '<span class="pill">' + h.moves + 'x</span>' +
-            (active ? '<span class="pill on">aktiv</span>' : '<span class="pill" style="color:#64748b">aus</span>') +
-            '</div>' +
-            '<div class="desc" style="margin-top:4px">Varianten: ' + (chosen.length ? escapeHtml(chosen.join(' · ')) : '—') + '</div>' +
-            '</div>' +
-            '<div class="meta">' +
-            '<div class="miniBtns">' +
-            '<button class="mini" data-act="onlyNormal" type="button">Normal</button>' +
-            '<button class="mini" data-act="allOn" type="button">Alle</button>' +
-            '<button class="mini" data-act="allOff" type="button">Aus</button>' +
-            '</div>' +
-            '<div class="pill" style="background:#fff">Runden <input class="roundInput" type="number" min="1" max="20" value="' + sel.rounds + '" style="width:64px;margin-left:8px;border-radius:999px;padding:6px 10px;border:1px solid #e2e8f0" /></div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="sep" style="margin:10px 0"></div>' +
-            '<div class="chips" aria-label="Varianten"></div>';
+          el.innerHTML = `
+<div class="itemTop">
+  <div>
+    <div class="row" style="gap:8px">
+      <div class="title">${makeTermUI(`${h.id} ${h.name}`, 'Taekwondo', '')}</div>
+      <span class="pill belt ${belt.cls || ''}">${belt.emoji} ${belt.label}</span>
+      <span class="pill">${h.moves}x</span>
+      ${active ? `<span class=\"pill on\">aktiv</span>` : `<span class=\"pill\" style=\"color:#64748b\">aus</span>`}
+    </div>
+    <div class="desc" style="margin-top:4px">Varianten: ${chosen.length ? escapeHtml(chosen.join(' · ')) : '—'}</div>
+  </div>
+  <div class="meta">
+    <div class="miniBtns">
+      <button class="mini" data-act="onlyNormal" type="button">Normal</button>
+      <button class="mini" data-act="allOn" type="button">Alle</button>
+      <button class="mini" data-act="allOff" type="button">Aus</button>
+    </div>
+    <div class="pill" style="background:#fff">Runden <input class="roundInput" type="number" min="1" max="20" value="${sel.rounds}" style="width:64px;margin-left:8px;border-radius:999px;padding:6px 10px;border:1px solid #e2e8f0" /></div>
+  </div>
+</div>
+<div class="sep" style="margin:10px 0"></div>
+<div class="chips" aria-label="Varianten"></div>
+`.trim();
 
-          var chips = el.querySelector('.chips');
+          let chips = el.querySelector('.chips');
           TKD_VARIATIONS.forEach(function (v) {
-            var c = document.createElement('button');
+            let c = document.createElement('button');
             c.type = 'button';
             c.className = 'chip' + (sel.variations[v] ? ' on' : '');
             c.textContent = v;
@@ -2240,9 +2223,9 @@ function setBadge() {
           });
 
           el.addEventListener('click', function (e) {
-            var t = e.target;
+            let t = e.target;
             if (t && t.classList && t.classList.contains('mini')) {
-              var act = t.getAttribute('data-act');
+              let act = t.getAttribute('data-act');
               if (act === 'onlyNormal') TKD_VARIATIONS.forEach(function (v) { sel.variations[v] = (v === 'normal'); });
               else if (act === 'allOff') TKD_VARIATIONS.forEach(function (v) { sel.variations[v] = false; });
               else TKD_VARIATIONS.forEach(function (v) { sel.variations[v] = true; });
@@ -2252,9 +2235,9 @@ function setBadge() {
             }
           });
 
-          var roundInput = el.querySelector('.roundInput');
+          let roundInput = el.querySelector('.roundInput');
           roundInput.addEventListener('change', function () {
-            var val = clamp(parseInt(roundInput.value || '1', 10), 1, 20);
+            let val = clamp(parseInt(roundInput.value || '1', 10), 1, 20);
             roundInput.value = String(val);
             sel.rounds = val;
             save();
@@ -2267,24 +2250,23 @@ function setBadge() {
       }
 
       function tkdRenderCombos(filter) {
-        var host = document.getElementById('tkd-comboList');
+        let host = document.getElementById('tkd-comboList');
         host.innerHTML = '';
-        var q = (filter || '').toLowerCase().trim();
-        var shown = 0;
+        let q = (filter || '').toLowerCase().trim();
+        let shown = 0;
 
         COMBOS.forEach(function (c) {
           if (q && c.toLowerCase().indexOf(q) === -1) return;
           shown++;
-          var el = document.createElement('div');
+          let el = document.createElement('div');
           el.className = 'item';
-          el.innerHTML =
-            '<div class="checkRow">' +
-            '<label><input type="checkbox" ' + (state.tkd.combos[c] ? 'checked' : '') + '> ' +
-            '<span>' + makeTermUI(c, 'Taekwondo', '🔁') + '</span>' +
-            '</label>' +
-            '<small>Kombinations-Drill</small>' +
-            '</div>';
-          var cb = el.querySelector('input');
+          el.innerHTML = `
+<div class="checkRow">
+  <label><input type="checkbox" ${state.tkd.combos[c] ? 'checked' : ''}> <span>${makeTermUI(c, 'Taekwondo', '🔁')}</span></label>
+  <small>Kombinations-Drill</small>
+</div>
+`.trim();
+          let cb = el.querySelector('input');
           cb.addEventListener('change', function () {
             state.tkd.combos[c] = !!cb.checked;
             save();
@@ -2297,19 +2279,18 @@ function setBadge() {
       }
 
       function tkdRenderIlbo() {
-        var host = document.getElementById('tkd-ilboList');
+        let host = document.getElementById('tkd-ilboList');
         host.innerHTML = '';
         SPARRING.forEach(function (s) {
-          var el = document.createElement('div');
+          let el = document.createElement('div');
           el.className = 'item';
-          el.innerHTML =
-            '<div class="checkRow">' +
-            '<label><input type="checkbox" ' + (state.tkd.sparring[s] ? 'checked' : '') + '> ' +
-            '<span>' + makeTermUI(s, 'Taekwondo', '🛡️') + '</span>' +
-            '</label>' +
-            '<small>Partner &amp; Distanz</small>' +
-            '</div>';
-          var cb = el.querySelector('input');
+          el.innerHTML = `
+<div class="checkRow">
+  <label><input type="checkbox" ${state.tkd.sparring[s] ? 'checked' : ''}> <span>${makeTermUI(s, 'Taekwondo', '🛡️')}</span></label>
+  <small>Partner & Distanz</small>
+</div>
+`.trim();
+          let cb = el.querySelector('input');
           cb.addEventListener('change', function () {
             state.tkd.sparring[s] = !!cb.checked;
             save();
@@ -2328,43 +2309,41 @@ function setBadge() {
         return { title: key, icon: '✨' };
       }
       function tkdRenderBasics(filter) {
-        var host = document.getElementById('tkd-basicsList');
+        let host = document.getElementById('tkd-basicsList');
         host.innerHTML = '';
-        var q = (filter || '').toLowerCase().trim();
-        var anyShown = false;
+        let q = (filter || '').toLowerCase().trim();
+        let anyShown = false;
 
         Object.keys(BASICS).forEach(function (k) {
-          var items = BASICS[k].slice();
+          let items = BASICS[k].slice();
           if (q) items = items.filter(function (i) { return i.toLowerCase().indexOf(q) !== -1; });
           if (!items.length) return;
           anyShown = true;
 
-          var meta = tkdGroupMeta(k);
-          var allSelected = items.every(function (i) { return !!state.tkd.basics[i]; });
-          var anySelected = items.some(function (i) { return !!state.tkd.basics[i]; });
+          let meta = tkdGroupMeta(k);
+          let allSelected = items.every(function (i) { return !!state.tkd.basics[i]; });
+          let anySelected = items.some(function (i) { return !!state.tkd.basics[i]; });
 
-          var el = document.createElement('div');
+          let el = document.createElement('div');
           el.className = 'item';
-          el.innerHTML =
-            '<div class="groupHead">' +
-            '<div class="groupTitle"><span class="pill">' + meta.icon + '</span>' + meta.title + ' <span class="pill">' + items.length + '</span></div>' +
-            '<div class="miniBtns">' +
-            '<button class="mini" data-gact="all" type="button" ' + (allSelected ? 'disabled' : '') + '>Alle</button>' +
-            '<button class="mini" data-gact="none" type="button" ' + (!anySelected ? 'disabled' : '') + '>Keine</button>' +
-            '</div>' +
-            '</div>' +
-            '<div class="sep" style="margin:10px 0"></div>' +
-            '<div class="list" style="gap:8px"></div>';
+          el.innerHTML = `
+<div class="groupHead">
+  <div class="groupTitle"><span class="pill">${meta.icon}</span>${meta.title} <span class="pill">${items.length}</span></div>
+  <div class="miniBtns">
+    <button class="mini" data-gact="all" type="button" ${allSelected ? 'disabled' : ''}>Alle</button>
+    <button class="mini" data-gact="none" type="button" ${!anySelected ? 'disabled' : ''}>Keine</button>
+  </div>
+</div>
+<div class="sep" style="margin:10px 0"></div>
+<div class="list" style="gap:8px"></div>
+`.trim();
 
-          var list = el.querySelector('.list');
+          let list = el.querySelector('.list');
           items.forEach(function (i) {
-            var row = document.createElement('div');
+            let row = document.createElement('div');
             row.className = 'checkRow';
-            row.innerHTML =
-              '<label><input type="checkbox" ' + (state.tkd.basics[i] ? 'checked' : '') + '> ' +
-              '<span>' + makeTermUI(i, 'Taekwondo', '') + '</span>' +
-              '</label>';
-            var cb = row.querySelector('input');
+            row.innerHTML = `<label><input type="checkbox" ${state.tkd.basics[i] ? 'checked' : ''}> <span>${makeTermUI(i, 'Taekwondo', '')}</span></label>`;
+            let cb = row.querySelector('input');
             cb.addEventListener('change', function () {
               state.tkd.basics[i] = !!cb.checked;
               save();
@@ -2374,9 +2353,9 @@ function setBadge() {
           });
 
           el.addEventListener('click', function (e) {
-            var t = e.target;
+            let t = e.target;
             if (!t || !t.getAttribute) return;
-            var gact = t.getAttribute('data-gact');
+            let gact = t.getAttribute('data-gact');
             if (gact === 'all') {
               items.forEach(function (i) { state.tkd.basics[i] = true; });
               save();
@@ -2411,51 +2390,52 @@ function setBadge() {
       });
 
       function wcRenderForms(filter) {
-        var host = document.getElementById('wc-formList');
+        let host = document.getElementById('wc-formList');
         host.innerHTML = '';
-        var q = (filter || '').toLowerCase().trim();
-        var shown = 0;
+        let q = (filter || '').toLowerCase().trim();
+        let shown = 0;
 
         FORMS.forEach(function (f) {
-          var text = (f.id + ' ' + f.code + ' ' + f.name + ' ' + f.note + ' ' + f.parts).toLowerCase();
+          let text = (f.id + ' ' + f.code + ' ' + f.name + ' ' + f.note + ' ' + f.parts).toLowerCase();
           if (q && text.indexOf(q) === -1) return;
           shown++;
 
-          var sel = state.wc.forms[f.id];
-          var chosen = [];
+          let sel = state.wc.forms[f.id];
+          let chosen = [];
           WC_VARIATIONS.forEach(function (v) { if (sel.variations[v]) chosen.push(v); });
-          var active = chosen.length > 0;
-          var lvl = WC_LEVELS[f.level];
+          let active = chosen.length > 0;
+          let lvl = WC_LEVELS[f.level];
 
-          var el = document.createElement('div');
+          let el = document.createElement('div');
           el.className = 'item';
-          el.innerHTML =
-            '<div class="itemTop">' +
-            '<div>' +
-            '<div class="row" style="gap:8px">' +
-            '<div class="title">' + makeTermUI(f.id + ' ' + f.name, 'Wing Chun', '') + '</div>' +
-            '<span class="pill">' + escapeHtml(f.code) + '</span>' +
-            '<span class="pill level ' + (lvl.cls || '') + '">' + lvl.emoji + ' ' + lvl.label + '</span>' +
-            '<span class="pill">' + escapeHtml(f.parts) + '</span>' +
-            (active ? '<span class="pill on">aktiv</span>' : '<span class="pill" style="color:#64748b">aus</span>') +
-            '</div>' +
-            '<div class="desc" style="margin-top:4px">' + escapeHtml(f.note) + ' · Varianten: ' + (chosen.length ? escapeHtml(chosen.join(' · ')) : '—') + '</div>' +
-            '</div>' +
-            '<div class="meta">' +
-            '<div class="miniBtns">' +
-            '<button class="mini" data-act="onlyNormal" type="button">Normal</button>' +
-            '<button class="mini" data-act="allOn" type="button">Alle</button>' +
-            '<button class="mini" data-act="allOff" type="button">Aus</button>' +
-            '</div>' +
-            '<div class="pill" style="background:#fff">Runden <input class="roundInput" type="number" min="1" max="20" value="' + sel.rounds + '" style="width:64px;margin-left:8px;border-radius:999px;padding:6px 10px;border:1px solid #e2e8f0" /></div>' +
-            '</div>' +
-            '</div>' +
-            '<div class="sep" style="margin:10px 0"></div>' +
-            '<div class="chips" aria-label="Varianten"></div>';
+          el.innerHTML = `
+<div class="itemTop">
+  <div>
+    <div class="row" style="gap:8px">
+      <div class="title">${makeTermUI(`${f.id} ${f.name}`, 'Wing Chun', '')}</div>
+      <span class="pill">${escapeHtml(f.code)}</span>
+      <span class="pill level ${lvl.cls || ''}">${lvl.emoji} ${lvl.label}</span>
+      <span class="pill">${escapeHtml(f.parts)}</span>
+      ${active ? `<span class=\"pill on\">aktiv</span>` : `<span class=\"pill\" style=\"color:#64748b\">aus</span>`}
+    </div>
+    <div class="desc" style="margin-top:4px">${escapeHtml(f.note)} · Varianten: ${chosen.length ? escapeHtml(chosen.join(' · ')) : '—'}</div>
+  </div>
+  <div class="meta">
+    <div class="miniBtns">
+      <button class="mini" data-act="onlyNormal" type="button">Normal</button>
+      <button class="mini" data-act="allOn" type="button">Alle</button>
+      <button class="mini" data-act="allOff" type="button">Aus</button>
+    </div>
+    <div class="pill" style="background:#fff">Runden <input class="roundInput" type="number" min="1" max="20" value="${sel.rounds}" style="width:64px;margin-left:8px;border-radius:999px;padding:6px 10px;border:1px solid #e2e8f0" /></div>
+  </div>
+</div>
+<div class="sep" style="margin:10px 0"></div>
+<div class="chips" aria-label="Varianten"></div>
+`.trim();
 
-          var chips = el.querySelector('.chips');
+          let chips = el.querySelector('.chips');
           WC_VARIATIONS.forEach(function (v) {
-            var c = document.createElement('button');
+            let c = document.createElement('button');
             c.type = 'button';
             c.className = 'chip' + (sel.variations[v] ? ' on' : '');
             c.textContent = v;
@@ -2470,9 +2450,9 @@ function setBadge() {
           });
 
           el.addEventListener('click', function (e) {
-            var t = e.target;
+            let t = e.target;
             if (t && t.classList && t.classList.contains('mini')) {
-              var act = t.getAttribute('data-act');
+              let act = t.getAttribute('data-act');
               if (act === 'onlyNormal') WC_VARIATIONS.forEach(function (v) { sel.variations[v] = (v === 'normal'); });
               else if (act === 'allOff') WC_VARIATIONS.forEach(function (v) { sel.variations[v] = false; });
               else WC_VARIATIONS.forEach(function (v) { sel.variations[v] = true; });
@@ -2482,9 +2462,9 @@ function setBadge() {
             }
           });
 
-          var roundInput = el.querySelector('.roundInput');
+          let roundInput = el.querySelector('.roundInput');
           roundInput.addEventListener('change', function () {
-            var val = clamp(parseInt(roundInput.value || '1', 10), 1, 20);
+            let val = clamp(parseInt(roundInput.value || '1', 10), 1, 20);
             roundInput.value = String(val);
             sel.rounds = val;
             save();
@@ -2497,25 +2477,24 @@ function setBadge() {
       }
 
       function wcRenderCheckboxList(hostId, emptyId, items, stateMap, filter, icon, defaultSmall) {
-        var host = document.getElementById(hostId);
+        let host = document.getElementById(hostId);
         host.innerHTML = '';
-        var q = (filter || '').toLowerCase().trim();
-        var shown = 0;
+        let q = (filter || '').toLowerCase().trim();
+        let shown = 0;
 
         items.forEach(function (it) {
-          var text = (it.t + ' ' + (it.d || '')).toLowerCase();
+          let text = (it.t + ' ' + (it.d || '')).toLowerCase();
           if (q && text.indexOf(q) === -1) return;
           shown++;
-          var el = document.createElement('div');
+          let el = document.createElement('div');
           el.className = 'item';
-          el.innerHTML =
-            '<div class="checkRow">' +
-            '<label><input type="checkbox" ' + (stateMap[it.t] ? 'checked' : '') + '> ' +
-            '<span>' + makeTermUI(it.t, 'Wing Chun', icon) + '</span>' +
-            '</label>' +
-            '<small>' + escapeHtml(it.d || defaultSmall || '') + '</small>' +
-            '</div>';
-          var cb = el.querySelector('input');
+el.innerHTML = `
+<div class="checkRow">
+  <label><input type="checkbox" ${stateMap[it.t] ? 'checked' : ''}> <span>${makeTermUI(it.t, 'Wing Chun', icon)}</span></label>
+  <small>${escapeHtml(it.d || defaultSmall || '')}</small>
+</div>
+`.trim();
+          let cb = el.querySelector('input');
           cb.addEventListener('change', function () {
             stateMap[it.t] = !!cb.checked;
             save();
@@ -2524,7 +2503,7 @@ function setBadge() {
           host.appendChild(el);
         });
 
-        var empty = document.getElementById(emptyId);
+        let empty = document.getElementById(emptyId);
         if (empty) empty.classList.toggle('hidden', shown !== 0);
       }
 
@@ -2542,25 +2521,24 @@ function setBadge() {
       });
 
       function otherRenderList(hostId, emptyId, items, stateMap, filter, icon, defaultSmall) {
-        var host = document.getElementById(hostId);
+        let host = document.getElementById(hostId);
         host.innerHTML = '';
-        var q = (filter || '').toLowerCase().trim();
-        var shown = 0;
+        let q = (filter || '').toLowerCase().trim();
+        let shown = 0;
 
         items.forEach(function (it) {
-          var text = (it.t + ' ' + (it.d || '')).toLowerCase();
+          let text = (it.t + ' ' + (it.d || '')).toLowerCase();
           if (q && text.indexOf(q) === -1) return;
           shown++;
-          var el = document.createElement('div');
+          let el = document.createElement('div');
           el.className = 'item';
-          el.innerHTML =
-            '<div class="checkRow">' +
-            '<label><input type="checkbox" ' + (stateMap[it.t] ? 'checked' : '') + '> ' +
-            '<span>' + makeTermUI(it.t, 'Weiteres', icon) + '</span>' +
-            '</label>' +
-            '<small>' + escapeHtml(it.d || defaultSmall || '') + '</small>' +
-            '</div>';
-          var cb = el.querySelector('input');
+el.innerHTML = `
+<div class="checkRow">
+  <label><input type="checkbox" ${stateMap[it.t] ? 'checked' : ''}> <span>${makeTermUI(it.t, 'Weiteres', icon)}</span></label>
+  <small>${escapeHtml(it.d || defaultSmall || '')}</small>
+</div>
+`.trim();
+          let cb = el.querySelector('input');
           cb.addEventListener('change', function () {
             stateMap[it.t] = !!cb.checked;
             save();
@@ -2569,36 +2547,37 @@ function setBadge() {
           host.appendChild(el);
         });
 
-        var empty = document.getElementById(emptyId);
+        let empty = document.getElementById(emptyId);
         if (empty) empty.classList.toggle('hidden', shown !== 0);
       }
 
       // ========= Training Summary (nur Subkategorien mit Auswahl anzeigen) =========
       function sectionCard(title, icon, count, innerHTML) {
-        return '' +
-          '<div class="item">' +
-          '<div class="itemTop">' +
-          '<div class="row" style="gap:10px">' +
-          '<span class="pill">' + icon + '</span>' +
-          '<div class="title">' + escapeHtml(title) + '</div>' +
-          '</div>' +
-          '<span class="pill">' + count + '</span>' +
-          '</div>' +
-          '<div class="sep" style="margin:10px 0"></div>' +
-          innerHTML +
-          '</div>';
-      }
+  return `
+<div class="item">
+  <div class="itemTop">
+    <div class="row" style="gap:10px">
+      <span class="pill">${icon}</span>
+      <div class="title">${escapeHtml(title)}</div>
+    </div>
+    <span class="pill">${count}</span>
+  </div>
+  <div class="sep" style="margin:10px 0"></div>
+  ${innerHTML}
+</div>
+`.trim();
+}
 
       function collectTrainingItems() {
-        var out = {
+        let out = {
           tkd: { hyongs: [], combos: [], sparring: [], basics: [], note: '' },
           wc: { forms: [], grundlagen: [], armhand: [], beine: [], weitere: [], weapon: [], note: '' },
           other: { kraft: [], boxen: [], sonstiges: [], note: '' }
         };
 
         HYONGS.forEach(function (h) {
-          var sel = state.tkd.hyongs[h.id];
-          var chosen = [];
+          let sel = state.tkd.hyongs[h.id];
+          let chosen = [];
           TKD_VARIATIONS.forEach(function (v) { if (sel.variations[v]) chosen.push(v); });
           if (!chosen.length) return;
           out.tkd.hyongs.push({
@@ -2614,8 +2593,8 @@ function setBadge() {
         out.tkd.note = (state.tkd.note || '').trim();
 
         FORMS.forEach(function (f) {
-          var sel = state.wc.forms[f.id];
-          var chosen = [];
+          let sel = state.wc.forms[f.id];
+          let chosen = [];
           WC_VARIATIONS.forEach(function (v) { if (sel.variations[v]) chosen.push(v); });
           if (!chosen.length) return;
           out.wc.forms.push({
@@ -2649,8 +2628,8 @@ function setBadge() {
       }
 
       function pickTrainingMotivation() {
-        var c = countSelectedAll();
-        var pool = [];
+        let c = countSelectedAll();
+        let pool = [];
         if (c.tkd > 0) pool = pool.concat(TKD_MOTIVATION);
         if (c.wc > 0) pool = pool.concat(WC_MOTIVATION);
         if (c.other > 0) pool = pool.concat(OTHER_MOTIVATION);
@@ -2659,9 +2638,9 @@ function setBadge() {
       }
 
       function updateTrainingProgress(keys, done) {
-        var total = keys.length;
-        var finished = keys.filter(function (k) { return !!done[k]; }).length;
-        var pct = total ? Math.round((finished / total) * 100) : 0;
+        let total = keys.length;
+        let finished = keys.filter(function (k) { return !!done[k]; }).length;
+        let pct = total ? Math.round((finished / total) * 100) : 0;
         document.getElementById('train-progressText').textContent = finished + ' / ' + total + ' erledigt';
         document.getElementById('train-progressBarFill').style.width = pct + '%';
       }
@@ -2669,16 +2648,16 @@ function setBadge() {
       function renderTraining() {
         document.getElementById('train-dateNow').textContent = prettyDateDE(new Date());
 
-        var data = collectTrainingItems();
-        var sections = [];
-        var doneKeys = [];
+        let data = collectTrainingItems();
+        let sections = [];
+        let doneKeys = [];
 
         function listBlock(items, ctxHint) {
           if (!items.length) return '';
-          var out = '<div class="list" style="gap:10px">';
+          let out = '<div class="list" style="gap:10px">';
           items.forEach(function (it) {
             doneKeys.push(it.key);
-            var safeKey = escapeAttr(it.key);
+            let safeKey = escapeAttr(it.key);
             out += '<div class="summaryBox" style="border-style:solid">' +
               '<div class="doneRow">' +
               '<input type="checkbox" class="doneCb" data-key="' + safeKey + '">' +
@@ -2694,10 +2673,10 @@ function setBadge() {
         }
         function simpleList(items, ctxHint, icon) {
           if (!items.length) return '';
-          var out = '<div class="list" style="gap:8px">';
+          let out = '<div class="list" style="gap:8px">';
           items.forEach(function (it) {
             doneKeys.push(it.key);
-            var safeKey = escapeAttr(it.key);
+            let safeKey = escapeAttr(it.key);
             out += '<div class="summaryBox" style="border-style:solid">' +
               '<div class="doneRow">' +
               '<input type="checkbox" class="doneCb" data-key="' + safeKey + '">' +
@@ -2709,9 +2688,9 @@ function setBadge() {
           return out;
         }
 
-        var tkdCount = data.tkd.hyongs.length + data.tkd.combos.length + data.tkd.sparring.length + data.tkd.basics.length;
+        let tkdCount = data.tkd.hyongs.length + data.tkd.combos.length + data.tkd.sparring.length + data.tkd.basics.length;
         if (tkdCount > 0) {
-          var inner = '';
+          let inner = '';
           if (data.tkd.hyongs.length) inner += sectionCard('Hyongs', '⚔️', data.tkd.hyongs.length, listBlock(data.tkd.hyongs, 'Taekwondo'));
           if (data.tkd.combos.length) inner += sectionCard('Kombinationen', '🔁', data.tkd.combos.length, simpleList(data.tkd.combos, 'Taekwondo', '🔁'));
           if (data.tkd.sparring.length) inner += sectionCard('Einschrittkampf', '🛡️', data.tkd.sparring.length, simpleList(data.tkd.sparring, 'Taekwondo', '🛡️'));
@@ -2720,9 +2699,9 @@ function setBadge() {
           sections.push(sectionCard('Taekwondo', '🥋', tkdCount, inner));
         }
 
-        var wcCount = data.wc.forms.length + data.wc.grundlagen.length + data.wc.armhand.length + data.wc.beine.length + data.wc.weitere.length + data.wc.weapon.length;
+        let wcCount = data.wc.forms.length + data.wc.grundlagen.length + data.wc.armhand.length + data.wc.beine.length + data.wc.weitere.length + data.wc.weapon.length;
         if (wcCount > 0) {
-          var innerW = '';
+          let innerW = '';
           if (data.wc.forms.length) innerW += sectionCard('Formen', '⚔️', data.wc.forms.length, listBlock(data.wc.forms, 'Wing Chun'));
           if (data.wc.grundlagen.length) innerW += sectionCard('Grundlagen', '🧱', data.wc.grundlagen.length, simpleList(data.wc.grundlagen, 'Wing Chun', '🧱'));
           if (data.wc.armhand.length) innerW += sectionCard('Arm- & Handtechniken', '🤲', data.wc.armhand.length, simpleList(data.wc.armhand, 'Wing Chun', '🤲'));
@@ -2733,9 +2712,9 @@ function setBadge() {
           sections.push(sectionCard('Wing Chun', '🥋', wcCount, innerW));
         }
 
-        var otherCount = data.other.kraft.length + data.other.boxen.length + data.other.sonstiges.length;
+        let otherCount = data.other.kraft.length + data.other.boxen.length + data.other.sonstiges.length;
         if (otherCount > 0) {
-          var innerO = '';
+          let innerO = '';
           if (data.other.kraft.length) innerO += sectionCard('Krafttraining', '🏋️', data.other.kraft.length, simpleList(data.other.kraft, 'Weiteres', '🏋️'));
           if (data.other.boxen.length) innerO += sectionCard('Boxen/Drills', '🥊', data.other.boxen.length, simpleList(data.other.boxen, 'Weiteres', '🥊'));
           if (data.other.sonstiges.length) innerO += sectionCard('Sonstiges', '🧘', data.other.sonstiges.length, simpleList(data.other.sonstiges, 'Weiteres', '🧘'));
@@ -2747,20 +2726,17 @@ function setBadge() {
           sections.push('<div class="summaryBox">Noch keine Übungen ausgewählt. Gehe zu TKD / Wing Chun / Weiteres und wähle etwas aus.</div>');
         }
 
-        var host = document.getElementById('train-sections');
+        let host = document.getElementById('train-sections');
         host.innerHTML = sections.join('');
 
-        var done = ensureDoneKeys(doneKeys);
+        let done = ensureDoneKeys(doneKeys);
         Array.prototype.slice.call(host.querySelectorAll('.doneCb')).forEach(function (cb) {
-          var key = cb.getAttribute('data-key');
-          cb.checked = !!done[key];
-          var box = cb.closest ? cb.closest('.summaryBox') : null;
-          if (box) { box.classList.add('trainingItem'); box.classList.toggle('done', cb.checked); }
+          let key = cb.getAttribute('data-key');
+          cb.checked = !!done[key]; let box=cb.closest('.summaryBox'); if(box){box.classList.add('trainingItem'); box.classList.toggle('done',cb.checked);}
           cb.addEventListener('change', function () {
             done[key] = !!cb.checked;
             saveDoneMap(done);
-            updateTrainingProgress(doneKeys, done);
-            if (box) box.classList.toggle('done', !!cb.checked);
+            updateTrainingProgress(doneKeys, done); if(box) box.classList.toggle('done',!!cb.checked);
           });
         });
 
@@ -2769,9 +2745,9 @@ function setBadge() {
       }
 
       function copyTrainingText() {
-        var d = new Date();
-        var data = collectTrainingItems();
-        var lines = [];
+        let d = new Date();
+        let data = collectTrainingItems();
+        let lines = [];
         lines.push('Martial Repertoire 🥋 – Heutiges Training (' + prettyDateDE(d) + ')');
         lines.push('');
 
@@ -2815,12 +2791,12 @@ function setBadge() {
           if (data.other.note) { lines.push('Notiz:'); lines.push(data.other.note); lines.push(''); }
         }
 
-        var text = lines.join('\n');
+        let text = lines.join('\n');
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(function () { toast('📋 Training kopiert'); }).catch(function () { toast('Kopieren nicht möglich'); console.log(text); });
         } else {
           try {
-            var ta = document.createElement('textarea');
+            let ta = document.createElement('textarea');
             ta.value = text; document.body.appendChild(ta);
             ta.select(); document.execCommand('copy');
             document.body.removeChild(ta);
@@ -2830,20 +2806,20 @@ function setBadge() {
       }
 
       // ========= Timer =========
-      var _timer = { t: null, mode: 'work', remaining: 0, round: 0, paused: true, total: 0 };
+      const _timer = { t: null, mode: 'work', remaining: 0, round: 0, paused: true, total: 0 };
       function fmt(s) {
         s = Math.max(0, Number(s) || 0);
-        var m = Math.floor(s / 60), ss = s % 60;
+        let m = Math.floor(s / 60), ss = s % 60;
         return String(m).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
       }
       
       // Timer – Fortschrittsring (visuell)
-      var _timerRing = { prog: null, C: 0 };
+      const _timerRing = { prog: null, C: 0 };
       function timerRingInit() {
-        var prog = document.getElementById('timer-ringProgress');
+        let prog = document.getElementById('timer-ringProgress');
         if (!prog) return;
-        var r = Number(prog.getAttribute('r')) || 52;
-        var C = 2 * Math.PI * r;
+        let r = Number(prog.getAttribute('r')) || 52;
+        let C = 2 * Math.PI * r;
         _timerRing.prog = prog;
         _timerRing.C = C;
         prog.style.strokeDasharray = String(C);
@@ -2852,7 +2828,7 @@ function setBadge() {
       }
       function timerRingSet(progress) {
         if (!_timerRing.prog) return;
-        var p = Number(progress) || 0;
+        let p = Number(progress) || 0;
         if (p < 0) p = 0;
         if (p > 1) p = 1;
         _timerRing.prog.style.strokeDashoffset = String(_timerRing.C * (1 - p));
@@ -2871,18 +2847,18 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
       function timerUpdate() {
         document.getElementById('timer-display').textContent = fmt(_timer.remaining);
         document.getElementById('timer-phase').textContent = _timer.t ? (_timer.mode === 'work' ? 'WORK' : 'PAUSE') : '—';
-        var rounds = Number(document.getElementById('timer-rounds').value || 0);
+        let rounds = Number(document.getElementById('timer-rounds').value || 0);
         document.getElementById('timer-round').textContent = (_timer.t ? (_timer.round + 1) : 0) + ' / ' + rounds;
       
         // Ring-Fortschritt aktualisieren (voll → leer)
-        var total = Number(_timer.total) || 0;
-        var rem = Number(_timer.remaining) || 0;
+        let total = Number(_timer.total) || 0;
+        let rem = Number(_timer.remaining) || 0;
         if (!total) {
           // Wenn Timer nicht läuft: orientiere dich am Work-Wert
           total = Number(document.getElementById('timer-workSec').value) || 0;
           rem = Number(_timer.remaining) || total;
         }
-        var progress = total > 0 ? (rem / total) : 0;
+        let progress = total > 0 ? (rem / total) : 0;
         timerRingSet(progress);
 }
       function timerStopInternal() {
@@ -2941,7 +2917,7 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
         timerUpdate();
       }
       function timerInit() {
-        var conf = timerLoad();
+        let conf = timerLoad();
         if (typeof conf.work === 'number') document.getElementById('timer-workSec').value = conf.work;
         if (typeof conf.rest === 'number') document.getElementById('timer-restSec').value = conf.rest;
         if (typeof conf.rounds === 'number') document.getElementById('timer-rounds').value = conf.rounds;
@@ -2988,18 +2964,18 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
 
       // ========= Global term click delegation =========
       document.addEventListener('click', function (e) {
-        var t = e.target;
+        let t = e.target;
         if (!t) return;
-        var btn = t.closest ? t.closest('.js-term') : null;
+        let btn = t.closest ? t.closest('.js-term') : null;
         if (!btn) return;
         e.stopPropagation();
-        var term = btn.getAttribute('data-term') || btn.textContent;
-        var ctx = btn.getAttribute('data-ctx') || '';
+        let term = btn.getAttribute('data-term') || btn.textContent;
+        let ctx = btn.getAttribute('data-ctx') || '';
         openGlossary(term, ctx);
       }, true);
 
       // ========= Init =========
-      var state = safeLoad();
+      let state = safeLoad();
 
       document.getElementById('tkd-noteInput').value = state.tkd.note || '';
       document.getElementById('tkd-noteInput').addEventListener('input', function () { state.tkd.note = this.value; save(); });
@@ -3009,13 +2985,13 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
       document.getElementById('other-noteInput').addEventListener('input', function () { state.other.note = this.value; save(); });
 
       document.getElementById('tkd-searchInput').addEventListener('input', function () {
-        var q = this.value;
+        let q = this.value;
         tkdRenderHyongs(q);
         tkdRenderCombos(q);
         tkdRenderBasics(q);
       });
       document.getElementById('wc-searchInput').addEventListener('input', function () {
-        var q = this.value;
+        let q = this.value;
         wcRenderForms(q);
         wcRenderCheckboxList('wc-grundlagenList', 'wc-grundlagenEmpty', GRUNDLAGEN, state.wc.grundlagen, q, '🧱', 'Grundlagen');
         wcRenderCheckboxList('wc-armhandList', 'wc-armhandEmpty', ARM_HAND, state.wc.armhand, q, '🤲', 'Technik');
@@ -3024,7 +3000,7 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
         wcRenderCheckboxList('wc-weaponList', 'wc-weaponEmpty', WEAPON, state.wc.weapon, q, '🛡️', 'Weapon');
       });
       document.getElementById('other-searchInput').addEventListener('input', function () {
-        var q = this.value;
+        let q = this.value;
         otherRenderList('other-kraftList', 'other-kraftEmpty', OTHER_KRAFT, state.other.kraft, q, '🏋️', 'Kraft');
         otherRenderList('other-boxenList', 'other-boxenEmpty', OTHER_BOXEN, state.other.boxen, q, '🥊', 'Boxen');
         otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, q, '🧘', 'Sonstiges');
@@ -3032,19 +3008,19 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
 
       document.getElementById('train-copyBtn').addEventListener('click', copyTrainingText);
       document.getElementById('train-motivationBtn').addEventListener('click', function () {
-        var m = pickTrainingMotivation();
+        let m = pickTrainingMotivation();
         document.getElementById('train-motivationText').textContent = m;
         toast('💪 ' + m);
       });
       document.getElementById('train-newMotivationBtn').addEventListener('click', function () {
-        var m = pickTrainingMotivation();
+        let m = pickTrainingMotivation();
         document.getElementById('train-motivationText').textContent = m;
         toast('✨ ' + m);
       });
       document.getElementById('train-resetDoneBtn').addEventListener('click', function () {
-        var host = document.getElementById('train-sections');
-        var keys = Array.prototype.slice.call(host.querySelectorAll('.doneCb')).map(function (cb) { return cb.getAttribute('data-key'); });
-        var done = getDoneMap();
+        let host = document.getElementById('train-sections');
+        let keys = Array.prototype.slice.call(host.querySelectorAll('.doneCb')).map(function (cb) { return cb.getAttribute('data-key'); });
+        let done = getDoneMap();
         keys.forEach(function (k) { done[k] = false; });
         saveDoneMap(done);
         Array.prototype.slice.call(host.querySelectorAll('.doneCb')).forEach(function (cb) { cb.checked = false; });
@@ -3078,13 +3054,13 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
       })();
 
       function rerenderAll() {
-        var tq = document.getElementById('tkd-searchInput').value;
+        let tq = document.getElementById('tkd-searchInput').value;
         tkdRenderHyongs(tq);
         tkdRenderCombos(tq);
         tkdRenderIlbo();
         tkdRenderBasics(tq);
 
-        var wq = document.getElementById('wc-searchInput').value;
+        let wq = document.getElementById('wc-searchInput').value;
         wcRenderForms(wq);
         wcRenderCheckboxList('wc-grundlagenList', 'wc-grundlagenEmpty', GRUNDLAGEN, state.wc.grundlagen, wq, '🧱', 'Grundlagen');
         wcRenderCheckboxList('wc-armhandList', 'wc-armhandEmpty', ARM_HAND, state.wc.armhand, wq, '🤲', 'Technik');
@@ -3092,7 +3068,7 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
         wcRenderCheckboxList('wc-weitereList', 'wc-weitereEmpty', WEITERE_HAND, state.wc.weitere, wq, '🧩', 'Hand');
         wcRenderCheckboxList('wc-weaponList', 'wc-weaponEmpty', WEAPON, state.wc.weapon, wq, '🛡️', 'Weapon');
 
-        var oq = document.getElementById('other-searchInput').value;
+        let oq = document.getElementById('other-searchInput').value;
         otherRenderList('other-kraftList', 'other-kraftEmpty', OTHER_KRAFT, state.other.kraft, oq, '🏋️', 'Kraft');
         otherRenderList('other-boxenList', 'other-boxenEmpty', OTHER_BOXEN, state.other.boxen, oq, '🥊', 'Boxen');
         otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, oq, '🧘', 'Sonstiges');
