@@ -1,232 +1,781 @@
 <!doctype html>
 <html lang="de">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Workout 🥋</title>
   <style>
-    :root{
-      --bg:#fafafa;
-      --card:#ffffff;
-      --text:#0f172a;
-      --muted:#64748b;
-      --line:#e2e8f0;
-      --shadow:0 6px 18px rgba(2,6,23,.06);
-      --r:18px;
-      --accent:#0f172a;
-      --good:#10b981;
-      --warn:#f59e0b;
-      --bad:#ef4444;
-      --focus:#93c5fd;
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --shadow: 0 6px 18px rgba(2, 6, 23, .06);
+      --r: 18px;
+      --accent: #0f172a;
+      --good: #10b981;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --focus: #93c5fd;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,"Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background:linear-gradient(180deg,#fafafa 0%,#fff 70%);
-    }
-    .wrap{max-width:1100px;margin:0 auto;padding:18px 16px 40px}
-    .header{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
-    .brand{display:flex;gap:12px;align-items:flex-start}
-    .icon{
-      width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;
-      background:var(--accent);color:#fff;font-size:24px;box-shadow:var(--shadow)
-    }
-    h1{margin:0;font-size:20px;letter-spacing:-.02em}
-    h2{margin:0;font-size:16px;letter-spacing:-.01em}
-    .subtitle{margin-top:4px;color:var(--muted);font-size:13px}
-    .actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    .badge{
-      display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;
-      background:#ecfdf5;color:#065f46;font-size:13px;font-weight:800;border:1px solid #d1fae5
-    }
-    .badge.gray{background:#f1f5f9;color:#0f172a;border-color:#e2e8f0}
-    .btn{
-      border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 12px;border-radius:999px;
-      font-weight:900;font-size:13px;cursor:pointer;box-shadow:0 1px 0 rgba(2,6,23,.02)
-    }
-    .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-    .btn:disabled{opacity:.5;cursor:not-allowed}
-    .menuWrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .seg{
-      display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#fff;
-      box-shadow:0 1px 0 rgba(2,6,23,.02)
-    }
-    .seg button{border:0;background:transparent;padding:10px 14px;font-weight:950;font-size:13px;cursor:pointer;color:#0f172a;white-space:nowrap}
-    .seg button.active{background:var(--accent);color:#fff}
-    .grid{margin-top:14px;display:grid;grid-template-columns:2fr 1fr;gap:16px}
-    @media (max-width:980px){.grid{grid-template-columns:1fr}}
-    .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
-    .pad{padding:16px}
-    .desc{margin:0;color:var(--muted);font-size:13px;line-height:1.35}
-    .sep{height:1px;background:var(--line);margin:14px 0}
-    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .tabs{display:grid;grid-template-columns:repeat(4, 1fr);gap:8px}
-    .tabs.wc{grid-template-columns:repeat(auto-fit, minmax(140px, 1fr))}
-    .tab{
-      background:#f1f5f9;border:1px solid #e2e8f0;padding:10px 10px;border-radius:999px;
-      font-weight:950;font-size:13px;cursor:pointer
-    }
-    .tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-    .search{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
-    input[type="text"], input[type="number"], textarea{
-      border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 12px;font-size:13px;outline:none;
-    }
-    textarea{border-radius:16px;min-height:80px;resize:vertical;padding:12px}
-    input[type="text"]:focus, input[type="number"]:focus, textarea:focus{
-      box-shadow:0 0 0 3px rgba(147,197,253,.45);border-color:var(--focus)
-    }
-    .search input[type="text"]{flex:1;min-width:220px;width:100%}
-    .hint{
-      display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:#f1f5f9;
-      border:1px solid #e2e8f0;color:#0f172a;font-size:12px;font-weight:900
-    }
-    .list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-    .item{border:1px solid var(--line);border-radius:var(--r);background:#fff;padding:12px}
-    .itemTop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .title{font-weight:950;font-size:14px}
-    .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    .pill{
-      display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;background:#f1f5f9;
-      border:1px solid #e2e8f0;font-size:12px;font-weight:900;color:#0f172a
-    }
-    .pill.on{background:#ecfdf5;border-color:#d1fae5;color:#065f46}
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .chip{
-      border:1px solid #e2e8f0;background:#f1f5f9;color:#334155;border-radius:999px;padding:8px 10px;
-      font-weight:950;font-size:12px;cursor:pointer;user-select:none
-    }
-    .chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
-    .miniBtns{display:flex;gap:8px;flex-wrap:wrap}
-    .mini{
-      padding:8px 10px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;font-weight:950;font-size:12px;cursor:pointer
-    }
-    .checkRow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .checkRow label{display:flex;align-items:flex-start;gap:10px;font-weight:950;font-size:13px}
-    .checkRow small{color:var(--muted);line-height:1.25}
-    input[type="checkbox"]{width:18px;height:18px;margin-top:2px}
-    .groupHead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .groupTitle{display:flex;align-items:center;gap:10px;font-weight:1000}
-    .summaryBox{
-      background:#f8fafc;border:1px dashed #e2e8f0;border-radius:var(--r);padding:12px;color:#475569;font-size:13px;line-height:1.35
-    }
-    .toast{
-      position:fixed;right:16px;bottom:16px;background:rgba(15,23,42,.95);color:#fff;padding:12px 14px;border-radius:16px;
-      box-shadow:var(--shadow);display:none;max-width:360px;z-index:99
-    }
-    .footer{margin-top:18px;color:#94a3b8;font-size:12px}
-    .motivation{background:#ecfdf5;border:1px solid #d1fae5;color:#065f46;border-radius:var(--r);padding:12px}
-    .motivation h3{margin:0 0 6px;font-size:13px}
-    .motivation p{margin:0;font-size:13px}
-    .kpi{display:flex;flex-direction:column;gap:10px}
-    .kpiRow{
-      display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:16px;background:#fff;border:1px solid #f1f5f9;
-      box-shadow:0 1px 0 rgba(2,6,23,.02)
-    }
-    .kpiLeft{display:flex;align-items:center;gap:10px;color:#334155;font-weight:950}
-    .kpiIcon{width:34px;height:34px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#f1f5f9}
-    .kpiVal{font-size:18px;font-weight:1000}
-    .hidden{display:none}
-    .subcard{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px}
-    .progressBar{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
-    .progressBar>div{height:100%;width:0%;background:var(--good)}
-    .progressMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .doneRow{display:flex;align-items:flex-start;gap:10px}
-    .doneRow input{margin-top:2px}
-    .doneTitle{font-weight:1000}
-    .doneDetails{color:#475569;font-size:12px;margin-top:4px;line-height:1.35}
-    .timerBig{font-size:34px;font-weight:1100;letter-spacing:-.02em}
-    .view{display:none}
-    .view.active{display:block}
-    .viewTitle{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .termBtn{
-      border:0;background:transparent;color:inherit;font:inherit;padding:0;margin:0;cursor:pointer;
-      text-decoration:underline dotted;text-underline-offset:3px;
-    }
-    .infoBtn{
-      border:1px solid #e2e8f0;background:#fff;border-radius:999px;padding:4px 8px;font-weight:1000;font-size:12px;cursor:pointer;color:#0f172a;
-    }
-    .termWrap{display:inline-flex;gap:8px;align-items:flex-start}
-    .termWrap .infoBtn{transform:translateY(-1px)}
-    .modalBack{
-      position:fixed;inset:0;background:rgba(2,6,23,.45);display:none;align-items:flex-end;justify-content:center;z-index:200;padding:14px;
-    }
-    .modalBack.show{display:flex}
-    .modal{
-      width:min(680px,100%);background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;
-    }
-    .modalHead{
-      padding:14px 14px 12px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
-    }
-    .modalHead h3{margin:0;font-size:15px;letter-spacing:-.01em}
-    .modalHead .modalSub{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}
-    .modalBody{padding:14px}
-    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media (max-width:620px){.grid2{grid-template-columns:1fr}}
-    .miniCard{border:1px solid var(--line);border-radius:16px;padding:12px;background:#fff}
-    .miniCard .k{font-weight:1000;font-size:12px;color:#0f172a}
-    .miniCard .v{margin-top:6px;color:#475569;font-size:13px;line-height:1.35}
-    .modalFoot{padding:12px 14px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
-    .kbd{display:inline-flex;align-items:center;gap:6px;color:#64748b;font-size:12px}
-    .kbd code{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;padding:2px 6px;color:#0f172a}
-    .tight{margin-top:8px}
-    .level.white{background:#f8fafc;border-color:#e2e8f0;color:#0f172a}
-    .level.yellow{background:#fffbeb;border-color:#fde68a;color:#92400e}
-    .level.green{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
-    .belt.yellow{background:#fffbeb;border-color:#fde68a;color:#92400e}
-    .belt.green{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
-    .belt.blue{background:#e0f2fe;border-color:#bae6fd;color:#075985}
-    .belt.red{background:#ffe4e6;border-color:#fecdd3;color:#9f1239}
-    .belt.black{background:#0f172a;border-color:#0f172a;color:#fff}
 
-    /* Timer Bereich – optisch verbessert (Inhalt/Struktur bleibt gleich) */
-    #timerPageCard{
-      background:linear-gradient(180deg,#ffffff 0%, #f8fafc 100%);
-      border-color:#dbeafe;
-      box-shadow:0 10px 26px rgba(2,6,23,.08);
+    * {
+      box-sizing: border-box
     }
-    #timerPageCard .row{align-items:center}
-    #timerPageCard #timer-phase{
-      background:#eef2ff;border-color:#e0e7ff;color:#3730a3;
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: linear-gradient(180deg, #fafafa 0%, #fff 70%)
     }
-    #timerPageCard #timer-round{
-      background:#f1f5f9;border-color:#e2e8f0;color:#0f172a;
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 16px 40px
     }
-    #timerPageCard label.pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      background:#fff;
-      border-color:#e2e8f0;
-      box-shadow:0 1px 0 rgba(2,6,23,.02);
+
+    .header {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap
     }
-    #timerPageCard label.pill input[type="number"]{
-      border-color:#e2e8f0;
-      box-shadow:none;
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start
     }
-    #timerPageCard #timer-display.timerBig{
-      background:linear-gradient(135deg,#0f172a 0%, #1f2937 100%);
-      color:#fff;
-      padding:12px 16px;
-      border-radius:18px;
-      box-shadow:0 12px 26px rgba(2,6,23,.18);
-      min-width:160px;
-      text-align:center;
-      letter-spacing:-.02em;
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: #fff;
+      font-size: 24px;
+      box-shadow: var(--shadow)
     }
-    #timerPageCard .desc{
-      color:#475569;
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -.02em
     }
-    #timerPageCard .btn.primary{
-      box-shadow:0 10px 22px rgba(15,23,42,.18);
+
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -.01em
     }
-    #timerPageCard .btn{
-      box-shadow:0 1px 0 rgba(2,6,23,.02);
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .badge {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #065f46;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid #d1fae5
+    }
+
+    .badge.gray {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: #e2e8f0
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 1px 0 rgba(2, 6, 23, .02)
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed
+    }
+
+    .menuWrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .seg {
+      display: flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(2, 6, 23, .02)
+    }
+
+    .seg button {
+      border: 0;
+      background: transparent;
+      padding: 10px 14px;
+      font-weight: 950;
+      font-size: 13px;
+      cursor: pointer;
+      color: #0f172a;
+      white-space: nowrap
+    }
+
+    .seg button.active {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px
+    }
+
+    @media (max-width:980px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow)
+    }
+
+    .pad {
+      padding: 16px
+    }
+
+    .desc {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35
+    }
+
+    .sep {
+      height: 1px;
+      background: var(--line);
+      margin: 14px 0
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px
+    }
+
+    .tabs.wc {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr))
+    }
+
+    .tab {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 10px 10px;
+      border-radius: 999px;
+      font-weight: 950;
+      font-size: 13px;
+      cursor: pointer
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    .search {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    textarea {
+      border-radius: 16px;
+      min-height: 80px;
+      resize: vertical;
+      padding: 12px
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus {
+      box-shadow: 0 0 0 3px rgba(147, 197, 253, .45);
+      border-color: var(--focus)
+    }
+
+    .search input[type="text"] {
+      flex: 1;
+      min-width: 220px;
+      width: 100%
+    }
+
+    .hint {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
+      font-size: 12px;
+      font-weight: 900
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px
+    }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      background: #fff;
+      padding: 12px
+    }
+
+    .itemTop {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .title {
+      font-weight: 950;
+      font-size: 14px
+    }
+
+    .meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .pill {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      font-size: 12px;
+      font-weight: 900;
+      color: #0f172a
+    }
+
+    .pill.on {
+      background: #ecfdf5;
+      border-color: #d1fae5;
+      color: #065f46
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px
+    }
+
+    .chip {
+      border: 1px solid #e2e8f0;
+      background: #f1f5f9;
+      color: #334155;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-weight: 950;
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none
+    }
+
+    .chip.on {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff
+    }
+
+    .miniBtns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .mini {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      font-weight: 950;
+      font-size: 12px;
+      cursor: pointer
+    }
+
+    .checkRow {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px
+    }
+
+    .checkRow label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-weight: 950;
+      font-size: 13px
+    }
+
+    .checkRow small {
+      color: var(--muted);
+      line-height: 1.25
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px
+    }
+
+    .groupHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .groupTitle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 1000
+    }
+
+    .summaryBox {
+      background: #f8fafc;
+      border: 1px dashed #e2e8f0;
+      border-radius: var(--r);
+      padding: 12px;
+      color: #475569;
+      font-size: 13px;
+      line-height: 1.35
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      background: rgba(15, 23, 42, .95);
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: none;
+      max-width: 360px;
+      z-index: 99
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: #94a3b8;
+      font-size: 12px
+    }
+
+    .motivation {
+      background: #ecfdf5;
+      border: 1px solid #d1fae5;
+      color: #065f46;
+      border-radius: var(--r);
+      padding: 12px
+    }
+
+    .motivation h3 {
+      margin: 0 0 6px;
+      font-size: 13px
+    }
+
+    .motivation p {
+      margin: 0;
+      font-size: 13px
+    }
+
+    .kpi {
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .kpiRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 1px 0 rgba(2, 6, 23, .02)
+    }
+
+    .kpiLeft {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #334155;
+      font-weight: 950
+    }
+
+    .kpiIcon {
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9
+    }
+
+    .kpiVal {
+      font-size: 18px;
+      font-weight: 1000
+    }
+
+    .hidden {
+      display: none
+    }
+
+    .subcard {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 16px;
+      padding: 12px
+    }
+
+    .progressBar {
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden
+    }
+
+    .progressBar>div {
+      height: 100%;
+      width: 0%;
+      background: var(--good)
+    }
+
+    .progressMeta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .doneRow {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px
+    }
+
+    .doneRow input {
+      margin-top: 2px
+    }
+
+    .doneTitle {
+      font-weight: 1000
+    }
+
+    .doneDetails {
+      color: #475569;
+      font-size: 12px;
+      margin-top: 4px;
+      line-height: 1.35
+    }
+
+    .timerBig {
+      font-size: 34px;
+      font-weight: 1100;
+      letter-spacing: -.02em
+    }
+
+    .view {
+      display: none
+    }
+
+    .view.active {
+      display: block
+    }
+
+    .viewTitle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .termBtn {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      text-decoration: underline dotted;
+      text-underline-offset: 3px;
+    }
+
+    .infoBtn {
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-weight: 1000;
+      font-size: 12px;
+      cursor: pointer;
+      color: #0f172a;
+    }
+
+    .termWrap {
+      display: inline-flex;
+      gap: 8px;
+      align-items: flex-start
+    }
+
+    .termWrap .infoBtn {
+      transform: translateY(-1px)
+    }
+
+    .modalBack {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, .45);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 200;
+      padding: 14px;
+    }
+
+    .modalBack.show {
+      display: flex
+    }
+
+    .modal {
+      width: min(680px, 100%);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .modalHead {
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .modalHead h3 {
+      margin: 0;
+      font-size: 15px;
+      letter-spacing: -.01em
+    }
+
+    .modalHead .modalSub {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35
+    }
+
+    .modalBody {
+      padding: 14px
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px
+    }
+
+    @media (max-width:620px) {
+      .grid2 {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .miniCard {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: #fff
+    }
+
+    .miniCard .k {
+      font-weight: 1000;
+      font-size: 12px;
+      color: #0f172a
+    }
+
+    .miniCard .v {
+      margin-top: 6px;
+      color: #475569;
+      font-size: 13px;
+      line-height: 1.35
+    }
+
+    .modalFoot {
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap
+    }
+
+    .kbd {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #64748b;
+      font-size: 12px
+    }
+
+    .kbd code {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 2px 6px;
+      color: #0f172a
+    }
+
+    .tight {
+      margin-top: 8px
+    }
+
+    .level.white {
+      background: #f8fafc;
+      border-color: #e2e8f0;
+      color: #0f172a
+    }
+
+    .level.yellow {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #92400e
+    }
+
+    .level.green {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #065f46
+    }
+
+    .belt.yellow {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #92400e
+    }
+
+    .belt.green {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #065f46
+    }
+
+    .belt.blue {
+      background: #e0f2fe;
+      border-color: #bae6fd;
+      color: #075985
+    }
+
+    .belt.red {
+      background: #ffe4e6;
+      border-color: #fecdd3;
+      color: #9f1239
+    }
+
+    .belt.black {
+      background: #0f172a;
+      border-color: #0f172a;
+      color: #fff
     }
   </style>
 </head>
+
 <body>
   <div class="wrap" id="appRoot">
     <div class="header">
@@ -241,6 +790,7 @@
             Session-Übersicht.</div>
         </div>
       </div>
+
       <div class="actions">
         <div class="menuWrap" aria-label="Navigation">
           <div class="seg" role="tablist" aria-label="Hauptseiten">
@@ -264,12 +814,17 @@
               <h2>🥋 Taekwondo – Zusammenstellen</h2>
               <span class="pill">Planungsseite</span>
             </div>
-            <p class="desc">Nutze die Suche, um schnell Inhalte zu finden. Varianten bei Hyongs sind separat auswählbar.</p>
+            <p class="desc">Nutze die Suche, um schnell Inhalte zu finden. Varianten bei Hyongs sind separat auswählbar.
+            </p>
+
             <div class="search">
-              <input id="tkd-searchInput" type="text" placeholder="Suchen (z.B. Tan-Gun, Kombination, Ap Chagui …)" autocomplete="off" />
+              <input id="tkd-searchInput" type="text" placeholder="Suchen (z.B. Tan-Gun, Kombination, Ap Chagui …)"
+                autocomplete="off" />
               <span class="hint">🔁 Tipp: Hyong-Varianten per Klick aktivieren</span>
             </div>
+
             <div class="sep"></div>
+
             <div class="tabs" role="tablist" aria-label="TKD Inhalte">
               <button class="tab active" data-tkd-tab="hyongs" type="button">Hyongs</button>
               <button class="tab" data-tkd-tab="kombos" type="button">Kombos</button>
@@ -281,13 +836,16 @@
               <div id="tkd-hyongList" class="list" aria-live="polite"></div>
               <div id="tkd-hyongEmpty" class="summaryBox hidden">Keine Hyongs passend zur Suche.</div>
             </div>
+
             <div id="tkd-tab-kombos" class="tabPanel hidden">
               <div id="tkd-comboList" class="list"></div>
               <div id="tkd-comboEmpty" class="summaryBox hidden">Keine Kombinationen passend zur Suche.</div>
             </div>
+
             <div id="tkd-tab-ilbo" class="tabPanel hidden">
               <div id="tkd-ilboList" class="list"></div>
             </div>
+
             <div id="tkd-tab-basics" class="tabPanel hidden">
               <div id="tkd-basicsList" class="list"></div>
               <div id="tkd-basicsEmpty" class="summaryBox hidden">Keine Grundübungen passend zur Suche.</div>
@@ -295,7 +853,8 @@
 
             <div class="sep"></div>
             <div class="title">📝 Notiz (TKD – optional)</div>
-            <input id="tkd-noteInput" type="text" placeholder="z.B. Fokus: saubere Hüftrotation · Tempo: langsam→schnell · Atmung" style="width:100%" />
+            <input id="tkd-noteInput" type="text"
+              placeholder="z.B. Fokus: saubere Hüftrotation · Tempo: langsam→schnell · Atmung" style="width:100%" />
           </section>
 
           <section id="view-wc" class="view" aria-label="Wing Chun Planung">
@@ -303,12 +862,17 @@
               <h2>🥋 Wing Chun – Zusammenstellen</h2>
               <span class="pill">Planungsseite</span>
             </div>
-            <p class="desc">Nutze die Suche, um schnell Inhalte zu finden. Varianten bei Formen sind separat auswählbar.</p>
+            <p class="desc">Nutze die Suche, um schnell Inhalte zu finden. Varianten bei Formen sind separat auswählbar.
+            </p>
+
             <div class="search">
-              <input id="wc-searchInput" type="text" placeholder="Suchen (z.B. Siu Nim Tao, Pak Sao, Jing Gerk …)" autocomplete="off" />
+              <input id="wc-searchInput" type="text" placeholder="Suchen (z.B. Siu Nim Tao, Pak Sao, Jing Gerk …)"
+                autocomplete="off" />
               <span class="hint">🔁 Tipp: Form-Varianten per Klick aktivieren</span>
             </div>
+
             <div class="sep"></div>
+
             <div class="tabs wc" role="tablist" aria-label="Wing Chun Inhalte">
               <button class="tab active" data-wc-tab="forms" type="button">Formen</button>
               <button class="tab" data-wc-tab="grundlagen" type="button">Grundlagen</button>
@@ -322,30 +886,38 @@
               <div id="wc-formList" class="list" aria-live="polite"></div>
               <div id="wc-formEmpty" class="summaryBox hidden">Keine Formen passend zur Suche.</div>
             </div>
+
             <div id="wc-tab-grundlagen" class="tabPanel hidden">
               <div id="wc-grundlagenList" class="list"></div>
               <div id="wc-grundlagenEmpty" class="summaryBox hidden">Keine Grundlagen passend zur Suche.</div>
             </div>
+
             <div id="wc-tab-armhand" class="tabPanel hidden">
               <div id="wc-armhandList" class="list"></div>
-              <div id="wc-armhandEmpty" class="summaryBox hidden">Keine Arm- &amp; Handtechniken passend zur Suche.</div>
+              <div id="wc-armhandEmpty" class="summaryBox hidden">Keine Arm- &amp; Handtechniken passend zur Suche.
+              </div>
             </div>
+
             <div id="wc-tab-beine" class="tabPanel hidden">
               <div id="wc-beineList" class="list"></div>
               <div id="wc-beineEmpty" class="summaryBox hidden">Keine Beintechniken passend zur Suche.</div>
             </div>
+
             <div id="wc-tab-weitere" class="tabPanel hidden">
               <div id="wc-weitereList" class="list"></div>
               <div id="wc-weitereEmpty" class="summaryBox hidden">Keine weiteren Handtechniken passend zur Suche.</div>
             </div>
+
             <div id="wc-tab-weapon" class="tabPanel hidden">
               <div id="wc-weaponList" class="list"></div>
-              <div id="wc-weaponEmpty" class="summaryBox hidden">Keine Weapon-Self-Defence Inhalte passend zur Suche.</div>
+              <div id="wc-weaponEmpty" class="summaryBox hidden">Keine Weapon-Self-Defence Inhalte passend zur Suche.
+              </div>
             </div>
 
             <div class="sep"></div>
             <div class="title">📝 Notiz (WC – optional)</div>
-            <input id="wc-noteInput" type="text" placeholder="z.B. Fokus: Mittellinie · Struktur · Timing · Chi Sao Sensitivität" style="width:100%" />
+            <input id="wc-noteInput" type="text"
+              placeholder="z.B. Fokus: Mittellinie · Struktur · Timing · Chi Sao Sensitivität" style="width:100%" />
           </section>
 
           <section id="view-other" class="view" aria-label="Weiteres Planung">
@@ -353,12 +925,17 @@
               <h2>🏋️ Weiteres – Ergänzungstraining</h2>
               <span class="pill">Planungsseite</span>
             </div>
-            <p class="desc">Wähle Kraft-/Box-Übungen als Ergänzung. Diese werden zusätzlich gespeichert und im Training angezeigt.</p>
+            <p class="desc">Wähle Kraft-/Box-Übungen als Ergänzung. Diese werden zusätzlich gespeichert und im Training
+              angezeigt.</p>
+
             <div class="search">
-              <input id="other-searchInput" type="text" placeholder="Suchen (z.B. Liegestütz, Jab-Cross, Plank …)" autocomplete="off" />
+              <input id="other-searchInput" type="text" placeholder="Suchen (z.B. Liegestütz, Jab-Cross, Plank …)"
+                autocomplete="off" />
               <span class="hint">➕ Tipp: Ergänzung bleibt in der Trainings-Übersicht</span>
             </div>
+
             <div class="sep"></div>
+
             <div class="tabs wc" role="tablist" aria-label="Weiteres Inhalte">
               <button class="tab active" data-other-tab="kraft" type="button">Krafttraining</button>
               <button class="tab" data-other-tab="boxen" type="button">Boxen/Drills</button>
@@ -369,10 +946,12 @@
               <div id="other-kraftList" class="list"></div>
               <div id="other-kraftEmpty" class="summaryBox hidden">Keine Kraftübungen passend zur Suche.</div>
             </div>
+
             <div id="other-tab-boxen" class="tabPanel hidden">
               <div id="other-boxenList" class="list"></div>
               <div id="other-boxenEmpty" class="summaryBox hidden">Keine Box-/Drills passend zur Suche.</div>
             </div>
+
             <div id="other-tab-sonst" class="tabPanel hidden">
               <div id="other-sonstList" class="list"></div>
               <div id="other-sonstEmpty" class="summaryBox hidden">Keine sonstigen Übungen passend zur Suche.</div>
@@ -380,7 +959,8 @@
 
             <div class="sep"></div>
             <div class="title">📝 Notiz (Weiteres – optional)</div>
-            <input id="other-noteInput" type="text" placeholder="z.B. Fokus: saubere Wiederholungen · stabile Struktur · ruhige Atmung" style="width:100%" />
+            <input id="other-noteInput" type="text"
+              placeholder="z.B. Fokus: saubere Wiederholungen · stabile Struktur · ruhige Atmung" style="width:100%" />
           </section>
 
           <section id="view-training" class="view" aria-label="Training Übersicht">
@@ -390,7 +970,9 @@
               <span class="badge gray">📅 Datum: <span id="train-dateNow"></span></span>
               <span class="badge">✨ <span id="train-selectedCount"></span> Auswahlen</span>
             </div>
-            <p class="desc">Markiere Übungen als „abgeschlossen“. Fortschritt bleibt gespeichert. Timer ist separat auf der Timer-Seite.</p>
+            <p class="desc">Markiere Übungen als „abgeschlossen“. Fortschritt bleibt gespeichert. Timer ist separat auf
+              der Timer-Seite.</p>
+
             <div class="row" style="margin-top:10px;">
               <button id="train-copyBtn" class="btn" type="button">⎘ Kopieren</button>
               <button id="train-motivationBtn" class="btn" type="button">💪 Motivation</button>
@@ -398,6 +980,7 @@
             </div>
 
             <div class="sep"></div>
+
             <div class="subcard">
               <div class="progressMeta">
                 <div>
@@ -414,9 +997,11 @@
             </div>
 
             <div class="sep"></div>
+
             <div id="train-sections" class="list" style="margin-top:0"></div>
 
             <div class="sep"></div>
+
             <div class="motivation" aria-live="polite">
               <h3>✨ Motivationsnachricht</h3>
               <p id="train-motivationText">—</p>
@@ -431,9 +1016,11 @@
               <h2>⏱️ Timer – Intervall-Modus (generell)</h2>
               <span class="pill">Timer</span>
             </div>
-            <p class="desc">Allgemeiner Intervall-Timer (Work/Pause/Intervalle). Nicht an Übungen gekoppelt. Settings bleiben gespeichert.</p>
+            <p class="desc">Allgemeiner Intervall-Timer (Work/Pause/Intervalle). Nicht an Übungen gekoppelt. Settings
+              bleiben gespeichert.</p>
 
             <div class="sep"></div>
+
             <div class="subcard" id="timerPageCard">
               <div class="row">
                 <span class="pill" id="timer-phase">—</span>
@@ -450,7 +1037,6 @@
                 <label class="pill" style="background:#fff">Intervalle
                   <input id="timer-rounds" type="number" min="1" value="8" style="width:90px;margin-left:8px" />
                 </label>
-
                 <button id="timer-start" class="btn primary" type="button">Start</button>
                 <button id="timer-pause" class="btn" type="button">Pause</button>
                 <button id="timer-reset" class="btn" type="button">Reset</button>
@@ -462,9 +1048,11 @@
               </div>
 
               <div class="sep"></div>
+
               <div class="summaryBox">
                 <div style="font-weight:1000;margin-bottom:6px">⚙️ Hinweis</div>
-                <div>Wenn du die Werte änderst, werden die Settings gespeichert. Der Timer läuft unabhängig von der gewählten Hauptseite.</div>
+                <div>Wenn du die Werte änderst, werden die Settings gespeichert. Der Timer läuft unabhängig von der
+                  gewählten Hauptseite.</div>
               </div>
             </div>
           </section>
@@ -479,30 +1067,41 @@
 
           <div class="kpi">
             <div class="kpiRow">
-              <div class="kpiLeft"><div class="kpiIcon">🥋</div>TKD</div>
+              <div class="kpiLeft">
+                <div class="kpiIcon">🥋</div>TKD
+              </div>
               <div id="kpi-tkd" class="kpiVal">0</div>
             </div>
             <div class="kpiRow">
-              <div class="kpiLeft"><div class="kpiIcon">🥋</div>Wing Chun</div>
+              <div class="kpiLeft">
+                <div class="kpiIcon">🥋</div>Wing Chun
+              </div>
               <div id="kpi-wc" class="kpiVal">0</div>
             </div>
             <div class="kpiRow">
-              <div class="kpiLeft"><div class="kpiIcon">🏋️</div>Weiteres</div>
+              <div class="kpiLeft">
+                <div class="kpiIcon">🏋️</div>Weiteres
+              </div>
               <div id="kpi-other" class="kpiVal">0</div>
             </div>
             <div class="kpiRow">
-              <div class="kpiLeft"><div class="kpiIcon">✨</div>Gesamt</div>
+              <div class="kpiLeft">
+                <div class="kpiIcon">✨</div>Gesamt
+              </div>
               <div id="kpi-all" class="kpiVal">0</div>
             </div>
           </div>
 
           <div class="sep"></div>
+
           <div class="summaryBox">
             <div style="font-weight:1000;margin-bottom:6px">👆 Navigation + Swipe</div>
-            <div>Wechsle oben zwischen TKD / Wing Chun / Weiteres / Training / Timer. Du kannst zusätzlich horizontal wischen (Touch/Trackpad) zwischen den 5 Hauptseiten.</div>
+            <div>Wechsle oben zwischen TKD | Wing Chun | Weiteres | Training | Timer. Du kannst zusätzlich horizontal
+              wischen (Touch/Trackpad) zwischen den 5 Hauptseiten.</div>
           </div>
 
           <div class="sep"></div>
+
           <div class="footer">Speichert automatisch im Browser (LocalStorage). Kein Login, keine Cloud.</div>
         </div>
       </div>
@@ -737,29 +1336,12 @@
         var wcFo = {}; FORMS.forEach(function (f) { wcFo[f.id] = defaultFormSelection(); });
         return {
           tkd: {
-            hyongs: tkdHy, combos: mapForStrings(COMBOS), sparring: mapForStrings(SPARRING),
-            basics: (function () {
-              var b = {};
-              Object.keys(BASICS).forEach(function (k) { BASICS[k].forEach(function (i) { b[i] = false; }); });
-              return b;
-            })(),
-            note: ''
+            hyongs: tkdHy, combos: mapForStrings(COMBOS), sparring: mapForStrings(SPARRING), basics: (function () {
+              var b = {}; Object.keys(BASICS).forEach(function (k) { BASICS[k].forEach(function (i) { b[i] = false; }); }); return b;
+            })(), note: ''
           },
-          wc: {
-            forms: wcFo,
-            grundlagen: mapForItems(GRUNDLAGEN),
-            armhand: mapForItems(ARM_HAND),
-            beine: mapForItems(BEINE),
-            weitere: mapForItems(WEITERE_HAND),
-            weapon: mapForItems(WEAPON),
-            note: ''
-          },
-          other: {
-            kraft: mapForItems(OTHER_KRAFT),
-            boxen: mapForItems(OTHER_BOXEN),
-            sonstiges: mapForItems(OTHER_SONST),
-            note: ''
-          }
+          wc: { forms: wcFo, grundlagen: mapForItems(GRUNDLAGEN), armhand: mapForItems(ARM_HAND), beine: mapForItems(BEINE), weitere: mapForItems(WEITERE_HAND), weapon: mapForItems(WEAPON), note: '' },
+          other: { kraft: mapForItems(OTHER_KRAFT), boxen: mapForItems(OTHER_BOXEN), sonstiges: mapForItems(OTHER_SONST), note: '' }
         };
       }
 
@@ -769,7 +1351,6 @@
         Object.keys(out).forEach(function (k) { if (typeof out[k] !== 'boolean') out[k] = false; });
         return out;
       }
-
       function safeLoad() {
         var base = makeInitialState();
         var raw = localStorage.getItem(STORAGE_KEY);
@@ -809,6 +1390,7 @@
           if (typeof merged.tkd.hyongs[h.id].rounds !== 'number') merged.tkd.hyongs[h.id].rounds = 1;
           merged.tkd.hyongs[h.id].rounds = clamp(Math.round(merged.tkd.hyongs[h.id].rounds), 1, 20);
         });
+
         FORMS.forEach(function (f) {
           if (!merged.wc.forms[f.id]) merged.wc.forms[f.id] = defaultFormSelection();
           if (!merged.wc.forms[f.id].variations) merged.wc.forms[f.id].variations = defaultFormSelection().variations;
@@ -819,7 +1401,6 @@
 
         return merged;
       }
-
       function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { } }
 
       function getDoneMap() { return safeParseJSON(localStorage.getItem(DONE_KEY) || '{}', {}); }
@@ -841,11 +1422,14 @@
       // NOTE: this avoids ES2018 Unicode codepoint escapes (\u{...}) to prevent syntax errors in some editors/browsers.
       function canonicalTerm(term) {
         var s = String(term || '').trim();
+
         // Remove leading emoji/symbol (surrogate pair or BMP symbols)
-        s = s.replace(/^(?:[\u2600-\u27BF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDC00-\uDFFF])\s*/, '');
+        s = s.replace(/^(?:[\u2600-\u27BF]|[\uD83C-\uDBFF][\uDC00-\uDFFF])\s*/, '');
         s = s.replace(/^[•\-]\s*/, '');
+
         // Strip leading roman numerals like "I " / "II "
         s = s.replace(/^(?:[IVX]+)\s+/i, '');
+
         // Strip some trailing meta parentheses (keep romanization parentheses like "(jeongul seogi)")
         var m = s.match(/\s*\(([^)]+)\)\s*$/);
         if (m) {
@@ -860,6 +1444,7 @@
         }
         return s;
       }
+
       function addGloss(term, entry) { glossary[canonicalTerm(term)] = entry; }
 
       addGloss('Chi Sao („Klebende Hände")', {
@@ -869,6 +1454,168 @@
         z: 'Sensitivität, Reflexe, Öffnungen erkennen, Kontrolle der Mittellinie.',
         p: 'Ökonomie + Timing + Struktur (kleine Bewegung, große Wirkung).'
       });
+
+      // ===== Ergänzte Glossar-Einträge (Hyongs + TKD Basics/Schläge + WC Formen) =====
+      addGloss('Chon-Ji Hyong', {
+        ctx: 'Taekwondo',
+        t: '„Himmel & Erde“ (Chon-Ji)',
+        m: 'Grundform mit klaren Linien und Basisbewegungen: Blöcke/Schläge aus stabilen Ständen, Fokus auf saubere Richtungswechsel und Körperachse.',
+        z: 'Basis-Koordination, Standstabilität, Rhythmus und präzise Grundtechniken festigen.',
+        p: 'Sauberer Stand + klare Hüftausrichtung; erst kontrolliert, dann schneller.'
+      });
+      addGloss('Tan-Gun Hyong', {
+        ctx: 'Taekwondo',
+        t: '„Tan-Gun“ (Namensform)',
+        m: 'Form mit deutlicher Hüftarbeit: grundlegende Abwehr-/Angriffskombinationen in klaren Bahnen, sauberer Wechsel zwischen Ständen und Techniken.',
+        z: 'Hüftrotation, Timing und stabile Technikabfolge unter gleichmäßigem Atemrhythmus trainieren.',
+        p: 'Hüfte führt – Technik folgt; Bewegungen kurz und eindeutig.'
+      });
+      addGloss('To-San Hyong', {
+        ctx: 'Taekwondo',
+        t: '„To-San“ (Namensform)',
+        m: 'Form mit stärkerer Dynamik in Übergängen: stabile Vorwärts-/Rückwärtsarbeit, klare Stopps und direkte Techniken in Kombination.',
+        z: 'Dynamische Standwechsel, Kontrolle im Stoppen und saubere Linienführung verbessern.',
+        p: 'Stabil stoppen, dann präzise beschleunigen – keine „weichen“ Zwischenpositionen.'
+      });
+      addGloss('Won-Hyo Hyong', {
+        ctx: 'Taekwondo',
+        t: '„Won-Hyo“ (Namensform)',
+        m: 'Form mit betonter Struktur: kontrollierte Armtechnik, deutliche Gewichtsverlagerung und saubere Orientierung in mehreren Richtungen.',
+        z: 'Struktur, Gleichgewicht und kontrollierte Kraftübertragung aus dem Stand entwickeln.',
+        p: 'Balance vor Power – Druck über Bodenverbindung, nicht über Schulter.'
+      });
+      addGloss('Yul-Gok Hyong', {
+        ctx: 'Taekwondo',
+        t: '„Yul-Gok“ (Namensform)',
+        m: 'Längere Form mit vielen Wechseln: sauberer Rhythmus zwischen ruhigen und schnellen Sequenzen; Fokus auf präzise Winkel und konsequentes Zurückziehen.',
+        z: 'Ausdauer in Technikqualität, Timing-Wechsel und präzise Richtungsarbeit trainieren.',
+        p: 'Rhythmus steuern: langsam = exakt, schnell = kontrolliert.'
+      });
+      addGloss('Chung-Gun Hyong', {
+        ctx: 'Taekwondo',
+        t: '„Chung-Gun“ (Namensform)',
+        m: 'Form mit klarer Vorwärtsausrichtung und markanten Stopps: Kombinationen wirken „direkt“ und fordern saubere Körperlinie.',
+        z: 'Direktheit, saubere Achsenarbeit und entschlossene Technikabschlüsse stärken.',
+        p: 'Technik endet klar – keine „Restbewegung“ nach dem Trefferpunkt.'
+      });
+      addGloss('Toi-Gye Hyong', {
+        ctx: 'Taekwondo',
+        t: '„Toi-Gye“ (Namensform)',
+        m: 'Form mit betonten Richtungswechseln: kontrollierte Übergänge, stabile Stände und saubere Armtechnik in klaren Sequenzen.',
+        z: 'Koordination bei Richtungswechseln, Standarbeit und Präzision der Grundtechniken verbessern.',
+        p: 'Winkel sauber setzen – erst Position, dann Technik.'
+      });
+      addGloss('Hwa-Rang Hyong', {
+        ctx: 'Taekwondo',
+        t: '„Hwa-Rang“ (Namensform)',
+        m: 'Form mit dynamischerem Charakter: klare Sequenzen, flüssige Übergänge und betonte Stabilität im Tempowechsel.',
+        z: 'Fluss in Übergängen, Timing und Stabilität bei schnellerer Ausführung trainieren.',
+        p: 'Locker bleiben, Struktur halten – Geschwindigkeit aus Technik, nicht aus Spannung.'
+      });
+      addGloss('Chung-Mu Hyong', {
+        ctx: 'Taekwondo',
+        t: '„Chung-Mu“ (Namensform)',
+        m: 'Form mit markanten Richtungswechseln und entschlossenen Technikabschlüssen: fordert klare Linien, saubere Körperachse und präzises Recoil.',
+        z: 'Entschlossenheit im Abschluss, saubere Achsenarbeit und kontrollierte Dynamik verbessern.',
+        p: 'Trefferpunkt definieren, dann sofort zurück in Struktur (Recoil/Guard).'
+      });
+      addGloss('Gwang-Gae Hyong', {
+        ctx: 'Taekwondo',
+        t: '„Gwang-Gae“ (Namensform)',
+        m: 'Höherstufige Form mit vielen Sequenzen: verlangt ruhige Kontrolle in Standarbeit, klare Winkel und stabile Ausrichtung über die gesamte Abfolge.',
+        z: 'Technikqualität über längere Abfolgen halten; Präzision, Rhythmus und Ausrichtung festigen.',
+        p: 'Qualität bleibt konstant: gleiche Standtiefe, gleiche Linie, gleiche Kontrolle bis zum Ende.'
+      });
+
+      // Wing Chun Formen
+      addGloss('Siu Nim Tao', {
+        ctx: 'Wing Chun',
+        t: '„Kleine Idee“ (Siu Nim Tao)',
+        m: 'Grundform im Stand: Aufbau von Struktur, Mittellinie, Handformen und Ellenbogenlinie; bewusst langsam und kontrolliert.',
+        z: 'Basisstruktur, Koordination und saubere Linienführung der Hände etablieren.',
+        p: 'Ökonomie: kleiner Weg, klare Linie, entspannte Stabilität.'
+      });
+      addGloss('Chum Kiu', {
+        ctx: 'Wing Chun',
+        t: '„Brücke suchen“ (Chum Kiu)',
+        m: 'Form mit Drehungen und Schritt-/Körperarbeit: Verbindung von Armen und Rumpf, Winkelarbeit und Stabilität im Wechsel.',
+        z: 'Distanz/Winkel kontrollieren, Körperdrehung sauber einsetzen, Struktur unter Bewegung halten.',
+        p: 'Körper dreht – Hände bleiben auf Linie; Timing vor Kraft.'
+      });
+      addGloss('Biu Tze', {
+        ctx: 'Wing Chun',
+        t: '„Stoßende Finger“ (Biu Tze)',
+        m: 'Fortgeschrittene Form mit kürzeren, deutlichen Aktionen und „Rettungsbewegungen“; Fokus auf direkte Lösungen aus ungünstigen Positionen.',
+        z: 'Anpassung, kurze Power und Strukturwiederherstellung trainieren.',
+        p: 'Direktheit + Struktur: zuerst Linie zurückholen, dann handeln.'
+      });
+
+      // TKD Grundübungen/Schläge (wenn keine Übersetzung sinnvoll ist: Erklärung im TKD-Kontext)
+      addGloss('Unteren Block', {
+        ctx: 'Taekwondo',
+        t: 'Unterer Block (Abwehr nach unten)',
+        m: 'Abwehrbewegung gegen Angriffe zum Unterkörper/Beinbereich: Armweg klar und knapp, Schulter entspannt, Block aus dem Stand geführt.',
+        z: 'Basis-Abwehrwinkel, Struktur und Timing für Gegenaktionen aufbauen.',
+        p: 'Klarer Winkel + stabiler Stand; keine Kraft gegen Kraft – Linie schließen.'
+      });
+      addGloss('Unterer Block', {
+        ctx: 'Taekwondo',
+        t: 'Unterer Block (Abwehr nach unten)',
+        m: 'Abwehrbewegung gegen Angriffe zum Unterkörper/Beinbereich: Armweg klar und knapp, Schulter entspannt, Block aus dem Stand geführt.',
+        z: 'Basis-Abwehrwinkel, Struktur und Timing für Gegenaktionen aufbauen.',
+        p: 'Klarer Winkel + stabiler Stand; keine Kraft gegen Kraft – Linie schließen.'
+      });
+      addGloss('Mittleren Block', {
+        ctx: 'Taekwondo',
+        t: 'Mittlerer Block (Abwehr auf Rumpfhöhe)',
+        m: 'Abwehrbewegung gegen Angriffe zum Oberkörper: Unterarm bildet eine stabile Barriere, Ellenbogenlinie bleibt kontrolliert, Schulter locker.',
+        z: 'Rumpfschutz, stabile Armstruktur und sauberes Timing trainieren.',
+        p: 'Struktur vor Tempo – Block ist kurz, dann sofort bereit für Konter.'
+      });
+      addGloss('Oberen Block', {
+        ctx: 'Taekwondo',
+        t: 'Oberer Block (Abwehr nach oben)',
+        m: 'Abwehr gegen Angriffe zum Kopfbereich: Arm hebt als Schutzdach, Stand bleibt stabil, Blick bleibt auf Zielrichtung.',
+        z: 'Kopfschutz, saubere Achse und kontrollierte Distanzarbeit verbessern.',
+        p: 'Schulter entspannt, Blockwinkel klar – kein Hochziehen des ganzen Körpers.'
+      });
+      addGloss('Stich', {
+        ctx: 'Taekwondo',
+        t: 'Stich (gerade, präzise Stoßtechnik)',
+        m: 'Geradlinige Stoßtechnik mit klarer Endposition: Armweg direkt, Hand/Knöchel ausgerichtet, Hüfte unterstützt die Linie.',
+        z: 'Präzision und geradlinige Kraftübertragung trainieren.',
+        p: 'Kurzer Weg, klare Linie – Trefferpunkt definieren, dann sofort zurück.'
+      });
+      addGloss('Lang', {
+        ctx: 'Taekwondo',
+        t: 'Lang (weite/verlängerte Technik-Ausführung)',
+        m: 'Technik mit bewusst größerer Reichweite/Bewegungsausladung (z.B. in Kombinationen): Fokus auf Kontrolle der Strecke und sauberes Stoppen.',
+        z: 'Reichweite, Distanzgefühl und kontrollierte Abschlusspositionen verbessern.',
+        p: 'Weit heißt nicht unkontrolliert – Strecke kontrollieren, Ende klar.'
+      });
+      addGloss('Faust', {
+        ctx: 'Taekwondo',
+        t: 'Faust (Fauststoß/-schlag)',
+        m: 'Grundschlag mit korrekter Faustformation und Handgelenksausrichtung: Ellbogenlinie stabil, Hüfte unterstützt, Schulter bleibt locker.',
+        z: 'Sichere Technikbasis (Handgelenk/Knöchel) und saubere Kraftübertragung entwickeln.',
+        p: 'Struktur schützt: Handgelenk gerade, Kraft aus Boden + Hüfte.'
+      });
+      addGloss('Ballen', {
+        ctx: 'Taekwondo',
+        t: 'Ballen (Faustballen-Schlag)',
+        m: 'Schlag mit dem vorderen Bereich der geballten Faust (Faustballen): eignet sich für kurze Distanzen; Handgelenk stabil halten.',
+        z: 'Kurze Schlagdistanz und kontrollierte, sichere Kontaktfläche trainieren.',
+        p: 'Kontaktfläche sauber, Handgelenk stabil – kurze Wege, klare Linie.'
+      });
+      addGloss('Ellbogen', {
+        ctx: 'Taekwondo',
+        t: 'Ellbogen (kurze Distanz)',
+        m: 'Kurze Technik im Nahbereich: Ellbogen wird aus stabiler Körperstruktur geführt, Schulter bleibt unten, Rumpf arbeitet mit.',
+        z: 'Nahdistanz-Kontrolle, Struktur und sichere Kraftübertragung trainieren.',
+        p: 'Nahdistanz = Struktur: Körper kompakt, Bewegung kurz, Kontrolle hoch.'
+      });
+
+
 
       function tkdKickEntry(term) {
         var t = canonicalTerm(term);
@@ -891,15 +1638,15 @@
           'Pak Sao': { t: '„Klatsch-/Schlaghand“', m: 'Kurzes Abklatschen/Abschlagen zur Öffnung, oft mit Gegenhand treffen.', z: 'Linie öffnen, Trefferfenster erzeugen.', p: 'Kurzer Weg, Timing, kein Ausholen.' },
           'Tan Sao': { t: '„Tragende Hand“', m: 'Handfläche oben; lenkt ab und schützt die Mittellinie.', z: 'Umlenken + direkt kontern.', p: 'Ellenbogen tief, Kraft leiten statt blocken.' },
           'Bong Sao': { t: '„Flügelarm“', m: 'Ellbogen als „Flügel“; lenkt Kraft um, schafft Winkel.', z: 'Druck umlenken, Übergang.', p: 'Winkel statt Muskelkraft.' },
-          'Jam Sao': { t: '„Sinkender Arm/Ellenbogen"', m: 'Ellenbogen senkt; stabilisiert Struktur und leitet Druck nach unten.', z: 'Struktur unter Druck, Kontrolle.', p: 'Achse, Ellenbogenlinie, Kraft nach unten.' },
-          'Lap Sao': { t: '„Ziehende/Greifende Hand"', m: 'Greifen und kurz ziehen, um Linie zu öffnen/Struktur zu brechen.', z: 'Öffnung schaffen, Gegner binden.', p: 'Timing vor Kraft; kurze Aktion.' },
-          'Man Sao': { t: '„Frage-/Suchhand"', m: 'Vorderhand tastet Distanz und schützt Zentrum.', z: 'Distanzgefühl, sichere Annäherung.', p: 'Entspannung, Struktur, Timing.' },
-          'Wu Sao': { t: '„Schützende Hand"', m: 'Rückhand schützt Zentrum als „Sicherheitsnetz".', z: 'Zentrum sichern, Übergänge abfangen.', p: 'Ellenbogenlinie, Ökonomie.' },
-          'Huen Sao': { t: '„Kreisende Hand"', m: 'Kreisende Ableitung/Öffnung zur Veränderung des Kontakts.', z: 'Linienwechsel, Übergänge.', p: 'Kleine Kreise, Timing.' },
-          'Lan Sao': { t: '„Riegelarm/Bar Arm"', m: 'Seitliches Abriegeln/Abfangen, sperrt eine Linie.', z: 'Raum kontrollieren, Konterfenster.', p: 'Struktur + Winkel.' },
+          'Jam Sao': { t: '„Sinkender Arm/Ellenbogen“', m: 'Ellenbogen senkt; stabilisiert Struktur und leitet Druck nach unten.', z: 'Struktur unter Druck, Kontrolle.', p: 'Achse, Ellenbogenlinie, Kraft nach unten.' },
+          'Lap Sao': { t: '„Ziehende/Greifende Hand“', m: 'Greifen und kurz ziehen, um Linie zu öffnen/Struktur zu brechen.', z: 'Öffnung schaffen, Gegner binden.', p: 'Timing vor Kraft; kurze Aktion.' },
+          'Man Sao': { t: '„Frage-/Suchhand“', m: 'Vorderhand tastet Distanz und schützt Zentrum.', z: 'Distanzgefühl, sichere Annäherung.', p: 'Entspannung, Struktur, Timing.' },
+          'Wu Sao': { t: '„Schützende Hand“', m: 'Rückhand schützt Zentrum als „Sicherheitsnetz“.', z: 'Zentrum sichern, Übergänge abfangen.', p: 'Ellenbogenlinie, Ökonomie.' },
+          'Huen Sao': { t: '„Kreisende Hand“', m: 'Kreisende Ableitung/Öffnung zur Veränderung des Kontakts.', z: 'Linienwechsel, Übergänge.', p: 'Kleine Kreise, Timing.' },
+          'Lan Sao': { t: '„Riegelarm/Bar Arm“', m: 'Seitliches Abriegeln/Abfangen, sperrt eine Linie.', z: 'Raum kontrollieren, Konterfenster.', p: 'Struktur + Winkel.' },
           'Jing Gerk': { t: 'Fronttritt', m: 'Kurzer gerader Tritt nach vorn, oft als Stopper.', z: 'Distanz halten, Timing stören.', p: 'Minimaler Weg, Struktur.' },
-          'Yap Gerk': { t: '„Abdrückendes Bein" (nach außen)', m: 'Abwehrbein drückt nach außen, lenkt Linie ab.', z: 'Linie öffnen, stabilisieren.', p: 'Timing, Stand.' },
-          'Bong Gerk': { t: '„Schwingenbein" (nach innen)', m: 'Nach innen abwehrende Beinbewegung zum Umlenken.', z: 'Linie schließen, Distanz.', p: 'Timing, Balance.' },
+          'Yap Gerk': { t: '„Abdrückendes Bein“ (nach außen)', m: 'Abwehrbein drückt nach außen, lenkt Linie ab.', z: 'Linie öffnen, stabilisieren.', p: 'Timing, Stand.' },
+          'Bong Gerk': { t: '„Schwingenbein“ (nach innen)', m: 'Nach innen abwehrende Beinbewegung zum Umlenken.', z: 'Linie schließen, Distanz.', p: 'Timing, Balance.' },
           'Einarmiges Dan Chi': { t: 'Einarmiger Kontakt-Drill (Vorstufe Chi Sao)', m: 'Ein Arm im Kontakt; Rollen/Wechseln im Rhythmus.', z: 'Kontaktgefühl, Timing, Basisreflexe.', p: 'Entspannung, Ellenbogenlinie.' },
           'Beidarmiges Pon Sao': { t: 'Beidarmiger Kontakt-Drill (Vorstufe Chi Sao)', m: 'Beide Arme im Kontakt; Struktur halten und wechseln.', z: 'Sensitivität, Koordination.', p: 'Struktur, Timing, kurze Wege.' }
         };
@@ -917,11 +1664,80 @@
         if (ctx === 'Taekwondo') {
           var k = tkdKickEntry(canon);
           if (k) return { ctx: 'Taekwondo', t: k.t, m: k.m, z: k.z, p: k.p };
+
+          if (/Vorwärts-Stellung/i.test(canon) || /jeongul seogi/i.test(raw)) {
+            return { ctx: 'Taekwondo', t: 'Vorwärts-Stellung (jeongul seogi) – langer Stand nach vorn', m: 'Vorderes Knie beugt, hinteres Bein streckt; Gewicht stabil in Linie nach vorn.', z: 'Stabilität, Reichweite, Kraftübertragung.', p: 'Bodenverbindung, Hüfte ausrichten, saubere Knieachse.' };
+          }
+          if (/Rückwärts-Stellung/i.test(canon) || /hugul seogi/i.test(raw)) {
+            return { ctx: 'Taekwondo', t: 'Rückwärts-Stellung (hugul seogi) – defensiver Stand', m: 'Gewicht eher hinten, vorderes Bein entlastet; schnelle Wechsel möglich.', z: 'Distanzkontrolle, Konter vorbereiten.', p: 'Gewichtsverlagerung, Balance, Timing.' };
+          }
+          if (/Sudo Daebi Magki/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Handkanten-Schutzblock (Sudo Daebi Magki)', m: 'Handkante in Schutzposition; blockt/lenkt mit Struktur.', z: 'Schutz + Öffnung.', p: 'Kurze Wege, stabiler Stand.' };
+          }
+          if (/Palmok Daebi Magki/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Unterarm-Schutzblock (Palmok Daebi Magki)', m: 'Unterarm in Schutzposition; kontrolliert ablenken/stoppen.', z: 'Zentrum schützen, Linie umlenken.', p: 'Kraft leiten, Schulter stabil.' };
+          }
+          if (/Hyong/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Form (Hyong) – festgelegte Bewegungsabfolge', m: 'Abfolge von Blöcken, Schlägen und Ständen in festem Ablauf.', z: 'Koordination, Rhythmus, Präzision, Atmung.', p: 'Timing (langsam → schnell), Hüftarbeit, Stand.' };
+          }
+          if (/Chagui/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Tritt (Chagui)', m: 'Tritttechnik aus Stand/Hüfte, sauber zurückziehen.', z: 'Trefferbild, Balance, Distanzgefühl.', p: 'Hüfte, Stand, Recoil.' };
+          }
+          if (/Magki/i.test(canon) || /Block/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Block / Abwehr', m: 'Angriffslinie schließen, Winkel setzen, Struktur halten.', z: 'Schutz + Gegenangriff vorbereiten.', p: 'Körperachse, kurze Wege.' };
+          }
+          if (/ilbo daeryeon/i.test(raw) || /Einschrittkampf/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Einschrittkampf (ilbo daeryeon)', m: 'Partnerdrill: Angriff/Abwehr in einem Schritt mit Distanzkontrolle.', z: 'Timing, Distanz, klare Technik unter Druck.', p: 'Stand + Atmung + Timing.' };
+          }
         }
+
         if (ctx === 'Wing Chun') {
           var wc = wcTechEntry(canon);
           if (wc) return { ctx: 'Wing Chun', t: wc.t, m: wc.m, z: wc.z, p: wc.p };
+
+          if (/Siu Nim Tao/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: '„Kleine Idee Form“', m: 'Grundform im Stand: Struktur, Hände, Ellenbogenlinie.', z: 'Basisstruktur, Kraftlinie, Koordination.', p: 'Ökonomie, Mittellinie, entspannte Stabilität.' };
+          }
+          if (/Chum Kiu/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: '„Arme suchende Form“', m: 'Form mit Körperdrehungen und Schritten; Hand–Körper Verbindung.', z: 'Winkel, Distanz, Rotation.', p: 'Timing + Struktur über Drehung.' };
+          }
+          if (/Biu Tze/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: '„Stoßende Finger“', m: 'Form mit Notfall-/Rettungsbewegungen und kurzen Impulsen.', z: 'Anpassungsfähigkeit, kurze Power.', p: 'Direktheit, Struktur.' };
+          }
+          if (/\bSao\b/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Handform/Technik („Sao“)', m: 'Führen/lenken/kontrollieren entlang der Mittellinie.', z: 'Kontrolle, Öffnungen schaffen.', p: 'Ellenbogen tief, kurze Wege.' };
+          }
+          if (/\bGerk\b/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Beintechnik („Gerk“)', m: 'Kurze, stabile Beinaktion als Stopper/Abwehr.', z: 'Distanz halten, Timing stören.', p: 'Minimaler Weg, Stand.' };
+          }
+          if (/\bCuan\b/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Fausttechnik („Cuan“) / Weapon-Drill', m: 'Geradlinige, strukturierte Ausführung.', z: 'Trefferbild, Linie kontrollieren.', p: 'Linie, Distanz, Timing.' };
+          }
+          if (/Kampfstellung/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Kampfstellung', m: 'Stabiler Stand, Mittellinie geschützt, bereit für Vorwärtsdruck.', z: 'Stabilität + Reaktion.', p: 'Struktur, Balance.' };
+          }
+          if (/Richtungs-Wechsel/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Richtungs-Wechsel', m: 'Winkelwechsel über Schritt/Drehung; Linie neu ausrichten.', z: 'Besserer Winkel, Distanz kontrollieren.', p: 'Timing, Ökonomie.' };
+          }
         }
+
+        // Weiteres defaults
+        if (ctx === 'Weiteres') {
+          if (/Liegestütz/i.test(canon)) return { ctx: 'Weiteres', t: 'Push-up', m: 'Körper gerade, kontrolliert absenken/hochdrücken.', z: 'Brust/Trizeps/Core stärken.', p: 'Rumpfspannung, saubere Linie.' };
+          if (/Kniebeuge/i.test(canon)) return { ctx: 'Weiteres', t: 'Squat', m: 'Hüfte nach hinten/unten, Knie stabil, aufrichten.', z: 'Beinkraft, Hüftstabilität.', p: 'Saubere Achse, Kontrolle.' };
+          if (/Plank/i.test(canon)) return { ctx: 'Weiteres', t: 'Unterarmstütz', m: 'Halten in gerader Linie, Bauch/Glute aktiv.', z: 'Core-Stabilität.', p: 'Spannung dosieren, ruhig atmen.' };
+          if (/Crunches/i.test(canon)) return { ctx: 'Weiteres', t: 'Bauch-Crunch', m: 'Rumpf kurz anheben, kontrolliert absenken.', z: 'Bauchkraft + Kontrolle.', p: 'Keine Schwungbewegung.' };
+          if (/Klimmzüge/i.test(canon)) return { ctx: 'Weiteres', t: 'Pull-up', m: 'Hängen → hochziehen, kontrolliert senken.', z: 'Rücken/Griffkraft.', p: 'Saubere Schulterposition.' };
+          if (/Jab-Cross/i.test(canon)) return { ctx: 'Weiteres', t: 'Gerade-1-2', m: 'Jab → Cross mit Rotation.', z: 'Rhythmus, Distanzgefühl.', p: 'Rotation aus Hüfte/Stand.' };
+          if (/Hook-Hook/i.test(canon)) return { ctx: 'Weiteres', t: 'Hakenkombination', m: 'Seitliche Schläge mit Rotation und stabilem Stand.', z: 'Power aus Rotation.', p: 'Stand, Hüfte, Deckung.' };
+          if (/Slip-Roll/i.test(canon)) return { ctx: 'Weiteres', t: 'Ausweichen + Abrollen', m: 'Slip (seitlich) + Roll (unter) – kontrolliert.', z: 'Defensiv-Timing, Konterfenster.', p: 'Kleine Bewegung, Blick.' };
+          if (/Shadowboxing/i.test(canon)) return { ctx: 'Weiteres', t: 'Schattenboxen', m: 'Freie Runden: Kombinationen + Footwork ohne Partner.', z: 'Flow, Technikpflege, Kondition.', p: 'Sauberkeit vor Tempo.' };
+          if (/Pratzen/i.test(canon)) return { ctx: 'Weiteres', t: 'Padwork', m: 'Schläge/Kicks auf Pratzen mit Timing/Ansage.', z: 'Trefferbild, Reaktion.', p: 'Timing, Distanz.' };
+          if (/Seilspringen/i.test(canon)) return { ctx: 'Weiteres', t: 'Rope skipping', m: 'Gleichmäßige Sprünge, Rhythmus halten.', z: 'Warm-up, Fußarbeit, Kondition.', p: 'Leicht, elastisch.' };
+          if (/Dehnen/i.test(canon) || /Cooldown/i.test(canon)) return { ctx: 'Weiteres', t: 'Dehnen / Cooldown', m: 'Sanftes Dehnen, Range ohne Schmerz erweitern.', z: 'Regeneration, Beweglichkeit.', p: 'Ruhig atmen, nicht reißen.' };
+          if (/Mobility/i.test(canon)) return { ctx: 'Weiteres', t: 'Mobilität', m: 'Kontrollierte Gelenkbewegungen für Hüfte/Schulter.', z: 'Bewegungsqualität, Range.', p: 'Kontrolle, langsam steigern.' };
+        }
+
         return { ctx: ctx, t: '—', m: 'Kurze Übungsbeschreibung.', z: 'Technik, Kontrolle und Wiederholungsqualität verbessern.', p: 'Saubere Struktur, Timing und dosierte Spannung.' };
       }
 
@@ -938,6 +1754,7 @@
         if (!raw) return;
         var canon = canonicalTerm(raw) || raw;
         var entry = ensureGlossary(raw, ctxHint);
+
         var back = document.getElementById('glossaryBack');
         document.getElementById('glossTitle').textContent = raw;
         document.getElementById('glossSub').textContent = 'Kontext: ' + (entry.ctx || ctxHint || '—');
@@ -945,17 +1762,16 @@
         document.getElementById('glossM').textContent = entry.m || '—';
         document.getElementById('glossZ').textContent = entry.z || '—';
         document.getElementById('glossP').textContent = entry.p || '—';
+
         back.classList.add('show');
         back.setAttribute('aria-hidden', 'false');
         glossary[canon] = entry;
       }
-
       function closeGlossary() {
         var back = document.getElementById('glossaryBack');
         back.classList.remove('show');
         back.setAttribute('aria-hidden', 'true');
       }
-
       document.getElementById('glossClose').addEventListener('click', closeGlossary);
       document.getElementById('glossOk').addEventListener('click', closeGlossary);
       document.getElementById('glossaryBack').addEventListener('click', function (e) { if (e.target === this) closeGlossary(); });
@@ -976,7 +1792,6 @@
       // ========= Router + Swipe =========
       var viewOrder = ['tkd', 'wc', 'other', 'training', 'timer'];
       var currentView = 'tkd';
-
       function setNavActive(id) {
         ['navTKD', 'navWC', 'navOTHER', 'navTRAIN', 'navTIMER'].forEach(function (b) {
           var el = document.getElementById(b);
@@ -984,7 +1799,6 @@
           el.setAttribute('aria-selected', b === id ? 'true' : 'false');
         });
       }
-
       function showView(name) {
         currentView = name;
         ['tkd', 'wc', 'other', 'training', 'timer'].forEach(function (v) {
@@ -999,7 +1813,6 @@
         if (name === 'timer') timerUpdate();
         setBadge();
       }
-
       document.getElementById('navTKD').addEventListener('click', function () { showView('tkd'); });
       document.getElementById('navWC').addEventListener('click', function () { showView('wc'); });
       document.getElementById('navOTHER').addEventListener('click', function () { showView('other'); });
@@ -1007,7 +1820,6 @@
       document.getElementById('navTIMER').addEventListener('click', function () { showView('timer'); });
 
       var swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, locked: null, t0: 0 };
-
       function isInteractiveTarget(t) {
         if (!t) return false;
         var tag = (t.tagName || '').toLowerCase();
@@ -1015,14 +1827,12 @@
         if (t.closest && t.closest('input,textarea,select,button,label,.chips,.miniBtns,.tabs,.termWrap')) return true;
         return false;
       }
-
       function canSwipeStart(e) {
         var ae = document.activeElement;
-        if (ae && (((ae.tagName || '').toLowerCase() === 'input') || ((ae.tagName || '').toLowerCase() === 'textarea'))) return false;
+        if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return false;
         if (isInteractiveTarget(e.target)) return false;
         return true;
       }
-
       function goNext(dir) {
         var idx = viewOrder.indexOf(currentView);
         if (idx < 0) idx = 0;
@@ -1030,7 +1840,6 @@
         if (next < 0 || next >= viewOrder.length) return;
         showView(viewOrder[next]);
       }
-
       document.addEventListener('touchstart', function (e) {
         if (e.touches && e.touches.length !== 1) return;
         if (!canSwipeStart(e)) return;
@@ -1042,14 +1851,12 @@
         swipe.x1 = swipe.x0;
         swipe.y1 = swipe.y0;
       }, { passive: true });
-
       document.addEventListener('touchmove', function (e) {
         if (!swipe.active || !e.touches || e.touches.length !== 1) return;
         swipe.x1 = e.touches[0].clientX;
         swipe.y1 = e.touches[0].clientY;
         var dx = swipe.x1 - swipe.x0;
         var dy = swipe.y1 - swipe.y0;
-
         if (!swipe.locked) {
           if (Math.abs(dx) > 12 || Math.abs(dy) > 12) {
             swipe.locked = (Math.abs(dy) > Math.abs(dx)) ? 'scroll' : 'swipe';
@@ -1057,21 +1864,17 @@
         }
         if (swipe.locked === 'scroll') return;
       }, { passive: true });
-
       document.addEventListener('touchend', function () {
         if (!swipe.active) return;
         swipe.active = false;
         if (swipe.locked !== 'swipe') return;
-
         var dx = swipe.x1 - swipe.x0;
         var dy = swipe.y1 - swipe.y0;
         if (Math.abs(dy) > Math.abs(dx)) return;
         if (Math.abs(dx) < 70) return;
         if (Date.now() - swipe.t0 < 80) return;
-
         if (dx < 0) goNext(+1); else goNext(-1);
       }, { passive: true });
-
       var wheelLock = { last: 0 };
       document.addEventListener('wheel', function (e) {
         if (Date.now() - wheelLock.last < 650) return;
@@ -1079,7 +1882,7 @@
         if (Math.abs(e.deltaY) > 25) return;
         if (isInteractiveTarget(e.target)) return;
         var ae = document.activeElement;
-        if (ae && (((ae.tagName || '').toLowerCase() === 'input') || ((ae.tagName || '').toLowerCase() === 'textarea'))) return;
+        if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return;
         wheelLock.last = Date.now();
         if (e.deltaX > 0) goNext(+1); else goNext(-1);
       }, { passive: true });
@@ -1104,7 +1907,6 @@
           WC_VARIATIONS.forEach(function (v) { if (sel && sel.variations && sel.variations[v]) any = true; });
           if (any) wc += 1;
         });
-
         function countMap(m) { var c = 0; Object.keys(m).forEach(function (k) { if (m[k]) c += 1; }); return c; }
         wc += countMap(state.wc.grundlagen);
         wc += countMap(state.wc.armhand);
@@ -1118,7 +1920,6 @@
 
         return { tkd: tkd, wc: wc, other: other, all: (tkd + wc + other) };
       }
-
       function setBadge() {
         var counts = countSelectedAll();
         var total = counts.all;
@@ -1237,7 +2038,6 @@
         COMBOS.forEach(function (c) {
           if (q && c.toLowerCase().indexOf(q) === -1) return;
           shown++;
-
           var el = document.createElement('div');
           el.className = 'item';
           el.innerHTML =
@@ -1247,14 +2047,12 @@
             '</label>' +
             '<small>Kombinations-Drill</small>' +
             '</div>';
-
           var cb = el.querySelector('input');
           cb.addEventListener('change', function () {
             state.tkd.combos[c] = !!cb.checked;
             save();
             setBadge();
           });
-
           host.appendChild(el);
         });
 
@@ -1274,14 +2072,12 @@
             '</label>' +
             '<small>Partner &amp; Distanz</small>' +
             '</div>';
-
           var cb = el.querySelector('input');
           cb.addEventListener('change', function () {
             state.tkd.sparring[s] = !!cb.checked;
             save();
             setBadge();
           });
-
           host.appendChild(el);
         });
       }
@@ -1294,7 +2090,6 @@
         if (key === 'stances') return { title: 'Stellungen', icon: '✨' };
         return { title: key, icon: '✨' };
       }
-
       function tkdRenderBasics(filter) {
         var host = document.getElementById('tkd-basicsList');
         host.innerHTML = '';
@@ -1332,14 +2127,12 @@
               '<label><input type="checkbox" ' + (state.tkd.basics[i] ? 'checked' : '') + '> ' +
               '<span>' + makeTermUI(i, 'Taekwondo', '') + '</span>' +
               '</label>';
-
             var cb = row.querySelector('input');
             cb.addEventListener('change', function () {
               state.tkd.basics[i] = !!cb.checked;
               save();
               setBadge();
             });
-
             list.appendChild(row);
           });
 
@@ -1476,7 +2269,6 @@
           var text = (it.t + ' ' + (it.d || '')).toLowerCase();
           if (q && text.indexOf(q) === -1) return;
           shown++;
-
           var el = document.createElement('div');
           el.className = 'item';
           el.innerHTML =
@@ -1486,14 +2278,12 @@
             '</label>' +
             '<small>' + escapeHtml(it.d || defaultSmall || '') + '</small>' +
             '</div>';
-
           var cb = el.querySelector('input');
           cb.addEventListener('change', function () {
             stateMap[it.t] = !!cb.checked;
             save();
             setBadge();
           });
-
           host.appendChild(el);
         });
 
@@ -1524,7 +2314,6 @@
           var text = (it.t + ' ' + (it.d || '')).toLowerCase();
           if (q && text.indexOf(q) === -1) return;
           shown++;
-
           var el = document.createElement('div');
           el.className = 'item';
           el.innerHTML =
@@ -1534,14 +2323,12 @@
             '</label>' +
             '<small>' + escapeHtml(it.d || defaultSmall || '') + '</small>' +
             '</div>';
-
           var cb = el.querySelector('input');
           cb.addEventListener('change', function () {
             stateMap[it.t] = !!cb.checked;
             save();
             setBadge();
           });
-
           host.appendChild(el);
         });
 
@@ -1577,17 +2364,16 @@
           var chosen = [];
           TKD_VARIATIONS.forEach(function (v) { if (sel.variations[v]) chosen.push(v); });
           if (!chosen.length) return;
-
           out.tkd.hyongs.push({
-            key: 'TKDHyong' + h.id,
+            key: 'TKD|Hyong|' + h.id,
             title: h.id + ' ' + h.name + ' (' + h.moves + 'x)',
             details: ['Varianten: ' + chosen.join(' · '), 'Runden: ' + sel.rounds]
           });
         });
 
-        Object.keys(state.tkd.combos).forEach(function (c) { if (state.tkd.combos[c]) out.tkd.combos.push({ key: 'TKDKombi' + c, title: c, details: [] }); });
-        Object.keys(state.tkd.sparring).forEach(function (s) { if (state.tkd.sparring[s]) out.tkd.sparring.push({ key: 'TKDIlbo' + s, title: s, details: [] }); });
-        Object.keys(state.tkd.basics).forEach(function (b) { if (state.tkd.basics[b]) out.tkd.basics.push({ key: 'TKDBasic' + b, title: b, details: [] }); });
+        Object.keys(state.tkd.combos).forEach(function (c) { if (state.tkd.combos[c]) out.tkd.combos.push({ key: 'TKD|Kombi|' + c, title: c, details: [] }); });
+        Object.keys(state.tkd.sparring).forEach(function (s) { if (state.tkd.sparring[s]) out.tkd.sparring.push({ key: 'TKD|Ilbo|' + s, title: s, details: [] }); });
+        Object.keys(state.tkd.basics).forEach(function (b) { if (state.tkd.basics[b]) out.tkd.basics.push({ key: 'TKD|Basic|' + b, title: b, details: [] }); });
         out.tkd.note = (state.tkd.note || '').trim();
 
         FORMS.forEach(function (f) {
@@ -1595,9 +2381,8 @@
           var chosen = [];
           WC_VARIATIONS.forEach(function (v) { if (sel.variations[v]) chosen.push(v); });
           if (!chosen.length) return;
-
           out.wc.forms.push({
-            key: 'WCForm' + f.id,
+            key: 'WC|Form|' + f.id,
             title: f.id + ' ' + f.name + ' (' + f.code + ')',
             details: [
               'Beschreibung: ' + f.note,
@@ -1611,17 +2396,16 @@
         function selFromMap(map, prefix, arrOut) {
           Object.keys(map).forEach(function (k) { if (map[k]) arrOut.push({ key: prefix + k, title: k, details: [] }); });
         }
-
-        selFromMap(state.wc.grundlagen, 'WCGrund', out.wc.grundlagen);
-        selFromMap(state.wc.armhand, 'WCArm', out.wc.armhand);
-        selFromMap(state.wc.beine, 'WCBein', out.wc.beine);
-        selFromMap(state.wc.weitere, 'WCWeitere', out.wc.weitere);
-        selFromMap(state.wc.weapon, 'WCWeapon', out.wc.weapon);
+        selFromMap(state.wc.grundlagen, 'WC|Grund|', out.wc.grundlagen);
+        selFromMap(state.wc.armhand, 'WC|Arm|', out.wc.armhand);
+        selFromMap(state.wc.beine, 'WC|Bein|', out.wc.beine);
+        selFromMap(state.wc.weitere, 'WC|Weitere|', out.wc.weitere);
+        selFromMap(state.wc.weapon, 'WC|Weapon|', out.wc.weapon);
         out.wc.note = (state.wc.note || '').trim();
 
-        selFromMap(state.other.kraft, 'OTHERKraft', out.other.kraft);
-        selFromMap(state.other.boxen, 'OTHERBoxen', out.other.boxen);
-        selFromMap(state.other.sonstiges, 'OTHersonstiges', out.other.sonstiges);
+        selFromMap(state.other.kraft, 'OTHER|Kraft|', out.other.kraft);
+        selFromMap(state.other.boxen, 'OTHER|Boxen|', out.other.boxen);
+        selFromMap(state.other.sonstiges, 'OTHER|Sonstiges|', out.other.sonstiges);
         out.other.note = (state.other.note || '').trim();
 
         return out;
@@ -1647,6 +2431,7 @@
 
       function renderTraining() {
         document.getElementById('train-dateNow').textContent = prettyDateDE(new Date());
+
         var data = collectTrainingItems();
         var sections = [];
         var doneKeys = [];
@@ -1670,7 +2455,6 @@
           out += '</div>';
           return out;
         }
-
         function simpleList(items, ctxHint, icon) {
           if (!items.length) return '';
           var out = '<div class="list" style="gap:8px">';
@@ -1759,7 +2543,6 @@
           });
           lines.push('');
         }
-
         function addSimple(title, arr) {
           lines.push(title + ':');
           arr.forEach(function (x) { lines.push('- ' + x.title); });
@@ -1774,7 +2557,6 @@
           if (data.tkd.basics.length) addSimple('Grundübungen', data.tkd.basics);
           if (data.tkd.note) { lines.push('Notiz:'); lines.push(data.tkd.note); lines.push(''); }
         }
-
         if (data.wc.forms.length || data.wc.grundlagen.length || data.wc.armhand.length || data.wc.beine.length || data.wc.weitere.length || data.wc.weapon.length) {
           lines.push('Wing Chun:'); lines.push('');
           if (data.wc.forms.length) addBlock('Formen', data.wc.forms);
@@ -1785,7 +2567,6 @@
           if (data.wc.weapon.length) addSimple('Weapon Self Defence', data.wc.weapon);
           if (data.wc.note) { lines.push('Notiz:'); lines.push(data.wc.note); lines.push(''); }
         }
-
         if (data.other.kraft.length || data.other.boxen.length || data.other.sonstiges.length) {
           lines.push('Weiteres:'); lines.push('');
           if (data.other.kraft.length) addSimple('Krafttraining', data.other.kraft);
@@ -1810,15 +2591,12 @@
 
       // ========= Timer =========
       var _timer = { t: null, mode: 'work', remaining: 0, round: 0, paused: true };
-
       function fmt(s) {
         s = Math.max(0, Number(s) || 0);
         var m = Math.floor(s / 60), ss = s % 60;
         return String(m).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
       }
-
       function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '{}', {}); }
-
       function timerSave() {
         try {
           localStorage.setItem(TIMER_KEY, JSON.stringify({
@@ -1828,20 +2606,17 @@
           }));
         } catch (e) { }
       }
-
       function timerUpdate() {
         document.getElementById('timer-display').textContent = fmt(_timer.remaining);
         document.getElementById('timer-phase').textContent = _timer.t ? (_timer.mode === 'work' ? 'WORK' : 'PAUSE') : '—';
         var rounds = Number(document.getElementById('timer-rounds').value || 0);
         document.getElementById('timer-round').textContent = (_timer.t ? (_timer.round + 1) : 0) + ' / ' + rounds;
       }
-
       function timerStopInternal() {
         if (_timer.t) { clearInterval(_timer.t); _timer.t = null; }
         _timer.paused = true;
         timerUpdate();
       }
-
       function timerTick() {
         timerUpdate();
         if (_timer.remaining <= 0) {
@@ -1862,7 +2637,6 @@
         }
         _timer.remaining--;
       }
-
       function timerStart() {
         timerSave();
         if (_timer.t) return;
@@ -1875,7 +2649,6 @@
         _timer.t = setInterval(timerTick, 1000);
         timerUpdate();
       }
-
       function timerPause() {
         if (!_timer.t) return;
         clearInterval(_timer.t);
@@ -1883,7 +2656,6 @@
         _timer.paused = true;
         timerUpdate();
       }
-
       function timerReset() {
         timerStopInternal();
         _timer.mode = 'work';
@@ -1891,7 +2663,6 @@
         _timer.remaining = Number(document.getElementById('timer-workSec').value || 0);
         timerUpdate();
       }
-
       function timerInit() {
         var conf = timerLoad();
         if (typeof conf.work === 'number') document.getElementById('timer-workSec').value = conf.work;
@@ -1920,30 +2691,6 @@
       }
 
       // ========= Reset =========
-      function rerenderAll() {
-        var tq = document.getElementById('tkd-searchInput').value;
-        tkdRenderHyongs(tq);
-        tkdRenderCombos(tq);
-        tkdRenderIlbo();
-        tkdRenderBasics(tq);
-
-        var wq = document.getElementById('wc-searchInput').value;
-        wcRenderForms(wq);
-        wcRenderCheckboxList('wc-grundlagenList', 'wc-grundlagenEmpty', GRUNDLAGEN, state.wc.grundlagen, wq, '🧱', 'Grundlagen');
-        wcRenderCheckboxList('wc-armhandList', 'wc-armhandEmpty', ARM_HAND, state.wc.armhand, wq, '🤲', 'Technik');
-        wcRenderCheckboxList('wc-beineList', 'wc-beineEmpty', BEINE, state.wc.beine, wq, '👣', 'Bein');
-        wcRenderCheckboxList('wc-weitereList', 'wc-weitereEmpty', WEITERE_HAND, state.wc.weitere, wq, '🧩', 'Hand');
-        wcRenderCheckboxList('wc-weaponList', 'wc-weaponEmpty', WEAPON, state.wc.weapon, wq, '🛡️', 'Weapon');
-
-        var oq = document.getElementById('other-searchInput').value;
-        otherRenderList('other-kraftList', 'other-kraftEmpty', OTHER_KRAFT, state.other.kraft, oq, '🏋️', 'Kraft');
-        otherRenderList('other-boxenList', 'other-boxenEmpty', OTHER_BOXEN, state.other.boxen, oq, '🥊', 'Boxen');
-        otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, oq, '🧘', 'Sonstiges');
-
-        document.getElementById('train-dateNow').textContent = prettyDateDE(new Date());
-        setBadge();
-      }
-
       function resetAll() {
         state = makeInitialState();
         save();
@@ -1976,10 +2723,8 @@
 
       document.getElementById('tkd-noteInput').value = state.tkd.note || '';
       document.getElementById('tkd-noteInput').addEventListener('input', function () { state.tkd.note = this.value; save(); });
-
       document.getElementById('wc-noteInput').value = state.wc.note || '';
       document.getElementById('wc-noteInput').addEventListener('input', function () { state.wc.note = this.value; save(); });
-
       document.getElementById('other-noteInput').value = state.other.note || '';
       document.getElementById('other-noteInput').addEventListener('input', function () { state.other.note = this.value; save(); });
 
@@ -1989,7 +2734,6 @@
         tkdRenderCombos(q);
         tkdRenderBasics(q);
       });
-
       document.getElementById('wc-searchInput').addEventListener('input', function () {
         var q = this.value;
         wcRenderForms(q);
@@ -1999,7 +2743,6 @@
         wcRenderCheckboxList('wc-weitereList', 'wc-weitereEmpty', WEITERE_HAND, state.wc.weitere, q, '🧩', 'Hand');
         wcRenderCheckboxList('wc-weaponList', 'wc-weaponEmpty', WEAPON, state.wc.weapon, q, '🛡️', 'Weapon');
       });
-
       document.getElementById('other-searchInput').addEventListener('input', function () {
         var q = this.value;
         otherRenderList('other-kraftList', 'other-kraftEmpty', OTHER_KRAFT, state.other.kraft, q, '🏋️', 'Kraft');
@@ -2018,7 +2761,6 @@
         document.getElementById('train-motivationText').textContent = m;
         toast('✨ ' + m);
       });
-
       document.getElementById('train-resetDoneBtn').addEventListener('click', function () {
         var host = document.getElementById('train-sections');
         var keys = Array.prototype.slice.call(host.querySelectorAll('.doneCb')).map(function (cb) { return cb.getAttribute('data-key'); });
@@ -2038,6 +2780,7 @@
         COMBOS.forEach(function (c) { ensureGlossary(c, 'Taekwondo'); });
         SPARRING.forEach(function (s) { ensureGlossary(s, 'Taekwondo'); });
         Object.keys(BASICS).forEach(function (k) { BASICS[k].forEach(function (i) { ensureGlossary(i, 'Taekwondo'); }); });
+
         FORMS.forEach(function (f) {
           ensureGlossary(f.id + ' ' + f.name, 'Wing Chun');
           ensureGlossary(f.name, 'Wing Chun');
@@ -2048,10 +2791,35 @@
         BEINE.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
         WEITERE_HAND.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
         WEAPON.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
+
         OTHER_KRAFT.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
         OTHER_BOXEN.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
         OTHER_SONST.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
       })();
+
+      function rerenderAll() {
+        var tq = document.getElementById('tkd-searchInput').value;
+        tkdRenderHyongs(tq);
+        tkdRenderCombos(tq);
+        tkdRenderIlbo();
+        tkdRenderBasics(tq);
+
+        var wq = document.getElementById('wc-searchInput').value;
+        wcRenderForms(wq);
+        wcRenderCheckboxList('wc-grundlagenList', 'wc-grundlagenEmpty', GRUNDLAGEN, state.wc.grundlagen, wq, '🧱', 'Grundlagen');
+        wcRenderCheckboxList('wc-armhandList', 'wc-armhandEmpty', ARM_HAND, state.wc.armhand, wq, '🤲', 'Technik');
+        wcRenderCheckboxList('wc-beineList', 'wc-beineEmpty', BEINE, state.wc.beine, wq, '👣', 'Bein');
+        wcRenderCheckboxList('wc-weitereList', 'wc-weitereEmpty', WEITERE_HAND, state.wc.weitere, wq, '🧩', 'Hand');
+        wcRenderCheckboxList('wc-weaponList', 'wc-weaponEmpty', WEAPON, state.wc.weapon, wq, '🛡️', 'Weapon');
+
+        var oq = document.getElementById('other-searchInput').value;
+        otherRenderList('other-kraftList', 'other-kraftEmpty', OTHER_KRAFT, state.other.kraft, oq, '🏋️', 'Kraft');
+        otherRenderList('other-boxenList', 'other-boxenEmpty', OTHER_BOXEN, state.other.boxen, oq, '🥊', 'Boxen');
+        otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, oq, '🧘', 'Sonstiges');
+
+        document.getElementById('train-dateNow').textContent = prettyDateDE(new Date());
+        setBadge();
+      }
 
       // Timer init
       timerInit();
@@ -2060,7 +2828,9 @@
       rerenderAll();
       showView('tkd');
       setBadge();
+
     })();
   </script>
 </body>
+
 </html>
