@@ -773,7 +773,351 @@
       border-color: #0f172a;
       color: #fff
     }
-  </style>
+  
+
+    /* =============================
+       Modern Redesign (nur CSS)
+       Inhalte/Struktur/Logik bleiben gleich
+       ============================= */
+
+    :root{
+      --bg: #0b1020;
+      --card: rgba(255,255,255,.82);
+      --text: #0b1220;
+      --muted: #5b6475;
+      --line: rgba(15,23,42,.10);
+      --shadow: 0 18px 55px rgba(2,6,23,.12);
+      --r: 22px;
+      --accent: #111827;
+      --good: #16a34a;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --focus: rgba(99,102,241,.55);
+      --glass: rgba(255,255,255,.70);
+      --glass2: rgba(255,255,255,.55);
+      --ring: rgba(99,102,241,.25);
+      --soft: rgba(15,23,42,.06);
+    
+  --brand: #005F78;
+  --brand-dark: #004C60;
+  --brand-light: #007F9E;
+  --brand-tint: #EAF4F7;
+  --white: #FFFFFF;
+
+  --brand-yellow: #F9C301;
+  --brand-yellow-dark: #9E7D20;
+
+  --bg-dark: #353539;
+  --text-light: #FFFFFF;
+
+  --accent-dark: #0f172a;
+  --accent-light: #1f2937;
+}
+
+    body{
+      background:
+        radial-gradient(1200px 600px at 15% 0%, rgba(99,102,241,.22) 0%, rgba(99,102,241,0) 55%),
+        radial-gradient(900px 520px at 85% 10%, rgba(16,185,129,.16) 0%, rgba(16,185,129,0) 60%),
+        radial-gradient(1100px 600px at 50% 110%, rgba(236,72,153,.10) 0%, rgba(236,72,153,0) 55%),
+        linear-gradient(180deg, #f8fafc 0%, #ffffff 45%, #f1f5f9 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .wrap{
+      padding: 20px 16px 48px;
+    }
+
+    .header{
+      gap: 16px;
+      align-items: center;
+    }
+
+    .brand{
+      gap: 14px;
+      align-items: center;
+    }
+
+    .icon{
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 55%, var(--accent-light) 100%);
+      box-shadow: 0 18px 50px rgba(2,6,23,.18);
+      border: 1px solid rgba(255,255,255,.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .icon::after{
+      content: "";
+      position: absolute;
+      inset: -60% -60% auto auto;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.45), rgba(255,255,255,0) 60%);
+      transform: rotate(18deg);
+      pointer-events: none;
+    }
+
+    h1{
+      font-size: 20px;
+      letter-spacing: -0.03em;
+      font-weight: 1000;
+      line-height: 1.2;
+    }
+    h2{
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      font-weight: 1000;
+      line-height: 1.25;
+    }
+    .subtitle{
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 62ch;
+    }
+
+    .seg{
+      background: rgba(255,255,255,.75);
+      border-color: rgba(15,23,42,.12);
+      box-shadow: 0 10px 30px rgba(2,6,23,.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .seg button{
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: background-color .18s ease, color .18s ease, transform .18s ease;
+    }
+    .seg button.active{
+      background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 60%, var(--accent-light) 100%);
+      box-shadow: 0 8px 20px rgba(2,6,23,.18);
+    }
+    .seg button:active{
+      transform: scale(.98);
+    }
+
+    .badge{
+      background: rgba(236,253,245,.72);
+      border-color: rgba(16,185,129,.25);
+      box-shadow: 0 10px 28px rgba(2,6,23,.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .badge.gray{
+      background: rgba(241,245,249,.75);
+      border-color: rgba(15,23,42,.10);
+    }
+
+    .btn{
+      border-color: rgba(15,23,42,.12);
+      background: rgba(255,255,255,.78);
+      box-shadow: 0 10px 28px rgba(2,6,23,.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease, border-color .16s ease;
+    }
+    .btn:hover{
+      box-shadow: 0 14px 34px rgba(2,6,23,.10);
+    }
+    .btn:active{
+      transform: scale(.98);
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 55%, var(--accent-light) 100%);
+      border-color: rgba(17,24,39,.92);
+      box-shadow: 0 16px 40px rgba(2,6,23,.18);
+    }
+
+    .card{
+      background: rgba(255,255,255,.72);
+      border-color: rgba(15,23,42,.10);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .subcard{
+      background: rgba(255,255,255,.70);
+      border-color: rgba(15,23,42,.10);
+      box-shadow: 0 12px 34px rgba(2,6,23,.08);
+    }
+
+    .tabs{
+      gap: 10px;
+    }
+    .tab{
+      background: rgba(241,245,249,.70);
+      border-color: rgba(15,23,42,.10);
+      box-shadow: 0 10px 26px rgba(2,6,23,.05);
+      transition: transform .16s ease, background-color .16s ease, box-shadow .16s ease, color .16s ease;
+    }
+    .tab:hover{
+      box-shadow: 0 14px 34px rgba(2,6,23,.08);
+    }
+    .tab:active{
+      transform: scale(.98);
+    }
+    .tab.active{
+      background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 60%, var(--accent-light) 100%);
+      box-shadow: 0 16px 40px rgba(2,6,23,.16);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea{
+      background: rgba(255,255,255,.82);
+      border-color: rgba(15,23,42,.12);
+      box-shadow: 0 10px 26px rgba(2,6,23,.04);
+      transition: box-shadow .16s ease, border-color .16s ease, background-color .16s ease;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus{
+      border-color: rgba(99,102,241,.45);
+      box-shadow: 0 0 0 4px var(--ring), 0 12px 30px rgba(2,6,23,.08);
+    }
+
+    .hint{
+      background: rgba(241,245,249,.72);
+      border-color: rgba(15,23,42,.10);
+      box-shadow: 0 10px 26px rgba(2,6,23,.05);
+    }
+
+    .item{
+      background: rgba(255,255,255,.80);
+      border-color: rgba(15,23,42,.10);
+      box-shadow: 0 14px 40px rgba(2,6,23,.07);
+    }
+
+    .pill{
+      background: rgba(241,245,249,.70);
+      border-color: rgba(15,23,42,.10);
+    }
+    .pill.on{
+      background: rgba(236,253,245,.75);
+      border-color: rgba(16,185,129,.25);
+      box-shadow: 0 12px 30px rgba(2,6,23,.05);
+    }
+
+    .chip{
+      background: rgba(241,245,249,.70);
+      border-color: rgba(15,23,42,.10);
+      box-shadow: 0 10px 24px rgba(2,6,23,.05);
+      transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+    }
+    .chip:hover{
+      box-shadow: 0 14px 34px rgba(2,6,23,.08);
+    }
+    .chip:active{
+      transform: scale(.98);
+    }
+    .chip.on{
+      background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 60%, var(--accent-light) 100%);
+      border-color: rgba(17,24,39,.92);
+      box-shadow: 0 16px 40px rgba(2,6,23,.16);
+    }
+
+    .mini{
+      background: rgba(255,255,255,.82);
+      border-color: rgba(15,23,42,.12);
+      box-shadow: 0 10px 24px rgba(2,6,23,.05);
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .mini:hover{ box-shadow: 0 14px 34px rgba(2,6,23,.08); }
+    .mini:active{ transform: scale(.98); }
+
+    .summaryBox{
+      background: rgba(248,250,252,.74);
+      border-color: rgba(15,23,42,.12);
+      box-shadow: 0 12px 34px rgba(2,6,23,.05);
+    }
+
+    .progressBar{
+      background: rgba(15,23,42,.10);
+      box-shadow: inset 0 1px 2px rgba(2,6,23,.10);
+    }
+    .progressBar>div{
+      background: linear-gradient(90deg, rgba(16,185,129,1) 0%, rgba(99,102,241,1) 55%, rgba(236,72,153,.95) 110%);
+    }
+
+    .motivation{
+      background: rgba(236,253,245,.78);
+      border-color: rgba(16,185,129,.25);
+      box-shadow: 0 14px 40px rgba(2,6,23,.07);
+    }
+
+    .toast{
+      background: rgba(15,23,42,.92);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .modalBack{
+      background: rgba(2,6,23,.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .modal{
+      background: rgba(255,255,255,.86);
+      border-color: rgba(15,23,42,.12);
+      box-shadow: 0 28px 80px rgba(2,6,23,.22);
+    }
+    .miniCard{
+      background: rgba(255,255,255,.78);
+      border-color: rgba(15,23,42,.10);
+      box-shadow: 0 12px 34px rgba(2,6,23,.06);
+    }
+
+    /* Timer – modernisiert, bleibt inhaltlich identisch */
+    #timerPageCard{
+      background:
+        radial-gradient(900px 380px at 15% 0%, rgba(99,102,241,.16) 0%, rgba(99,102,241,0) 55%),
+        radial-gradient(800px 340px at 85% 10%, rgba(16,185,129,.14) 0%, rgba(16,185,129,0) 60%),
+        linear-gradient(180deg, rgba(255,255,255,.86) 0%, rgba(248,250,252,.80) 100%);
+      border-color: rgba(99,102,241,.18);
+      box-shadow: 0 20px 60px rgba(2,6,23,.12);
+    }
+    #timerPageCard #timer-display.timerBig{
+      background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 60%, var(--accent-light) 100%);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    /* Motion: subtil, aber respektiert Reduced Motion */
+    @media (prefers-reduced-motion: no-preference){
+      .card, .item, .subcard, .summaryBox, .miniCard{
+        transition: transform .18s ease, box-shadow .18s ease;
+      }
+      .card:hover, .item:hover{
+        box-shadow: 0 26px 78px rgba(2,6,23,.14);
+      }
+    }
+
+
+
+/* Theme overrides: TKD / Wing Chun (nur Farben) */
+#appRoot[data-theme="tkd"]{
+  --accent: var(--brand);
+  --accent-dark: var(--brand-dark);
+  --accent-light: var(--brand-light);
+}
+#appRoot[data-theme="wc"]{
+  --accent: var(--brand-yellow);
+  --accent-dark: var(--bg-dark);
+  --accent-light: var(--brand-yellow-dark);
+}
+
+/* Timer-Zeit lesbar machen (nur Darstellung, keine Logik) */
+#timer-display.timerBig{
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 16px;
+  min-width: 140px;
+  text-align: center;
+}
+</style>
 </head>
 
 <body>
@@ -1455,168 +1799,6 @@
         p: 'Ökonomie + Timing + Struktur (kleine Bewegung, große Wirkung).'
       });
 
-      // ===== Ergänzte Glossar-Einträge (Hyongs + TKD Basics/Schläge + WC Formen) =====
-      addGloss('Chon-Ji Hyong', {
-        ctx: 'Taekwondo',
-        t: '„Himmel & Erde“ (Chon-Ji)',
-        m: 'Grundform mit klaren Linien und Basisbewegungen: Blöcke/Schläge aus stabilen Ständen, Fokus auf saubere Richtungswechsel und Körperachse.',
-        z: 'Basis-Koordination, Standstabilität, Rhythmus und präzise Grundtechniken festigen.',
-        p: 'Sauberer Stand + klare Hüftausrichtung; erst kontrolliert, dann schneller.'
-      });
-      addGloss('Tan-Gun Hyong', {
-        ctx: 'Taekwondo',
-        t: '„Tan-Gun“ (Namensform)',
-        m: 'Form mit deutlicher Hüftarbeit: grundlegende Abwehr-/Angriffskombinationen in klaren Bahnen, sauberer Wechsel zwischen Ständen und Techniken.',
-        z: 'Hüftrotation, Timing und stabile Technikabfolge unter gleichmäßigem Atemrhythmus trainieren.',
-        p: 'Hüfte führt – Technik folgt; Bewegungen kurz und eindeutig.'
-      });
-      addGloss('To-San Hyong', {
-        ctx: 'Taekwondo',
-        t: '„To-San“ (Namensform)',
-        m: 'Form mit stärkerer Dynamik in Übergängen: stabile Vorwärts-/Rückwärtsarbeit, klare Stopps und direkte Techniken in Kombination.',
-        z: 'Dynamische Standwechsel, Kontrolle im Stoppen und saubere Linienführung verbessern.',
-        p: 'Stabil stoppen, dann präzise beschleunigen – keine „weichen“ Zwischenpositionen.'
-      });
-      addGloss('Won-Hyo Hyong', {
-        ctx: 'Taekwondo',
-        t: '„Won-Hyo“ (Namensform)',
-        m: 'Form mit betonter Struktur: kontrollierte Armtechnik, deutliche Gewichtsverlagerung und saubere Orientierung in mehreren Richtungen.',
-        z: 'Struktur, Gleichgewicht und kontrollierte Kraftübertragung aus dem Stand entwickeln.',
-        p: 'Balance vor Power – Druck über Bodenverbindung, nicht über Schulter.'
-      });
-      addGloss('Yul-Gok Hyong', {
-        ctx: 'Taekwondo',
-        t: '„Yul-Gok“ (Namensform)',
-        m: 'Längere Form mit vielen Wechseln: sauberer Rhythmus zwischen ruhigen und schnellen Sequenzen; Fokus auf präzise Winkel und konsequentes Zurückziehen.',
-        z: 'Ausdauer in Technikqualität, Timing-Wechsel und präzise Richtungsarbeit trainieren.',
-        p: 'Rhythmus steuern: langsam = exakt, schnell = kontrolliert.'
-      });
-      addGloss('Chung-Gun Hyong', {
-        ctx: 'Taekwondo',
-        t: '„Chung-Gun“ (Namensform)',
-        m: 'Form mit klarer Vorwärtsausrichtung und markanten Stopps: Kombinationen wirken „direkt“ und fordern saubere Körperlinie.',
-        z: 'Direktheit, saubere Achsenarbeit und entschlossene Technikabschlüsse stärken.',
-        p: 'Technik endet klar – keine „Restbewegung“ nach dem Trefferpunkt.'
-      });
-      addGloss('Toi-Gye Hyong', {
-        ctx: 'Taekwondo',
-        t: '„Toi-Gye“ (Namensform)',
-        m: 'Form mit betonten Richtungswechseln: kontrollierte Übergänge, stabile Stände und saubere Armtechnik in klaren Sequenzen.',
-        z: 'Koordination bei Richtungswechseln, Standarbeit und Präzision der Grundtechniken verbessern.',
-        p: 'Winkel sauber setzen – erst Position, dann Technik.'
-      });
-      addGloss('Hwa-Rang Hyong', {
-        ctx: 'Taekwondo',
-        t: '„Hwa-Rang“ (Namensform)',
-        m: 'Form mit dynamischerem Charakter: klare Sequenzen, flüssige Übergänge und betonte Stabilität im Tempowechsel.',
-        z: 'Fluss in Übergängen, Timing und Stabilität bei schnellerer Ausführung trainieren.',
-        p: 'Locker bleiben, Struktur halten – Geschwindigkeit aus Technik, nicht aus Spannung.'
-      });
-      addGloss('Chung-Mu Hyong', {
-        ctx: 'Taekwondo',
-        t: '„Chung-Mu“ (Namensform)',
-        m: 'Form mit markanten Richtungswechseln und entschlossenen Technikabschlüssen: fordert klare Linien, saubere Körperachse und präzises Recoil.',
-        z: 'Entschlossenheit im Abschluss, saubere Achsenarbeit und kontrollierte Dynamik verbessern.',
-        p: 'Trefferpunkt definieren, dann sofort zurück in Struktur (Recoil/Guard).'
-      });
-      addGloss('Gwang-Gae Hyong', {
-        ctx: 'Taekwondo',
-        t: '„Gwang-Gae“ (Namensform)',
-        m: 'Höherstufige Form mit vielen Sequenzen: verlangt ruhige Kontrolle in Standarbeit, klare Winkel und stabile Ausrichtung über die gesamte Abfolge.',
-        z: 'Technikqualität über längere Abfolgen halten; Präzision, Rhythmus und Ausrichtung festigen.',
-        p: 'Qualität bleibt konstant: gleiche Standtiefe, gleiche Linie, gleiche Kontrolle bis zum Ende.'
-      });
-
-      // Wing Chun Formen
-      addGloss('Siu Nim Tao', {
-        ctx: 'Wing Chun',
-        t: '„Kleine Idee“ (Siu Nim Tao)',
-        m: 'Grundform im Stand: Aufbau von Struktur, Mittellinie, Handformen und Ellenbogenlinie; bewusst langsam und kontrolliert.',
-        z: 'Basisstruktur, Koordination und saubere Linienführung der Hände etablieren.',
-        p: 'Ökonomie: kleiner Weg, klare Linie, entspannte Stabilität.'
-      });
-      addGloss('Chum Kiu', {
-        ctx: 'Wing Chun',
-        t: '„Brücke suchen“ (Chum Kiu)',
-        m: 'Form mit Drehungen und Schritt-/Körperarbeit: Verbindung von Armen und Rumpf, Winkelarbeit und Stabilität im Wechsel.',
-        z: 'Distanz/Winkel kontrollieren, Körperdrehung sauber einsetzen, Struktur unter Bewegung halten.',
-        p: 'Körper dreht – Hände bleiben auf Linie; Timing vor Kraft.'
-      });
-      addGloss('Biu Tze', {
-        ctx: 'Wing Chun',
-        t: '„Stoßende Finger“ (Biu Tze)',
-        m: 'Fortgeschrittene Form mit kürzeren, deutlichen Aktionen und „Rettungsbewegungen“; Fokus auf direkte Lösungen aus ungünstigen Positionen.',
-        z: 'Anpassung, kurze Power und Strukturwiederherstellung trainieren.',
-        p: 'Direktheit + Struktur: zuerst Linie zurückholen, dann handeln.'
-      });
-
-      // TKD Grundübungen/Schläge (wenn keine Übersetzung sinnvoll ist: Erklärung im TKD-Kontext)
-      addGloss('Unteren Block', {
-        ctx: 'Taekwondo',
-        t: 'Unterer Block (Abwehr nach unten)',
-        m: 'Abwehrbewegung gegen Angriffe zum Unterkörper/Beinbereich: Armweg klar und knapp, Schulter entspannt, Block aus dem Stand geführt.',
-        z: 'Basis-Abwehrwinkel, Struktur und Timing für Gegenaktionen aufbauen.',
-        p: 'Klarer Winkel + stabiler Stand; keine Kraft gegen Kraft – Linie schließen.'
-      });
-      addGloss('Unterer Block', {
-        ctx: 'Taekwondo',
-        t: 'Unterer Block (Abwehr nach unten)',
-        m: 'Abwehrbewegung gegen Angriffe zum Unterkörper/Beinbereich: Armweg klar und knapp, Schulter entspannt, Block aus dem Stand geführt.',
-        z: 'Basis-Abwehrwinkel, Struktur und Timing für Gegenaktionen aufbauen.',
-        p: 'Klarer Winkel + stabiler Stand; keine Kraft gegen Kraft – Linie schließen.'
-      });
-      addGloss('Mittleren Block', {
-        ctx: 'Taekwondo',
-        t: 'Mittlerer Block (Abwehr auf Rumpfhöhe)',
-        m: 'Abwehrbewegung gegen Angriffe zum Oberkörper: Unterarm bildet eine stabile Barriere, Ellenbogenlinie bleibt kontrolliert, Schulter locker.',
-        z: 'Rumpfschutz, stabile Armstruktur und sauberes Timing trainieren.',
-        p: 'Struktur vor Tempo – Block ist kurz, dann sofort bereit für Konter.'
-      });
-      addGloss('Oberen Block', {
-        ctx: 'Taekwondo',
-        t: 'Oberer Block (Abwehr nach oben)',
-        m: 'Abwehr gegen Angriffe zum Kopfbereich: Arm hebt als Schutzdach, Stand bleibt stabil, Blick bleibt auf Zielrichtung.',
-        z: 'Kopfschutz, saubere Achse und kontrollierte Distanzarbeit verbessern.',
-        p: 'Schulter entspannt, Blockwinkel klar – kein Hochziehen des ganzen Körpers.'
-      });
-      addGloss('Stich', {
-        ctx: 'Taekwondo',
-        t: 'Stich (gerade, präzise Stoßtechnik)',
-        m: 'Geradlinige Stoßtechnik mit klarer Endposition: Armweg direkt, Hand/Knöchel ausgerichtet, Hüfte unterstützt die Linie.',
-        z: 'Präzision und geradlinige Kraftübertragung trainieren.',
-        p: 'Kurzer Weg, klare Linie – Trefferpunkt definieren, dann sofort zurück.'
-      });
-      addGloss('Lang', {
-        ctx: 'Taekwondo',
-        t: 'Lang (weite/verlängerte Technik-Ausführung)',
-        m: 'Technik mit bewusst größerer Reichweite/Bewegungsausladung (z.B. in Kombinationen): Fokus auf Kontrolle der Strecke und sauberes Stoppen.',
-        z: 'Reichweite, Distanzgefühl und kontrollierte Abschlusspositionen verbessern.',
-        p: 'Weit heißt nicht unkontrolliert – Strecke kontrollieren, Ende klar.'
-      });
-      addGloss('Faust', {
-        ctx: 'Taekwondo',
-        t: 'Faust (Fauststoß/-schlag)',
-        m: 'Grundschlag mit korrekter Faustformation und Handgelenksausrichtung: Ellbogenlinie stabil, Hüfte unterstützt, Schulter bleibt locker.',
-        z: 'Sichere Technikbasis (Handgelenk/Knöchel) und saubere Kraftübertragung entwickeln.',
-        p: 'Struktur schützt: Handgelenk gerade, Kraft aus Boden + Hüfte.'
-      });
-      addGloss('Ballen', {
-        ctx: 'Taekwondo',
-        t: 'Ballen (Faustballen-Schlag)',
-        m: 'Schlag mit dem vorderen Bereich der geballten Faust (Faustballen): eignet sich für kurze Distanzen; Handgelenk stabil halten.',
-        z: 'Kurze Schlagdistanz und kontrollierte, sichere Kontaktfläche trainieren.',
-        p: 'Kontaktfläche sauber, Handgelenk stabil – kurze Wege, klare Linie.'
-      });
-      addGloss('Ellbogen', {
-        ctx: 'Taekwondo',
-        t: 'Ellbogen (kurze Distanz)',
-        m: 'Kurze Technik im Nahbereich: Ellbogen wird aus stabiler Körperstruktur geführt, Schulter bleibt unten, Rumpf arbeitet mit.',
-        z: 'Nahdistanz-Kontrolle, Struktur und sichere Kraftübertragung trainieren.',
-        p: 'Nahdistanz = Struktur: Körper kompakt, Bewegung kurz, Kontrolle hoch.'
-      });
-
-
-
       function tkdKickEntry(term) {
         var t = canonicalTerm(term);
         var map = {
@@ -1801,6 +1983,8 @@
       }
       function showView(name) {
         currentView = name;
+  var _root = document.getElementById('appRoot');
+  if (_root) _root.setAttribute('data-theme', (name === 'tkd') ? 'tkd' : ((name === 'wc') ? 'wc' : ''));
         ['tkd', 'wc', 'other', 'training', 'timer'].forEach(function (v) {
           document.getElementById('view-' + v).classList.toggle('active', v === name);
         });
