@@ -1,4 +1,4 @@
-/* Daten (Arrays/Objekte) aus der ursprünglichen index.html ausgelagert.
+/* Daten (Arrays/Objekte) aus der ursprünglichen App ausgelagert.
    Enthält nur Konfiguration & Inhalte – keine Logik. */
 
 const TKD_VARIATIONS = ['normal', 'Rückwärts', 'gespiegelt', 'front', 'gesprungen', 'Gegenbewegung'];

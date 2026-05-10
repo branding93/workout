@@ -1419,6 +1419,15 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
       rerenderAll();
       showView('tkd');
       setBadge();
+  // ========= PWA: Service Worker Registrierung =========
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function (err) {
+        console.warn('Service Worker Registrierung fehlgeschlagen:', err);
+      });
+    });
+  }
+
 
     })();
   
