@@ -1126,16 +1126,35 @@ Scroll-Snap Hauptseiten (Browser übernimmt Swipe)
   display: flex;
   flex-direction: row;
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 .viewsSnapContainer > .snapView{
   flex: 0 0 100%;
   width: 100%;
+  min-width: 100%;
   scroll-snap-align: start;
+}
+/* verhindert, dass Flex-Contents die Seite breiter ziehen */
+.viewsSnapContainer, .viewsSnapContainer *{ min-width: 0; }
+
+/* =============================
+Mobile: Navigation darf nicht die Viewport-Breite sprengen
+============================= */
+@media (max-width:560px){
+  .seg{
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .seg::-webkit-scrollbar{ display:none; }
+  .seg button{ flex: 0 0 auto; }
 }
 
 /* =============================
@@ -2114,7 +2133,6 @@ Micro-Feedback: Zähler oben rechts
             last = name;
             currentView = name;
 
-            // Theme (falls vorhanden)
             var _root = document.getElementById('appRoot');
             if (_root) _root.setAttribute('data-theme', (name === 'tkd') ? 'tkd' : ((name === 'wc') ? 'wc' : ''));
 
@@ -3104,14 +3122,12 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
           var t = e.target;
           if (!t) return;
 
-          // Training: Done
           if (t.classList && t.classList.contains('doneCb')) {
             var r = t.closest('.doneRow');
             if (r) r.classList.toggle('done', !!t.checked);
             return;
           }
 
-          // Planung: Auswahl (Checkboxen außerhalb Training)
           if (t.type === 'checkbox') {
             var item = t.closest ? t.closest('.item') : null;
             if (item) item.classList.toggle('selected', !!t.checked);
