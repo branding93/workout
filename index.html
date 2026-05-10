@@ -4,8 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Martial Repertoire 🥋 (TKD + Wing Chun + Weiteres)</title>
-  <!-- Quellen: [1](https://lufthansagroup-my.sharepoint.com/personal/fredrik_branding_lhind_dlh_de/Documents/Microsoft%20Copilot%20Chat-Dateien/index_tkd.html)[2](https://lufthansagroup-my.sharepoint.com/personal/fredrik_branding_lhind_dlh_de/Documents/Microsoft%20Copilot%20Chat-Dateien/index_wc.html) -->
+  <title>Workout 🥋</title>
   <style>
     :root {
       --bg: #fafafa;
@@ -616,7 +615,6 @@
       transform: translateY(-1px)
     }
 
-    /* Modal */
     .modalBack {
       position: fixed;
       inset: 0;
@@ -724,16 +722,10 @@
       color: #0f172a
     }
 
-    /* Small helper */
-    .muted {
-      color: var(--muted)
-    }
-
     .tight {
       margin-top: 8px
     }
 
-    /* WC level pills (from original) */
     .level.white {
       background: #f8fafc;
       border-color: #e2e8f0;
@@ -752,7 +744,6 @@
       color: #065f46
     }
 
-    /* TKD belt pills (from original) */
     .belt.yellow {
       background: #fffbeb;
       border-color: #fde68a;
@@ -816,10 +807,8 @@
     </div>
 
     <div class="grid">
-      <!-- Main content -->
       <div class="card">
         <div class="pad">
-          <!-- TKD VIEW -->
           <section id="view-tkd" class="view active" aria-label="TKD Planung">
             <div class="viewTitle">
               <h2>🥋 Taekwondo – Zusammenstellen</h2>
@@ -868,7 +857,6 @@
               placeholder="z.B. Fokus: saubere Hüftrotation · Tempo: langsam→schnell · Atmung" style="width:100%" />
           </section>
 
-          <!-- WC VIEW -->
           <section id="view-wc" class="view" aria-label="Wing Chun Planung">
             <div class="viewTitle">
               <h2>🥋 Wing Chun – Zusammenstellen</h2>
@@ -932,7 +920,6 @@
               placeholder="z.B. Fokus: Mittellinie · Struktur · Timing · Chi Sao Sensitivität" style="width:100%" />
           </section>
 
-          <!-- OTHER VIEW -->
           <section id="view-other" class="view" aria-label="Weiteres Planung">
             <div class="viewTitle">
               <h2>🏋️ Weiteres – Ergänzungstraining</h2>
@@ -976,7 +963,6 @@
               placeholder="z.B. Fokus: saubere Wiederholungen · stabile Struktur · ruhige Atmung" style="width:100%" />
           </section>
 
-          <!-- TRAINING VIEW -->
           <section id="view-training" class="view" aria-label="Training Übersicht">
             <div class="viewTitle">
               <h2>📋 Training – Session-Übersicht</h2>
@@ -1025,7 +1011,6 @@
             </div>
           </section>
 
-          <!-- TIMER VIEW -->
           <section id="view-timer" class="view" aria-label="Timer Seite">
             <div class="viewTitle">
               <h2>⏱️ Timer – Intervall-Modus (generell)</h2>
@@ -1074,7 +1059,6 @@
         </div>
       </div>
 
-      <!-- Right side overview (always visible) -->
       <div class="card">
         <div class="pad">
           <h2>Übersicht</h2>
@@ -1126,7 +1110,6 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <!-- Glossary Modal -->
   <div id="glossaryBack" class="modalBack" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="glossTitle">
       <div class="modalHead">
@@ -1165,10 +1148,7 @@
 
   <script>
     (function () {
-      // =========================
-      // DATA (1:1 aus den Dateien)
-      // =========================
-      // TKD (aus index_tkd.html) [1](https://lufthansagroup-my.sharepoint.com/personal/fredrik_branding_lhind_dlh_de/Documents/Microsoft%20Copilot%20Chat-Dateien/index_tkd.html)
+      // TKD
       var TKD_VARIATIONS = ['normal', 'Rückwärts', 'gespiegelt', 'front', 'gesprungen', 'Gegenbewegung'];
       var TKD_BELTS = {
         white: { label: 'Weiß', emoji: '⚪️', cls: '' },
@@ -1219,7 +1199,7 @@
         'Heute 1% besser – reicht völlig.'
       ];
 
-      // WC (aus index_wc.html) [2](https://lufthansagroup-my.sharepoint.com/personal/fredrik_branding_lhind_dlh_de/Documents/Microsoft%20Copilot%20Chat-Dateien/index_wc.html)
+      // WC
       var WC_VARIATIONS = ['normal', 'langsam', 'Struktur', 'Power', 'Mittellinie', 'Timing'];
       var WC_LEVELS = {
         white: { label: 'Basis', emoji: '⚪️', cls: 'white' },
@@ -1286,7 +1266,7 @@
         'Ziel: Präzision. Bonus: Geschwindigkeit.'
       ];
 
-      // OTHER (neu)
+      // OTHER
       var OTHER_KRAFT = [
         { t: 'Liegestütz', d: 'Oberkörper · Rumpfspannung' },
         { t: 'Kniebeuge', d: 'Beine · Hüfte · Stabilität' },
@@ -1312,9 +1292,6 @@
         'Kontrolle vor Tempo – dann beschleunigen.'
       ];
 
-      // =========================
-      // STORAGE + STATE
-      // =========================
       var STORAGE_KEY = 'martial-repertoire-html-v1';
       var DONE_KEY = STORAGE_KEY + ':done';
       var TIMER_KEY = STORAGE_KEY + ':timer';
@@ -1333,6 +1310,15 @@
         clearTimeout(toast._t);
         toast._t = setTimeout(function () { t.style.display = 'none'; }, 2200);
       }
+      function escapeHtml(s) {
+        return String(s || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+      function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
 
       function defaultHyongSelection() {
         var v = {}; TKD_VARIATIONS.forEach(function (x) { v[x] = false; });
@@ -1342,57 +1328,29 @@
         var v = {}; WC_VARIATIONS.forEach(function (x) { v[x] = false; });
         return { variations: v, rounds: 1 };
       }
-      function mapForStrings(arr) {
-        var m = {}; arr.forEach(function (x) { m[x] = false; }); return m;
-      }
-      function mapForItems(arr) {
-        var m = {}; arr.forEach(function (x) { m[x.t] = false; }); return m;
-      }
+      function mapForStrings(arr) { var m = {}; arr.forEach(function (x) { m[x] = false; }); return m; }
+      function mapForItems(arr) { var m = {}; arr.forEach(function (x) { m[x.t] = false; }); return m; }
+
       function makeInitialState() {
         var tkdHy = {}; HYONGS.forEach(function (h) { tkdHy[h.id] = defaultHyongSelection(); });
         var wcFo = {}; FORMS.forEach(function (f) { wcFo[f.id] = defaultFormSelection(); });
         return {
           tkd: {
-            hyongs: tkdHy,
-            combos: mapForStrings(COMBOS),
-            sparring: mapForStrings(SPARRING),
-            basics: (function () {
-              var b = {};
-              Object.keys(BASICS).forEach(function (k) {
-                BASICS[k].forEach(function (i) { b[i] = false; });
-              });
-              return b;
-            })(),
-            note: ''
+            hyongs: tkdHy, combos: mapForStrings(COMBOS), sparring: mapForStrings(SPARRING), basics: (function () {
+              var b = {}; Object.keys(BASICS).forEach(function (k) { BASICS[k].forEach(function (i) { b[i] = false; }); }); return b;
+            })(), note: ''
           },
-          wc: {
-            forms: wcFo,
-            grundlagen: mapForItems(GRUNDLAGEN),
-            armhand: mapForItems(ARM_HAND),
-            beine: mapForItems(BEINE),
-            weitere: mapForItems(WEITERE_HAND),
-            weapon: mapForItems(WEAPON),
-            note: ''
-          },
-          other: {
-            kraft: mapForItems(OTHER_KRAFT),
-            boxen: mapForItems(OTHER_BOXEN),
-            sonstiges: mapForItems(OTHER_SONST),
-            note: ''
-          }
+          wc: { forms: wcFo, grundlagen: mapForItems(GRUNDLAGEN), armhand: mapForItems(ARM_HAND), beine: mapForItems(BEINE), weitere: mapForItems(WEITERE_HAND), weapon: mapForItems(WEAPON), note: '' },
+          other: { kraft: mapForItems(OTHER_KRAFT), boxen: mapForItems(OTHER_BOXEN), sonstiges: mapForItems(OTHER_SONST), note: '' }
         };
       }
 
-      function safeParseJSON(raw, fallback) {
-        try { return JSON.parse(raw); } catch (e) { return fallback; }
-      }
-
+      function safeParseJSON(raw, fallback) { try { return JSON.parse(raw); } catch (e) { return fallback; } }
       function mergeBoolMap(baseMap, parsedMap) {
         var out = Object.assign({}, baseMap, parsedMap || {});
         Object.keys(out).forEach(function (k) { if (typeof out[k] !== 'boolean') out[k] = false; });
         return out;
       }
-
       function safeLoad() {
         var base = makeInitialState();
         var raw = localStorage.getItem(STORAGE_KEY);
@@ -1425,13 +1383,10 @@
           }
         };
 
-        // Normalize rounds + variations booleans
         HYONGS.forEach(function (h) {
           if (!merged.tkd.hyongs[h.id]) merged.tkd.hyongs[h.id] = defaultHyongSelection();
           if (!merged.tkd.hyongs[h.id].variations) merged.tkd.hyongs[h.id].variations = defaultHyongSelection().variations;
-          TKD_VARIATIONS.forEach(function (v) {
-            if (typeof merged.tkd.hyongs[h.id].variations[v] !== 'boolean') merged.tkd.hyongs[h.id].variations[v] = false;
-          });
+          TKD_VARIATIONS.forEach(function (v) { if (typeof merged.tkd.hyongs[h.id].variations[v] !== 'boolean') merged.tkd.hyongs[h.id].variations[v] = false; });
           if (typeof merged.tkd.hyongs[h.id].rounds !== 'number') merged.tkd.hyongs[h.id].rounds = 1;
           merged.tkd.hyongs[h.id].rounds = clamp(Math.round(merged.tkd.hyongs[h.id].rounds), 1, 20);
         });
@@ -1439,219 +1394,207 @@
         FORMS.forEach(function (f) {
           if (!merged.wc.forms[f.id]) merged.wc.forms[f.id] = defaultFormSelection();
           if (!merged.wc.forms[f.id].variations) merged.wc.forms[f.id].variations = defaultFormSelection().variations;
-          WC_VARIATIONS.forEach(function (v) {
-            if (typeof merged.wc.forms[f.id].variations[v] !== 'boolean') merged.wc.forms[f.id].variations[v] = false;
-          });
+          WC_VARIATIONS.forEach(function (v) { if (typeof merged.wc.forms[f.id].variations[v] !== 'boolean') merged.wc.forms[f.id].variations[v] = false; });
           if (typeof merged.wc.forms[f.id].rounds !== 'number') merged.wc.forms[f.id].rounds = 1;
           merged.wc.forms[f.id].rounds = clamp(Math.round(merged.wc.forms[f.id].rounds), 1, 20);
         });
 
         return merged;
       }
+      function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { } }
 
-      function save() {
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { }
-      }
-
-      // =========================
-      // DONE MAP (prefix keys)
-      // =========================
-      function getDoneMap() {
-        return safeParseJSON(localStorage.getItem(DONE_KEY) || '{}', {});
-      }
-      function saveDoneMap(m) {
-        try { localStorage.setItem(DONE_KEY, JSON.stringify(m)); } catch (e) { }
-      }
-
+      function getDoneMap() { return safeParseJSON(localStorage.getItem(DONE_KEY) || '{}', {}); }
+      function saveDoneMap(m) { try { localStorage.setItem(DONE_KEY, JSON.stringify(m)); } catch (e) { } }
       function ensureDoneKeys(keys) {
         var map = getDoneMap();
         var present = {};
         keys.forEach(function (k) { present[k] = true; });
-        Object.keys(map).forEach(function (k) {
-          if (!present[k]) delete map[k];
-        });
-        keys.forEach(function (k) {
-          if (typeof map[k] !== 'boolean') map[k] = false;
-        });
+        Object.keys(map).forEach(function (k) { if (!present[k]) delete map[k]; });
+        keys.forEach(function (k) { if (typeof map[k] !== 'boolean') map[k] = false; });
         saveDoneMap(map);
         return map;
       }
 
-      // =========================
-      // GLOSSARY (Modal + auto entries)
-      // =========================
-      var glossary = {}; // term -> { t,m,z,p,ctx }
+      // ========= Glossary =========
+      var glossary = {};
       function normTermKey(s) { return String(s || '').trim(); }
 
-      function addGloss(term, entry) {
-        glossary[normTermKey(term)] = entry;
+      // NOTE: this avoids ES2018 Unicode codepoint escapes (\u{...}) to prevent syntax errors in some editors/browsers.
+      function canonicalTerm(term) {
+        var s = String(term || '').trim();
+
+        // Remove leading emoji/symbol (surrogate pair or BMP symbols)
+        s = s.replace(/^(?:[\u2600-\u27BF]|[\uD83C-\uDBFF][\uDC00-\uDFFF])\s*/, '');
+        s = s.replace(/^[•\-]\s*/, '');
+
+        // Strip leading roman numerals like "I " / "II "
+        s = s.replace(/^(?:[IVX]+)\s+/i, '');
+
+        // Strip some trailing meta parentheses (keep romanization parentheses like "(jeongul seogi)")
+        var m = s.match(/\s*\(([^)]+)\)\s*$/);
+        if (m) {
+          var inside = String(m[1] || '').trim();
+          var looksCode = /^[A-Z0-9\-]{1,8}$/.test(inside);
+          var hasDigits = /[0-9]/.test(inside);
+          var hasMetaWords = /(Sätze|Teile|x|—)/i.test(inside);
+          var looksLowerRomanization = /^[a-zäöüß\s\-]+$/i.test(inside) && inside.toLowerCase() === inside && inside.indexOf(' ') !== -1;
+          if ((looksCode || hasDigits || hasMetaWords) && !looksLowerRomanization) {
+            s = s.replace(/\s*\([^)]+\)\s*$/, '').trim();
+          }
+        }
+        return s;
       }
 
-      // A few curated seeds (optional, minimal; everything else auto)
-      // (We still auto-create for all terms to satisfy "kein Begriff ohne Popup".)
+      function addGloss(term, entry) { glossary[canonicalTerm(term)] = entry; }
+
       addGloss('Chi Sao („Klebende Hände")', {
         ctx: 'Wing Chun',
-        t: '„Klebende Hände“',
-        m: 'Partner-Drill mit Kontakt an den Armen; Druck/Entlastung fühlen und reagieren.',
-        z: 'Sensitivität, Reflexe, Lücken erkennen, Kontrolle der Mittellinie.',
-        p: 'Struktur + Timing + Ökonomie (kleine Bewegung, große Wirkung).'
+        t: '„Klebende Hände“ (Partnerdrill)',
+        m: 'Kontakt-Drill am Unterarm: Druck/Entlastung fühlen, mit Struktur „kleben“ und reagieren.',
+        z: 'Sensitivität, Reflexe, Öffnungen erkennen, Kontrolle der Mittellinie.',
+        p: 'Ökonomie + Timing + Struktur (kleine Bewegung, große Wirkung).'
       });
+
+      function tkdKickEntry(term) {
+        var t = canonicalTerm(term);
+        var map = {
+          'Ap Chagui': { t: 'Fronttritt (nach vorn)', m: 'Knie hoch, Fußballen/Spann einsetzen; gerade nach vorn stoßen und sauber zurückziehen.', z: 'Distanz aufbauen, Timing für direkte Treffer, Kontrolle und Schnelligkeit.', p: 'Hüftvorschub, stabile Achse, Recoil – Präzision vor Power.' },
+          'Naeryo Chagui': { t: 'Axttritt / Abwärtstritt', m: 'Bein hoch anheben und kontrolliert von oben nach unten „fällen“ (Ferse/Spann je nach Stil).', z: 'Abwärtsdruck, Guard brechen, Reichweite nutzen.', p: 'Balance, kontrollierte Hüfte, gerader Oberkörper – sauberer Winkel.' },
+          'Dollyo Chagui': { t: 'Rundtritt', m: 'Knie anheben, Hüfte drehen, rund zur Seite einschlagen (Spann/Rist).', z: 'Treffer aus Winkel, Speed-Power, Hüftrotation trainieren.', p: 'Hüftrotation + Standstabilität + schnelles Recoil.' },
+          'Yop Chagui': { t: 'Seittritt', m: 'Knie hoch, Hüfte „einrasten“, Ferse gerade seitlich stoßen.', z: 'Stopp-Kick, Distanz halten, starke Linie.', p: 'Körperlinie/Struktur, Ferse führt, Rumpfspannung.' },
+          'Pandae Dollyo Chagui': { t: 'Gegen-Rundtritt / Reverse Roundhouse', m: 'Rundtritt mit Gegenbewegung/anderem Hüftwinkel – trifft oft „von außen“.', z: 'Winkelwechsel, unerwartete Linie, Timing.', p: 'Rotation + Balance; kontrollierter Fußweg.' },
+          'Tui Chagui': { t: 'Rückwärtskick / Back Kick', m: 'Drehen, Blick über Schulter, Ferse gerade nach hinten stoßen.', z: 'Konter aus Distanz, starke Gerade, Timing beim Drehen.', p: 'Blick zuerst, Hüfte gerade, stabile Standachse.' },
+          'Twio Yop Chagui': { t: 'Sprungseittritt', m: 'Abspringen und Seittritt in der Luft mit Ferse ausstoßen.', z: 'Explosivität, Distanz überbrücken, sauberes Treffen unter Dynamik.', p: 'Timing beim Absprung, Struktur in der Luft, sichere Landung.' }
+        };
+        return map[t] || null;
+      }
+
+      function wcTechEntry(term) {
+        var t = canonicalTerm(term);
+        var map = {
+          'Fook Sao': { t: '„Kontrollierende/leitende Hand“', m: 'Unterarm führt kontrolliert, hält Kontakt und „fühlt“ Druck.', z: 'Kontakt halten, Linie kontrollieren, Übergänge vorbereiten.', p: 'Entspannte Struktur, Ellenbogenlinie, fühlen statt drücken.' },
+          'Pak Sao': { t: '„Klatsch-/Schlaghand“', m: 'Kurzes Abklatschen/Abschlagen zur Öffnung, oft mit Gegenhand treffen.', z: 'Linie öffnen, Trefferfenster erzeugen.', p: 'Kurzer Weg, Timing, kein Ausholen.' },
+          'Tan Sao': { t: '„Tragende Hand“', m: 'Handfläche oben; lenkt ab und schützt die Mittellinie.', z: 'Umlenken + direkt kontern.', p: 'Ellenbogen tief, Kraft leiten statt blocken.' },
+          'Bong Sao': { t: '„Flügelarm“', m: 'Ellbogen als „Flügel“; lenkt Kraft um, schafft Winkel.', z: 'Druck umlenken, Übergang.', p: 'Winkel statt Muskelkraft.' },
+          'Jam Sao': { t: '„Sinkender Arm/Ellenbogen“', m: 'Ellenbogen senkt; stabilisiert Struktur und leitet Druck nach unten.', z: 'Struktur unter Druck, Kontrolle.', p: 'Achse, Ellenbogenlinie, Kraft nach unten.' },
+          'Lap Sao': { t: '„Ziehende/Greifende Hand“', m: 'Greifen und kurz ziehen, um Linie zu öffnen/Struktur zu brechen.', z: 'Öffnung schaffen, Gegner binden.', p: 'Timing vor Kraft; kurze Aktion.' },
+          'Man Sao': { t: '„Frage-/Suchhand“', m: 'Vorderhand tastet Distanz und schützt Zentrum.', z: 'Distanzgefühl, sichere Annäherung.', p: 'Entspannung, Struktur, Timing.' },
+          'Wu Sao': { t: '„Schützende Hand“', m: 'Rückhand schützt Zentrum als „Sicherheitsnetz“.', z: 'Zentrum sichern, Übergänge abfangen.', p: 'Ellenbogenlinie, Ökonomie.' },
+          'Huen Sao': { t: '„Kreisende Hand“', m: 'Kreisende Ableitung/Öffnung zur Veränderung des Kontakts.', z: 'Linienwechsel, Übergänge.', p: 'Kleine Kreise, Timing.' },
+          'Lan Sao': { t: '„Riegelarm/Bar Arm“', m: 'Seitliches Abriegeln/Abfangen, sperrt eine Linie.', z: 'Raum kontrollieren, Konterfenster.', p: 'Struktur + Winkel.' },
+          'Jing Gerk': { t: 'Fronttritt', m: 'Kurzer gerader Tritt nach vorn, oft als Stopper.', z: 'Distanz halten, Timing stören.', p: 'Minimaler Weg, Struktur.' },
+          'Yap Gerk': { t: '„Abdrückendes Bein“ (nach außen)', m: 'Abwehrbein drückt nach außen, lenkt Linie ab.', z: 'Linie öffnen, stabilisieren.', p: 'Timing, Stand.' },
+          'Bong Gerk': { t: '„Schwingenbein“ (nach innen)', m: 'Nach innen abwehrende Beinbewegung zum Umlenken.', z: 'Linie schließen, Distanz.', p: 'Timing, Balance.' },
+          'Einarmiges Dan Chi': { t: 'Einarmiger Kontakt-Drill (Vorstufe Chi Sao)', m: 'Ein Arm im Kontakt; Rollen/Wechseln im Rhythmus.', z: 'Kontaktgefühl, Timing, Basisreflexe.', p: 'Entspannung, Ellenbogenlinie.' },
+          'Beidarmiges Pon Sao': { t: 'Beidarmiger Kontakt-Drill (Vorstufe Chi Sao)', m: 'Beide Arme im Kontakt; Struktur halten und wechseln.', z: 'Sensitivität, Koordination.', p: 'Struktur, Timing, kurze Wege.' }
+        };
+        return map[t] || null;
+      }
 
       function looksKorean(term) { return /Chagui|Hyong|seogi|Magki|Palmok|Sudo|Pandae|Twio|Tui/i.test(term); }
       function looksWC(term) { return /\bSao\b|\bGerk\b|\bCuan\b|Siu Nim Tao|Chum Kiu|Biu Tze|Dan Chi|Pon Sao|Mittellinie/i.test(term); }
 
       function autoEntry(term, ctxHint) {
-        var t = normTermKey(term);
-        var ctx = ctxHint || (looksWC(t) ? 'Wing Chun' : (looksKorean(t) ? 'Taekwondo' : 'Weiteres'));
-        // Basic heuristics
-        var translation = '—';
-        var movement = 'Kurze Übungsbeschreibung.';
-        var goal = 'Technik, Kontrolle und Wiederholungsqualität verbessern.';
-        var principle = 'Saubere Struktur, Timing und dosierte Spannung.';
+        var raw = normTermKey(term);
+        var canon = canonicalTerm(raw);
+        var ctx = ctxHint || (looksWC(canon) ? 'Wing Chun' : (looksKorean(canon) ? 'Taekwondo' : 'Weiteres'));
 
-        // TKD
-        if (/Hyong/i.test(t)) {
-          translation = 'Form (Hyong) – festgelegte Bewegungsabfolge';
-          movement = 'Abfolge von Blöcken, Schlägen und Ständen in festem Ablauf üben.';
-          goal = 'Koordination, Rhythmus, Präzision, Übergänge und Atmung.';
-          principle = 'Haltung + Hüftarbeit + Timing (langsam → schnell → stark).';
-        } else if (/Chagui/i.test(t)) {
-          translation = 'Tritt (Chagui)';
-          movement = 'Tritttechnik kontrolliert aus Stand/Hüfte ausführen und zurückziehen.';
-          goal = 'Trefferbild, Balance, Distanzgefühl, Schnellkraft.';
-          principle = 'Hüftrotation, Standstabilität, sauberes Recoil.';
-        } else if (/Magki/i.test(t) || /Block/i.test(t)) {
-          translation = 'Block / Abwehr';
-          movement = 'Angriffslinie schließen, Winkel setzen, Struktur halten.';
-          goal = 'Schutz + Gegenangriff vorbereiten.';
-          principle = 'Körperachse, stabile Schulter, kurze Wege.';
-        } else if (/seogi/i.test(t) || /Stellung/i.test(t)) {
-          translation = 'Stellung / Stand';
-          movement = 'Stand einnehmen, Gewicht verteilen, Knie/Hüfte stabilisieren.';
-          goal = 'Basis für Kraftübertragung und Balance.';
-          principle = 'Bodenverbindung, Linie, kontrolliertes Gewicht.';
-        } else if (/ilbo daeryeon/i.test(t)) {
-          translation = 'Einschrittkampf';
-          movement = 'Partnerdrill: Angriff/Abwehr in einem Schritt mit Distanzkontrolle.';
-          goal = 'Timing, Distanz, klare Technik unter Druck.';
-          principle = 'Einheit aus Stand + Atmung + Gegenbewegung.';
+        if (ctx === 'Taekwondo') {
+          var k = tkdKickEntry(canon);
+          if (k) return { ctx: 'Taekwondo', t: k.t, m: k.m, z: k.z, p: k.p };
+
+          if (/Vorwärts-Stellung/i.test(canon) || /jeongul seogi/i.test(raw)) {
+            return { ctx: 'Taekwondo', t: 'Vorwärts-Stellung (jeongul seogi) – langer Stand nach vorn', m: 'Vorderes Knie beugt, hinteres Bein streckt; Gewicht stabil in Linie nach vorn.', z: 'Stabilität, Reichweite, Kraftübertragung.', p: 'Bodenverbindung, Hüfte ausrichten, saubere Knieachse.' };
+          }
+          if (/Rückwärts-Stellung/i.test(canon) || /hugul seogi/i.test(raw)) {
+            return { ctx: 'Taekwondo', t: 'Rückwärts-Stellung (hugul seogi) – defensiver Stand', m: 'Gewicht eher hinten, vorderes Bein entlastet; schnelle Wechsel möglich.', z: 'Distanzkontrolle, Konter vorbereiten.', p: 'Gewichtsverlagerung, Balance, Timing.' };
+          }
+          if (/Sudo Daebi Magki/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Handkanten-Schutzblock (Sudo Daebi Magki)', m: 'Handkante in Schutzposition; blockt/lenkt mit Struktur.', z: 'Schutz + Öffnung.', p: 'Kurze Wege, stabiler Stand.' };
+          }
+          if (/Palmok Daebi Magki/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Unterarm-Schutzblock (Palmok Daebi Magki)', m: 'Unterarm in Schutzposition; kontrolliert ablenken/stoppen.', z: 'Zentrum schützen, Linie umlenken.', p: 'Kraft leiten, Schulter stabil.' };
+          }
+          if (/Hyong/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Form (Hyong) – festgelegte Bewegungsabfolge', m: 'Abfolge von Blöcken, Schlägen und Ständen in festem Ablauf.', z: 'Koordination, Rhythmus, Präzision, Atmung.', p: 'Timing (langsam → schnell), Hüftarbeit, Stand.' };
+          }
+          if (/Chagui/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Tritt (Chagui)', m: 'Tritttechnik aus Stand/Hüfte, sauber zurückziehen.', z: 'Trefferbild, Balance, Distanzgefühl.', p: 'Hüfte, Stand, Recoil.' };
+          }
+          if (/Magki/i.test(canon) || /Block/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Block / Abwehr', m: 'Angriffslinie schließen, Winkel setzen, Struktur halten.', z: 'Schutz + Gegenangriff vorbereiten.', p: 'Körperachse, kurze Wege.' };
+          }
+          if (/ilbo daeryeon/i.test(raw) || /Einschrittkampf/i.test(canon)) {
+            return { ctx: 'Taekwondo', t: 'Einschrittkampf (ilbo daeryeon)', m: 'Partnerdrill: Angriff/Abwehr in einem Schritt mit Distanzkontrolle.', z: 'Timing, Distanz, klare Technik unter Druck.', p: 'Stand + Atmung + Timing.' };
+          }
         }
 
-        // WC
         if (ctx === 'Wing Chun') {
-          if (/Siu Nim Tao/i.test(t)) {
-            translation = '„Kleine Idee Form“';
-            movement = 'Grundform im Stand: Struktur, Hände, Ellbogenlinie, Ruhe.';
-            goal = 'Basisstruktur, Kraftlinie, Koordination der Hände.';
-            principle = 'Ökonomie, Mittellinie, entspannte Stabilität.';
-          } else if (/Chum Kiu/i.test(t)) {
-            translation = '„Arme suchende Form“';
-            movement = 'Form mit Körperdrehungen und Schritten; Verbindung Hand-Körper.';
-            goal = 'Winkel, Distanz, Rotation, Stabilität in Bewegung.';
-            principle = 'Timing + Struktur über Drehung und Stand.';
-          } else if (/Biu Tze/i.test(t)) {
-            translation = '„Stoßende Finger“';
-            movement = 'Form mit Notfall-/Rettungsbewegungen und kurzen Kraftimpulsen.';
-            goal = 'Rettungslinien, kurze Power, Anpassungsfähigkeit.';
-            principle = 'Körpermechanik, Ellbogenlinie, Direktheit.';
-          } else if (/\bSao\b/i.test(t)) {
-            translation = 'Handform/Technik („Sao“)';
-            movement = 'Arme/Hände führen, ablenken oder kontrollieren – entlang der Mittellinie.';
-            goal = 'Kontrolle, Öffnungen schaffen, direkte Treffer.';
-            principle = 'Ellenbogen tief, Struktur, kurze Wege.';
-          } else if (/\bGerk\b/i.test(t)) {
-            translation = 'Beintechnik („Gerk“)';
-            movement = 'Kick/Abwehrbein kurz, stabil, mit Struktur.';
-            goal = 'Stoppen, Distanz halten, Balance brechen.';
-            principle = 'Timing + Stand + minimale Bewegung.';
-          } else if (/\bCuan\b/i.test(t)) {
-            translation = 'Fausttechnik („Cuan“) / Weapon-Drill';
-            movement = 'Geradlinige, strukturierte Ausführung mit Kontrolle.';
-            goal = 'Trefferbild, Kontrolle, sichere Linie.';
-            principle = 'Linie, Distanz, Timing.';
+          var wc = wcTechEntry(canon);
+          if (wc) return { ctx: 'Wing Chun', t: wc.t, m: wc.m, z: wc.z, p: wc.p };
+
+          if (/Siu Nim Tao/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: '„Kleine Idee Form“', m: 'Grundform im Stand: Struktur, Hände, Ellenbogenlinie.', z: 'Basisstruktur, Kraftlinie, Koordination.', p: 'Ökonomie, Mittellinie, entspannte Stabilität.' };
+          }
+          if (/Chum Kiu/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: '„Arme suchende Form“', m: 'Form mit Körperdrehungen und Schritten; Hand–Körper Verbindung.', z: 'Winkel, Distanz, Rotation.', p: 'Timing + Struktur über Drehung.' };
+          }
+          if (/Biu Tze/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: '„Stoßende Finger“', m: 'Form mit Notfall-/Rettungsbewegungen und kurzen Impulsen.', z: 'Anpassungsfähigkeit, kurze Power.', p: 'Direktheit, Struktur.' };
+          }
+          if (/\bSao\b/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Handform/Technik („Sao“)', m: 'Führen/lenken/kontrollieren entlang der Mittellinie.', z: 'Kontrolle, Öffnungen schaffen.', p: 'Ellenbogen tief, kurze Wege.' };
+          }
+          if (/\bGerk\b/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Beintechnik („Gerk“)', m: 'Kurze, stabile Beinaktion als Stopper/Abwehr.', z: 'Distanz halten, Timing stören.', p: 'Minimaler Weg, Stand.' };
+          }
+          if (/\bCuan\b/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Fausttechnik („Cuan“) / Weapon-Drill', m: 'Geradlinige, strukturierte Ausführung.', z: 'Trefferbild, Linie kontrollieren.', p: 'Linie, Distanz, Timing.' };
+          }
+          if (/Kampfstellung/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Kampfstellung', m: 'Stabiler Stand, Mittellinie geschützt, bereit für Vorwärtsdruck.', z: 'Stabilität + Reaktion.', p: 'Struktur, Balance.' };
+          }
+          if (/Richtungs-Wechsel/i.test(canon)) {
+            return { ctx: 'Wing Chun', t: 'Richtungs-Wechsel', m: 'Winkelwechsel über Schritt/Drehung; Linie neu ausrichten.', z: 'Besserer Winkel, Distanz kontrollieren.', p: 'Timing, Ökonomie.' };
           }
         }
 
-        // OTHER
+        // Weiteres defaults
         if (ctx === 'Weiteres') {
-          if (/Liegestütz/i.test(t)) {
-            translation = 'Push-up';
-            movement = 'Körper gerade, kontrolliert absenken/hochdrücken.';
-            goal = 'Brust/Trizeps/Core stärken, Stabilität für Technik.';
-            principle = 'Rumpfspannung, saubere Linie, kontrollierte Wiederholungen.';
-          } else if (/Kniebeuge/i.test(t)) {
-            translation = 'Squat';
-            movement = 'Hüfte nach hinten/unten, Knie stabil, aufrichten.';
-            goal = 'Beinkraft, Hüftstabilität, Explosivität.';
-            principle = 'Saubere Achse, volle Kontrolle, Atmung.';
-          } else if (/Plank/i.test(t)) {
-            translation = 'Unterarmstütz';
-            movement = 'Halten in gerader Linie, Bauch/Glute aktiv.';
-            goal = 'Core-Stabilität und Struktur.';
-            principle = 'Spannung dosieren, ruhig atmen, Linie halten.';
-          } else if (/Crunches/i.test(t)) {
-            translation = 'Bauch-Crunch';
-            movement = 'Rumpf kurz anheben, kontrolliert absenken.';
-            goal = 'Bauchkraft + Kontrolle.';
-            principle = 'Keine Schwungbewegung, gleichmäßige Atmung.';
-          } else if (/Klimmzüge/i.test(t)) {
-            translation = 'Pull-up';
-            movement = 'Hängen → hochziehen, Schulter stabil, kontrolliert senken.';
-            goal = 'Rücken/Griffkraft, Stabilität für Clinch/Armarbeit.';
-            principle = 'Saubere Schulterposition, kontrollierte Wiederholungen.';
-          } else if (/Jab-Cross/i.test(t)) {
-            translation = 'Gerade-1-2';
-            movement = 'Linke Gerade → rechte Gerade (oder umgekehrt) mit Rotation.';
-            goal = 'Grundrhythmus, Distanzgefühl, Trefferbild.';
-            principle = 'Rotation aus Hüfte/Stand, Schultern locker.';
-          } else if (/Hook-Hook/i.test(t)) {
-            translation = 'Hakenkombination';
-            movement = 'Seitliche Schläge mit Rotation und stabilem Stand.';
-            goal = 'Power aus Rotation, Balance halten.';
-            principle = 'Stand, Hüfte, kurze Wege, Deckung.';
-          } else if (/Slip-Roll/i.test(t)) {
-            translation = 'Ausweichen + Abrollen';
-            movement = 'Kopfbewegung: Slip (seitlich) + Roll (unter) – kontrolliert.';
-            goal = 'Defensive Timing/Distanz, Konterfenster.';
-            principle = 'Timing, Blick, kleine Bewegung.';
-          } else if (/Shadowboxing/i.test(t)) {
-            translation = 'Schattenboxen';
-            movement = 'Freie Runden: Kombinationen + Footwork ohne Partner.';
-            goal = 'Flow, Technikpflege, Kondition.';
-            principle = 'Sauberkeit vor Tempo, Rhythmus.';
-          } else if (/Pratzen/i.test(t)) {
-            translation = 'Padwork';
-            movement = 'Schläge/Kicks auf Pratzen mit Timing/Ansage.';
-            goal = 'Trefferbild, Reaktion, Tempo.';
-            principle = 'Timing, Distanz, klare Technik.';
-          }
+          if (/Liegestütz/i.test(canon)) return { ctx: 'Weiteres', t: 'Push-up', m: 'Körper gerade, kontrolliert absenken/hochdrücken.', z: 'Brust/Trizeps/Core stärken.', p: 'Rumpfspannung, saubere Linie.' };
+          if (/Kniebeuge/i.test(canon)) return { ctx: 'Weiteres', t: 'Squat', m: 'Hüfte nach hinten/unten, Knie stabil, aufrichten.', z: 'Beinkraft, Hüftstabilität.', p: 'Saubere Achse, Kontrolle.' };
+          if (/Plank/i.test(canon)) return { ctx: 'Weiteres', t: 'Unterarmstütz', m: 'Halten in gerader Linie, Bauch/Glute aktiv.', z: 'Core-Stabilität.', p: 'Spannung dosieren, ruhig atmen.' };
+          if (/Crunches/i.test(canon)) return { ctx: 'Weiteres', t: 'Bauch-Crunch', m: 'Rumpf kurz anheben, kontrolliert absenken.', z: 'Bauchkraft + Kontrolle.', p: 'Keine Schwungbewegung.' };
+          if (/Klimmzüge/i.test(canon)) return { ctx: 'Weiteres', t: 'Pull-up', m: 'Hängen → hochziehen, kontrolliert senken.', z: 'Rücken/Griffkraft.', p: 'Saubere Schulterposition.' };
+          if (/Jab-Cross/i.test(canon)) return { ctx: 'Weiteres', t: 'Gerade-1-2', m: 'Jab → Cross mit Rotation.', z: 'Rhythmus, Distanzgefühl.', p: 'Rotation aus Hüfte/Stand.' };
+          if (/Hook-Hook/i.test(canon)) return { ctx: 'Weiteres', t: 'Hakenkombination', m: 'Seitliche Schläge mit Rotation und stabilem Stand.', z: 'Power aus Rotation.', p: 'Stand, Hüfte, Deckung.' };
+          if (/Slip-Roll/i.test(canon)) return { ctx: 'Weiteres', t: 'Ausweichen + Abrollen', m: 'Slip (seitlich) + Roll (unter) – kontrolliert.', z: 'Defensiv-Timing, Konterfenster.', p: 'Kleine Bewegung, Blick.' };
+          if (/Shadowboxing/i.test(canon)) return { ctx: 'Weiteres', t: 'Schattenboxen', m: 'Freie Runden: Kombinationen + Footwork ohne Partner.', z: 'Flow, Technikpflege, Kondition.', p: 'Sauberkeit vor Tempo.' };
+          if (/Pratzen/i.test(canon)) return { ctx: 'Weiteres', t: 'Padwork', m: 'Schläge/Kicks auf Pratzen mit Timing/Ansage.', z: 'Trefferbild, Reaktion.', p: 'Timing, Distanz.' };
+          if (/Seilspringen/i.test(canon)) return { ctx: 'Weiteres', t: 'Rope skipping', m: 'Gleichmäßige Sprünge, Rhythmus halten.', z: 'Warm-up, Fußarbeit, Kondition.', p: 'Leicht, elastisch.' };
+          if (/Dehnen/i.test(canon) || /Cooldown/i.test(canon)) return { ctx: 'Weiteres', t: 'Dehnen / Cooldown', m: 'Sanftes Dehnen, Range ohne Schmerz erweitern.', z: 'Regeneration, Beweglichkeit.', p: 'Ruhig atmen, nicht reißen.' };
+          if (/Mobility/i.test(canon)) return { ctx: 'Weiteres', t: 'Mobilität', m: 'Kontrollierte Gelenkbewegungen für Hüfte/Schulter.', z: 'Bewegungsqualität, Range.', p: 'Kontrolle, langsam steigern.' };
         }
 
-        return {
-          ctx: ctx,
-          t: translation,
-          m: movement,
-          z: goal,
-          p: principle
-        };
+        return { ctx: ctx, t: '—', m: 'Kurze Übungsbeschreibung.', z: 'Technik, Kontrolle und Wiederholungsqualität verbessern.', p: 'Saubere Struktur, Timing und dosierte Spannung.' };
       }
 
       function ensureGlossary(term, ctxHint) {
-        var key = normTermKey(term);
-        if (!key) return null;
-        if (!glossary[key]) {
-          glossary[key] = autoEntry(key, ctxHint);
-        }
-        return glossary[key];
+        var raw = normTermKey(term);
+        if (!raw) return null;
+        var canon = canonicalTerm(raw) || raw;
+        if (!glossary[canon]) glossary[canon] = autoEntry(raw, ctxHint);
+        return glossary[canon];
       }
 
       function openGlossary(term, ctxHint) {
-        var key = normTermKey(term);
-        if (!key) return;
-        var entry = ensureGlossary(key, ctxHint);
-        var back = document.getElementById('glossaryBack');
+        var raw = normTermKey(term);
+        if (!raw) return;
+        var canon = canonicalTerm(raw) || raw;
+        var entry = ensureGlossary(raw, ctxHint);
 
-        document.getElementById('glossTitle').textContent = key;
+        var back = document.getElementById('glossaryBack');
+        document.getElementById('glossTitle').textContent = raw;
         document.getElementById('glossSub').textContent = 'Kontext: ' + (entry.ctx || ctxHint || '—');
         document.getElementById('glossT').textContent = entry.t || '—';
         document.getElementById('glossM').textContent = entry.m || '—';
@@ -1660,27 +1603,21 @@
 
         back.classList.add('show');
         back.setAttribute('aria-hidden', 'false');
+        glossary[canon] = entry;
       }
       function closeGlossary() {
         var back = document.getElementById('glossaryBack');
         back.classList.remove('show');
         back.setAttribute('aria-hidden', 'true');
       }
-
       document.getElementById('glossClose').addEventListener('click', closeGlossary);
       document.getElementById('glossOk').addEventListener('click', closeGlossary);
-      document.getElementById('glossaryBack').addEventListener('click', function (e) {
-        if (e.target === this) closeGlossary();
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeGlossary();
-      });
+      document.getElementById('glossaryBack').addEventListener('click', function (e) { if (e.target === this) closeGlossary(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeGlossary(); });
 
       function makeTermUI(term, ctxHint, prefixIcon) {
-        // returns HTML string: clickable term + info button
         var safe = escapeHtml(term);
         var icon = prefixIcon ? (prefixIcon + ' ') : '';
-        // Use both: clicking term OR info button opens modal
         return '' +
           '<span class="termWrap">' +
           '<button class="termBtn js-term" type="button" data-term="' + escapeAttr(term) + '" data-ctx="' + escapeAttr(ctxHint || '') + '">' +
@@ -1690,23 +1627,9 @@
           '</span>';
       }
 
-      function wireTermClicks(root) {
-        Array.prototype.slice.call(root.querySelectorAll('.js-term')).forEach(function (btn) {
-          btn.addEventListener('click', function (ev) {
-            ev.stopPropagation();
-            var term = btn.getAttribute('data-term') || btn.textContent;
-            var ctx = btn.getAttribute('data-ctx') || '';
-            openGlossary(term, ctx);
-          });
-        });
-      }
-
-      // =========================
-      // VIEW ROUTER (Menu + Swipe)
-      // =========================
+      // ========= Router + Swipe =========
       var viewOrder = ['tkd', 'wc', 'other', 'training', 'timer'];
       var currentView = 'tkd';
-
       function setNavActive(id) {
         ['navTKD', 'navWC', 'navOTHER', 'navTRAIN', 'navTIMER'].forEach(function (b) {
           var el = document.getElementById(b);
@@ -1714,49 +1637,37 @@
           el.setAttribute('aria-selected', b === id ? 'true' : 'false');
         });
       }
-
       function showView(name) {
         currentView = name;
         ['tkd', 'wc', 'other', 'training', 'timer'].forEach(function (v) {
           document.getElementById('view-' + v).classList.toggle('active', v === name);
         });
-
         if (name === 'tkd') setNavActive('navTKD');
         if (name === 'wc') setNavActive('navWC');
         if (name === 'other') setNavActive('navOTHER');
         if (name === 'training') setNavActive('navTRAIN');
         if (name === 'timer') setNavActive('navTIMER');
-
-        if (name === 'training') {
-          renderTraining();
-        }
-        if (name === 'timer') {
-          timerUpdate();
-        }
-        // Keep badge fresh on every view change
+        if (name === 'training') renderTraining();
+        if (name === 'timer') timerUpdate();
         setBadge();
       }
-
       document.getElementById('navTKD').addEventListener('click', function () { showView('tkd'); });
       document.getElementById('navWC').addEventListener('click', function () { showView('wc'); });
       document.getElementById('navOTHER').addEventListener('click', function () { showView('other'); });
       document.getElementById('navTRAIN').addEventListener('click', function () { showView('training'); });
       document.getElementById('navTIMER').addEventListener('click', function () { showView('timer'); });
 
-      // Swipe (Touch + Trackpad via wheel)
-      var swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, moved: false, locked: null, t0: 0 };
+      var swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, locked: null, t0: 0 };
       function isInteractiveTarget(t) {
         if (!t) return false;
         var tag = (t.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'textarea' || tag === 'select' || tag === 'button' || tag === 'label') return true;
-        if (t.closest && t.closest('input,textarea,select,button,label,.chips,.miniBtns,.tabs')) return true;
+        if (t.closest && t.closest('input,textarea,select,button,label,.chips,.miniBtns,.tabs,.termWrap')) return true;
         return false;
       }
       function canSwipeStart(e) {
-        // Don’t start swipe if focusing/typing/checkboxing
         var ae = document.activeElement;
-        if (ae && (ae.tagName || '').toLowerCase() === 'input') return false;
-        if (ae && (ae.tagName || '').toLowerCase() === 'textarea') return false;
+        if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return false;
         if (isInteractiveTarget(e.target)) return false;
         return true;
       }
@@ -1767,13 +1678,10 @@
         if (next < 0 || next >= viewOrder.length) return;
         showView(viewOrder[next]);
       }
-
-      // Touch events
       document.addEventListener('touchstart', function (e) {
         if (e.touches && e.touches.length !== 1) return;
         if (!canSwipeStart(e)) return;
         swipe.active = true;
-        swipe.moved = false;
         swipe.locked = null;
         swipe.t0 = Date.now();
         swipe.x0 = e.touches[0].clientX;
@@ -1781,7 +1689,6 @@
         swipe.x1 = swipe.x0;
         swipe.y1 = swipe.y0;
       }, { passive: true });
-
       document.addEventListener('touchmove', function (e) {
         if (!swipe.active || !e.touches || e.touches.length !== 1) return;
         swipe.x1 = e.touches[0].clientX;
@@ -1789,15 +1696,12 @@
         var dx = swipe.x1 - swipe.x0;
         var dy = swipe.y1 - swipe.y0;
         if (!swipe.locked) {
-          // lock when meaningful move
           if (Math.abs(dx) > 12 || Math.abs(dy) > 12) {
             swipe.locked = (Math.abs(dy) > Math.abs(dx)) ? 'scroll' : 'swipe';
           }
         }
-        if (swipe.locked === 'scroll') return; // user scrolls -> no swipe
-        swipe.moved = true;
+        if (swipe.locked === 'scroll') return;
       }, { passive: true });
-
       document.addEventListener('touchend', function () {
         if (!swipe.active) return;
         swipe.active = false;
@@ -1806,54 +1710,22 @@
         var dy = swipe.y1 - swipe.y0;
         if (Math.abs(dy) > Math.abs(dx)) return;
         if (Math.abs(dx) < 70) return;
-        // avoid accidental when tapping
         if (Date.now() - swipe.t0 < 80) return;
-        if (dx < 0) goNext(+1);
-        else goNext(-1);
+        if (dx < 0) goNext(+1); else goNext(-1);
       }, { passive: true });
-
-      // Trackpad (wheel with deltaX)
       var wheelLock = { last: 0 };
       document.addEventListener('wheel', function (e) {
-        // require horizontal wheel and low vertical
         if (Date.now() - wheelLock.last < 650) return;
         if (Math.abs(e.deltaX) < 70) return;
         if (Math.abs(e.deltaY) > 25) return;
         if (isInteractiveTarget(e.target)) return;
         var ae = document.activeElement;
-        if (ae && (ae.tagName || '').toLowerCase() === 'input') return;
-        if (ae && (ae.tagName || '').toLowerCase() === 'textarea') return;
+        if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return;
         wheelLock.last = Date.now();
-        if (e.deltaX > 0) goNext(+1);
-        else goNext(-1);
+        if (e.deltaX > 0) goNext(+1); else goNext(-1);
       }, { passive: true });
 
-      // =========================
-      // RENDER HELPERS
-      // =========================
-      function escapeHtml(s) {
-        return String(s || '')
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
-      }
-      function escapeAttr(s) {
-        return escapeHtml(s).replace(/"/g, '&quot;');
-      }
-
-      function setBadge() {
-        var counts = countSelectedAll();
-        var total = counts.all;
-        document.getElementById('selectedBadge').textContent = '📋 ' + total + ' Auswahl' + (total === 1 ? '' : 'en');
-        document.getElementById('kpi-tkd').textContent = String(counts.tkd);
-        document.getElementById('kpi-wc').textContent = String(counts.wc);
-        document.getElementById('kpi-other').textContent = String(counts.other);
-        document.getElementById('kpi-all').textContent = String(total);
-        document.getElementById('train-selectedCount').textContent = String(total);
-      }
-
+      // ========= Counts =========
       function countSelectedAll() {
         var tkd = 0, wc = 0, other = 0;
 
@@ -1886,10 +1758,18 @@
 
         return { tkd: tkd, wc: wc, other: other, all: (tkd + wc + other) };
       }
+      function setBadge() {
+        var counts = countSelectedAll();
+        var total = counts.all;
+        document.getElementById('selectedBadge').textContent = '📋 ' + total + ' Auswahl' + (total === 1 ? '' : 'en');
+        document.getElementById('kpi-tkd').textContent = String(counts.tkd);
+        document.getElementById('kpi-wc').textContent = String(counts.wc);
+        document.getElementById('kpi-other').textContent = String(counts.other);
+        document.getElementById('kpi-all').textContent = String(total);
+        document.getElementById('train-selectedCount').textContent = String(total);
+      }
 
-      // =========================
-      // TKD RENDER
-      // =========================
+      // ========= TKD Tabs =========
       function tkdSetActiveTab(name) {
         Array.prototype.slice.call(document.querySelectorAll('[data-tkd-tab]')).forEach(function (t) {
           t.classList.toggle('active', t.getAttribute('data-tkd-tab') === name);
@@ -1982,7 +1862,6 @@
           });
 
           host.appendChild(el);
-          wireTermClicks(el);
         });
 
         document.getElementById('tkd-hyongEmpty').classList.toggle('hidden', shown !== 0);
@@ -2013,7 +1892,6 @@
             setBadge();
           });
           host.appendChild(el);
-          wireTermClicks(el);
         });
 
         document.getElementById('tkd-comboEmpty').classList.toggle('hidden', shown !== 0);
@@ -2039,7 +1917,6 @@
             setBadge();
           });
           host.appendChild(el);
-          wireTermClicks(el);
         });
       }
 
@@ -2051,7 +1928,6 @@
         if (key === 'stances') return { title: 'Stellungen', icon: '✨' };
         return { title: key, icon: '✨' };
       }
-
       function tkdRenderBasics(filter) {
         var host = document.getElementById('tkd-basicsList');
         host.innerHTML = '';
@@ -2096,7 +1972,6 @@
               setBadge();
             });
             list.appendChild(row);
-            wireTermClicks(row);
           });
 
           el.addEventListener('click', function (e) {
@@ -2123,9 +1998,7 @@
         document.getElementById('tkd-basicsEmpty').classList.toggle('hidden', anyShown);
       }
 
-      // =========================
-      // WC RENDER
-      // =========================
+      // ========= WC Tabs =========
       function wcSetActiveTab(name) {
         Array.prototype.slice.call(document.querySelectorAll('[data-wc-tab]')).forEach(function (t) {
           t.classList.toggle('active', t.getAttribute('data-wc-tab') === name);
@@ -2219,7 +2092,6 @@
           });
 
           host.appendChild(el);
-          wireTermClicks(el);
         });
 
         document.getElementById('wc-formEmpty').classList.toggle('hidden', shown !== 0);
@@ -2251,16 +2123,13 @@
             setBadge();
           });
           host.appendChild(el);
-          wireTermClicks(el);
         });
 
         var empty = document.getElementById(emptyId);
         if (empty) empty.classList.toggle('hidden', shown !== 0);
       }
 
-      // =========================
-      // OTHER RENDER
-      // =========================
+      // ========= Other Tabs =========
       function otherSetActiveTab(name) {
         Array.prototype.slice.call(document.querySelectorAll('[data-other-tab]')).forEach(function (t) {
           t.classList.toggle('active', t.getAttribute('data-other-tab') === name);
@@ -2299,16 +2168,13 @@
             setBadge();
           });
           host.appendChild(el);
-          wireTermClicks(el);
         });
 
         var empty = document.getElementById(emptyId);
         if (empty) empty.classList.toggle('hidden', shown !== 0);
       }
 
-      // =========================
-      // TRAINING SUMMARY
-      // =========================
+      // ========= Training Summary (nur Subkategorien mit Auswahl anzeigen) =========
       function sectionCard(title, icon, count, innerHTML) {
         return '' +
           '<div class="item">' +
@@ -2325,7 +2191,6 @@
       }
 
       function collectTrainingItems() {
-        // returns structure with keys for DoneMap
         var out = {
           tkd: { hyongs: [], combos: [], sparring: [], basics: [], note: '' },
           wc: { forms: [], grundlagen: [], armhand: [], beine: [], weitere: [], weapon: [], note: '' },
@@ -2344,33 +2209,9 @@
           });
         });
 
-        Object.keys(state.tkd.combos).forEach(function (c) {
-          if (!state.tkd.combos[c]) return;
-          out.tkd.combos.push({
-            key: 'TKD|Kombi|' + c,
-            title: c,
-            details: []
-          });
-        });
-
-        Object.keys(state.tkd.sparring).forEach(function (s) {
-          if (!state.tkd.sparring[s]) return;
-          out.tkd.sparring.push({
-            key: 'TKD|Ilbo|' + s,
-            title: s,
-            details: []
-          });
-        });
-
-        Object.keys(state.tkd.basics).forEach(function (b) {
-          if (!state.tkd.basics[b]) return;
-          out.tkd.basics.push({
-            key: 'TKD|Basic|' + b,
-            title: b,
-            details: []
-          });
-        });
-
+        Object.keys(state.tkd.combos).forEach(function (c) { if (state.tkd.combos[c]) out.tkd.combos.push({ key: 'TKD|Kombi|' + c, title: c, details: [] }); });
+        Object.keys(state.tkd.sparring).forEach(function (s) { if (state.tkd.sparring[s]) out.tkd.sparring.push({ key: 'TKD|Ilbo|' + s, title: s, details: [] }); });
+        Object.keys(state.tkd.basics).forEach(function (b) { if (state.tkd.basics[b]) out.tkd.basics.push({ key: 'TKD|Basic|' + b, title: b, details: [] }); });
         out.tkd.note = (state.tkd.note || '').trim();
 
         FORMS.forEach(function (f) {
@@ -2391,26 +2232,39 @@
         });
 
         function selFromMap(map, prefix, arrOut) {
-          Object.keys(map).forEach(function (k) {
-            if (!map[k]) return;
-            arrOut.push({ key: prefix + k, title: k, details: [] });
-          });
+          Object.keys(map).forEach(function (k) { if (map[k]) arrOut.push({ key: prefix + k, title: k, details: [] }); });
         }
         selFromMap(state.wc.grundlagen, 'WC|Grund|', out.wc.grundlagen);
         selFromMap(state.wc.armhand, 'WC|Arm|', out.wc.armhand);
         selFromMap(state.wc.beine, 'WC|Bein|', out.wc.beine);
         selFromMap(state.wc.weitere, 'WC|Weitere|', out.wc.weitere);
         selFromMap(state.wc.weapon, 'WC|Weapon|', out.wc.weapon);
-
         out.wc.note = (state.wc.note || '').trim();
 
         selFromMap(state.other.kraft, 'OTHER|Kraft|', out.other.kraft);
         selFromMap(state.other.boxen, 'OTHER|Boxen|', out.other.boxen);
         selFromMap(state.other.sonstiges, 'OTHER|Sonstiges|', out.other.sonstiges);
-
         out.other.note = (state.other.note || '').trim();
 
         return out;
+      }
+
+      function pickTrainingMotivation() {
+        var c = countSelectedAll();
+        var pool = [];
+        if (c.tkd > 0) pool = pool.concat(TKD_MOTIVATION);
+        if (c.wc > 0) pool = pool.concat(WC_MOTIVATION);
+        if (c.other > 0) pool = pool.concat(OTHER_MOTIVATION);
+        if (!pool.length) pool = pool.concat(TKD_MOTIVATION).concat(WC_MOTIVATION).concat(OTHER_MOTIVATION);
+        return pool[Math.floor(Math.random() * pool.length)];
+      }
+
+      function updateTrainingProgress(keys, done) {
+        var total = keys.length;
+        var finished = keys.filter(function (k) { return !!done[k]; }).length;
+        var pct = total ? Math.round((finished / total) * 100) : 0;
+        document.getElementById('train-progressText').textContent = finished + ' / ' + total + ' erledigt';
+        document.getElementById('train-progressBarFill').style.width = pct + '%';
       }
 
       function renderTraining() {
@@ -2421,7 +2275,7 @@
         var doneKeys = [];
 
         function listBlock(items, ctxHint) {
-          if (!items.length) return '<div class="desc">—</div>';
+          if (!items.length) return '';
           var out = '<div class="list" style="gap:10px">';
           items.forEach(function (it) {
             doneKeys.push(it.key);
@@ -2439,9 +2293,8 @@
           out += '</div>';
           return out;
         }
-
         function simpleList(items, ctxHint, icon) {
-          if (!items.length) return '<div class="desc">—</div>';
+          if (!items.length) return '';
           var out = '<div class="list" style="gap:8px">';
           items.forEach(function (it) {
             doneKeys.push(it.key);
@@ -2457,39 +2310,36 @@
           return out;
         }
 
-        // TKD section (only if at least one selected)
         var tkdCount = data.tkd.hyongs.length + data.tkd.combos.length + data.tkd.sparring.length + data.tkd.basics.length;
         if (tkdCount > 0) {
           var inner = '';
-          inner += sectionCard('Hyongs', '⚔️', data.tkd.hyongs.length, (data.tkd.hyongs.length ? listBlock(data.tkd.hyongs, 'Taekwondo') : '<div class="desc">Keine Hyongs ausgewählt.</div>'));
-          inner += sectionCard('Kombinationen', '🔁', data.tkd.combos.length, (data.tkd.combos.length ? simpleList(data.tkd.combos, 'Taekwondo', '🔁') : '<div class="desc">Keine Kombinationen ausgewählt.</div>'));
-          inner += sectionCard('Einschrittkampf', '🛡️', data.tkd.sparring.length, (data.tkd.sparring.length ? simpleList(data.tkd.sparring, 'Taekwondo', '🛡️') : '<div class="desc">Kein Einschrittkampf ausgewählt.</div>'));
-          inner += sectionCard('Grundübungen', '👣', data.tkd.basics.length, (data.tkd.basics.length ? simpleList(data.tkd.basics, 'Taekwondo', '') : '<div class="desc">Keine Grundübungen ausgewählt.</div>'));
+          if (data.tkd.hyongs.length) inner += sectionCard('Hyongs', '⚔️', data.tkd.hyongs.length, listBlock(data.tkd.hyongs, 'Taekwondo'));
+          if (data.tkd.combos.length) inner += sectionCard('Kombinationen', '🔁', data.tkd.combos.length, simpleList(data.tkd.combos, 'Taekwondo', '🔁'));
+          if (data.tkd.sparring.length) inner += sectionCard('Einschrittkampf', '🛡️', data.tkd.sparring.length, simpleList(data.tkd.sparring, 'Taekwondo', '🛡️'));
+          if (data.tkd.basics.length) inner += sectionCard('Grundübungen', '👣', data.tkd.basics.length, simpleList(data.tkd.basics, 'Taekwondo', ''));
           if (data.tkd.note) inner += sectionCard('Notiz (TKD)', '📝', 1, '<div class="summaryBox" style="border-style:solid">' + escapeHtml(data.tkd.note) + '</div>');
           sections.push(sectionCard('Taekwondo', '🥋', tkdCount, inner));
         }
 
-        // WC section
         var wcCount = data.wc.forms.length + data.wc.grundlagen.length + data.wc.armhand.length + data.wc.beine.length + data.wc.weitere.length + data.wc.weapon.length;
         if (wcCount > 0) {
           var innerW = '';
-          innerW += sectionCard('Formen', '⚔️', data.wc.forms.length, (data.wc.forms.length ? listBlock(data.wc.forms, 'Wing Chun') : '<div class="desc">Keine Formen ausgewählt.</div>'));
-          innerW += sectionCard('Grundlagen', '🧱', data.wc.grundlagen.length, (data.wc.grundlagen.length ? simpleList(data.wc.grundlagen, 'Wing Chun', '🧱') : '<div class="desc">Keine Grundlagen ausgewählt.</div>'));
-          innerW += sectionCard('Arm- & Handtechniken', '🤲', data.wc.armhand.length, (data.wc.armhand.length ? simpleList(data.wc.armhand, 'Wing Chun', '🤲') : '<div class="desc">Keine Arm- & Handtechniken ausgewählt.</div>'));
-          innerW += sectionCard('Beintechniken', '👣', data.wc.beine.length, (data.wc.beine.length ? simpleList(data.wc.beine, 'Wing Chun', '👣') : '<div class="desc">Keine Beintechniken ausgewählt.</div>'));
-          innerW += sectionCard('Weiteres', '🧩', data.wc.weitere.length, (data.wc.weitere.length ? simpleList(data.wc.weitere, 'Wing Chun', '🧩') : '<div class="desc">Keine weiteren Handtechniken ausgewählt.</div>'));
-          innerW += sectionCard('Weapon Self Defence', '🛡️', data.wc.weapon.length, (data.wc.weapon.length ? simpleList(data.wc.weapon, 'Wing Chun', '🛡️') : '<div class="desc">Keine Weapon-Self-Defence Inhalte ausgewählt.</div>'));
+          if (data.wc.forms.length) innerW += sectionCard('Formen', '⚔️', data.wc.forms.length, listBlock(data.wc.forms, 'Wing Chun'));
+          if (data.wc.grundlagen.length) innerW += sectionCard('Grundlagen', '🧱', data.wc.grundlagen.length, simpleList(data.wc.grundlagen, 'Wing Chun', '🧱'));
+          if (data.wc.armhand.length) innerW += sectionCard('Arm- & Handtechniken', '🤲', data.wc.armhand.length, simpleList(data.wc.armhand, 'Wing Chun', '🤲'));
+          if (data.wc.beine.length) innerW += sectionCard('Beintechniken', '👣', data.wc.beine.length, simpleList(data.wc.beine, 'Wing Chun', '👣'));
+          if (data.wc.weitere.length) innerW += sectionCard('Weiteres', '🧩', data.wc.weitere.length, simpleList(data.wc.weitere, 'Wing Chun', '🧩'));
+          if (data.wc.weapon.length) innerW += sectionCard('Weapon Self Defence', '🛡️', data.wc.weapon.length, simpleList(data.wc.weapon, 'Wing Chun', '🛡️'));
           if (data.wc.note) innerW += sectionCard('Notiz (WC)', '📝', 1, '<div class="summaryBox" style="border-style:solid">' + escapeHtml(data.wc.note) + '</div>');
           sections.push(sectionCard('Wing Chun', '🥋', wcCount, innerW));
         }
 
-        // OTHER section
         var otherCount = data.other.kraft.length + data.other.boxen.length + data.other.sonstiges.length;
         if (otherCount > 0) {
           var innerO = '';
-          innerO += sectionCard('Krafttraining', '🏋️', data.other.kraft.length, (data.other.kraft.length ? simpleList(data.other.kraft, 'Weiteres', '🏋️') : '<div class="desc">Keine Kraftübungen ausgewählt.</div>'));
-          innerO += sectionCard('Boxen/Drills', '🥊', data.other.boxen.length, (data.other.boxen.length ? simpleList(data.other.boxen, 'Weiteres', '🥊') : '<div class="desc">Keine Box-/Drills ausgewählt.</div>'));
-          innerO += sectionCard('Sonstiges', '🧘', data.other.sonstiges.length, (data.other.sonstiges.length ? simpleList(data.other.sonstiges, 'Weiteres', '🧘') : '<div class="desc">Keine sonstigen Übungen ausgewählt.</div>'));
+          if (data.other.kraft.length) innerO += sectionCard('Krafttraining', '🏋️', data.other.kraft.length, simpleList(data.other.kraft, 'Weiteres', '🏋️'));
+          if (data.other.boxen.length) innerO += sectionCard('Boxen/Drills', '🥊', data.other.boxen.length, simpleList(data.other.boxen, 'Weiteres', '🥊'));
+          if (data.other.sonstiges.length) innerO += sectionCard('Sonstiges', '🧘', data.other.sonstiges.length, simpleList(data.other.sonstiges, 'Weiteres', '🧘'));
           if (data.other.note) innerO += sectionCard('Notiz (Weiteres)', '📝', 1, '<div class="summaryBox" style="border-style:solid">' + escapeHtml(data.other.note) + '</div>');
           sections.push(sectionCard('Weiteres', '🏋️', otherCount, innerO));
         }
@@ -2501,10 +2351,7 @@
         var host = document.getElementById('train-sections');
         host.innerHTML = sections.join('');
 
-        // Done map normalize
         var done = ensureDoneKeys(doneKeys);
-
-        // Apply done states + bind
         Array.prototype.slice.call(host.querySelectorAll('.doneCb')).forEach(function (cb) {
           var key = cb.getAttribute('data-key');
           cb.checked = !!done[key];
@@ -2515,32 +2362,8 @@
           });
         });
 
-        // Wire glossary term clicks in training view
-        wireTermClicks(host);
-
         updateTrainingProgress(doneKeys, done);
-
-        // Motivation in training
-        var m = pickTrainingMotivation();
-        document.getElementById('train-motivationText').textContent = m;
-      }
-
-      function updateTrainingProgress(keys, done) {
-        var total = keys.length;
-        var finished = keys.filter(function (k) { return !!done[k]; }).length;
-        var pct = total ? Math.round((finished / total) * 100) : 0;
-        document.getElementById('train-progressText').textContent = finished + ' / ' + total + ' erledigt';
-        document.getElementById('train-progressBarFill').style.width = pct + '%';
-      }
-
-      function pickTrainingMotivation() {
-        var c = countSelectedAll();
-        var pool = [];
-        if (c.tkd > 0) pool = pool.concat(TKD_MOTIVATION);
-        if (c.wc > 0) pool = pool.concat(WC_MOTIVATION);
-        if (c.other > 0) pool = pool.concat(OTHER_MOTIVATION);
-        if (!pool.length) pool = pool.concat(TKD_MOTIVATION).concat(WC_MOTIVATION).concat(OTHER_MOTIVATION);
-        return pool[Math.floor(Math.random() * pool.length)];
+        document.getElementById('train-motivationText').textContent = pickTrainingMotivation();
       }
 
       function copyTrainingText() {
@@ -2564,23 +2387,16 @@
           lines.push('');
         }
 
-        // TKD
-        var tkdCount = data.tkd.hyongs.length + data.tkd.combos.length + data.tkd.sparring.length + data.tkd.basics.length;
-        if (tkdCount) {
-          lines.push('Taekwondo:');
-          lines.push('');
+        if (data.tkd.hyongs.length || data.tkd.combos.length || data.tkd.sparring.length || data.tkd.basics.length) {
+          lines.push('Taekwondo:'); lines.push('');
           if (data.tkd.hyongs.length) addBlock('Hyongs', data.tkd.hyongs);
           if (data.tkd.combos.length) addSimple('Kombinationen', data.tkd.combos);
           if (data.tkd.sparring.length) addSimple('Einschrittkampf', data.tkd.sparring);
           if (data.tkd.basics.length) addSimple('Grundübungen', data.tkd.basics);
           if (data.tkd.note) { lines.push('Notiz:'); lines.push(data.tkd.note); lines.push(''); }
         }
-
-        // WC
-        var wcCount = data.wc.forms.length + data.wc.grundlagen.length + data.wc.armhand.length + data.wc.beine.length + data.wc.weitere.length + data.wc.weapon.length;
-        if (wcCount) {
-          lines.push('Wing Chun:');
-          lines.push('');
+        if (data.wc.forms.length || data.wc.grundlagen.length || data.wc.armhand.length || data.wc.beine.length || data.wc.weitere.length || data.wc.weapon.length) {
+          lines.push('Wing Chun:'); lines.push('');
           if (data.wc.forms.length) addBlock('Formen', data.wc.forms);
           if (data.wc.grundlagen.length) addSimple('Grundlagen', data.wc.grundlagen);
           if (data.wc.armhand.length) addSimple('Arm- & Handtechniken', data.wc.armhand);
@@ -2589,12 +2405,8 @@
           if (data.wc.weapon.length) addSimple('Weapon Self Defence', data.wc.weapon);
           if (data.wc.note) { lines.push('Notiz:'); lines.push(data.wc.note); lines.push(''); }
         }
-
-        // OTHER
-        var otherCount = data.other.kraft.length + data.other.boxen.length + data.other.sonstiges.length;
-        if (otherCount) {
-          lines.push('Weiteres:');
-          lines.push('');
+        if (data.other.kraft.length || data.other.boxen.length || data.other.sonstiges.length) {
+          lines.push('Weiteres:'); lines.push('');
           if (data.other.kraft.length) addSimple('Krafttraining', data.other.kraft);
           if (data.other.boxen.length) addSimple('Boxen/Drills', data.other.boxen);
           if (data.other.sonstiges.length) addSimple('Sonstiges', data.other.sonstiges);
@@ -2615,11 +2427,8 @@
         }
       }
 
-      // =========================
-      // TIMER (general, from originals)
-      // =========================
+      // ========= Timer =========
       var _timer = { t: null, mode: 'work', remaining: 0, round: 0, paused: true };
-
       function fmt(s) {
         s = Math.max(0, Number(s) || 0);
         var m = Math.floor(s / 60), ss = s % 60;
@@ -2704,7 +2513,6 @@
 
         ['timer-workSec', 'timer-restSec', 'timer-rounds'].forEach(function (id) {
           document.getElementById(id).addEventListener('change', function () {
-            // clamp + save
             if (id === 'timer-workSec') this.value = String(clamp(parseInt(this.value || '60', 10), 10, 3600));
             if (id === 'timer-restSec') this.value = String(clamp(parseInt(this.value || '30', 10), 0, 3600));
             if (id === 'timer-rounds') this.value = String(clamp(parseInt(this.value || '8', 10), 1, 200));
@@ -2720,43 +2528,44 @@
         timerUpdate();
       }
 
-      // =========================
-      // RESET
-      // =========================
+      // ========= Reset =========
       function resetAll() {
         state = makeInitialState();
         save();
         saveDoneMap({});
-        // Keep timer settings
-        // Clear inputs
         document.getElementById('tkd-noteInput').value = '';
         document.getElementById('wc-noteInput').value = '';
         document.getElementById('other-noteInput').value = '';
         document.getElementById('tkd-searchInput').value = '';
         document.getElementById('wc-searchInput').value = '';
         document.getElementById('other-searchInput').value = '';
-        // Re-render
         rerenderAll();
         toast('↺ Alles zurückgesetzt');
         if (currentView === 'training') renderTraining();
       }
 
-      // =========================
-      // INIT + EVENTS
-      // =========================
+      // ========= Global term click delegation =========
+      document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (!t) return;
+        var btn = t.closest ? t.closest('.js-term') : null;
+        if (!btn) return;
+        e.stopPropagation();
+        var term = btn.getAttribute('data-term') || btn.textContent;
+        var ctx = btn.getAttribute('data-ctx') || '';
+        openGlossary(term, ctx);
+      }, true);
+
+      // ========= Init =========
       var state = safeLoad();
 
-      // Notes
       document.getElementById('tkd-noteInput').value = state.tkd.note || '';
       document.getElementById('tkd-noteInput').addEventListener('input', function () { state.tkd.note = this.value; save(); });
-
       document.getElementById('wc-noteInput').value = state.wc.note || '';
       document.getElementById('wc-noteInput').addEventListener('input', function () { state.wc.note = this.value; save(); });
-
       document.getElementById('other-noteInput').value = state.other.note || '';
       document.getElementById('other-noteInput').addEventListener('input', function () { state.other.note = this.value; save(); });
 
-      // Search events
       document.getElementById('tkd-searchInput').addEventListener('input', function () {
         var q = this.value;
         tkdRenderHyongs(q);
@@ -2779,7 +2588,6 @@
         otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, q, '🧘', 'Sonstiges');
       });
 
-      // Training buttons
       document.getElementById('train-copyBtn').addEventListener('click', copyTrainingText);
       document.getElementById('train-motivationBtn').addEventListener('click', function () {
         var m = pickTrainingMotivation();
@@ -2802,18 +2610,38 @@
         toast('↺ Fortschritt zurückgesetzt');
       });
 
-      // Global reset
       document.getElementById('resetAllBtn').addEventListener('click', resetAll);
 
+      // Prefill glossary so every term has an entry
+      (function prefillGlossary() {
+        HYONGS.forEach(function (h) { ensureGlossary(h.id + ' ' + h.name, 'Taekwondo'); ensureGlossary(h.name, 'Taekwondo'); });
+        COMBOS.forEach(function (c) { ensureGlossary(c, 'Taekwondo'); });
+        SPARRING.forEach(function (s) { ensureGlossary(s, 'Taekwondo'); });
+        Object.keys(BASICS).forEach(function (k) { BASICS[k].forEach(function (i) { ensureGlossary(i, 'Taekwondo'); }); });
+
+        FORMS.forEach(function (f) {
+          ensureGlossary(f.id + ' ' + f.name, 'Wing Chun');
+          ensureGlossary(f.name, 'Wing Chun');
+          ensureGlossary(f.id + ' ' + f.name + ' (' + f.code + ')', 'Wing Chun');
+        });
+        GRUNDLAGEN.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
+        ARM_HAND.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
+        BEINE.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
+        WEITERE_HAND.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
+        WEAPON.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
+
+        OTHER_KRAFT.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
+        OTHER_BOXEN.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
+        OTHER_SONST.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
+      })();
+
       function rerenderAll() {
-        // TKD
         var tq = document.getElementById('tkd-searchInput').value;
         tkdRenderHyongs(tq);
         tkdRenderCombos(tq);
         tkdRenderIlbo();
         tkdRenderBasics(tq);
 
-        // WC
         var wq = document.getElementById('wc-searchInput').value;
         wcRenderForms(wq);
         wcRenderCheckboxList('wc-grundlagenList', 'wc-grundlagenEmpty', GRUNDLAGEN, state.wc.grundlagen, wq, '🧱', 'Grundlagen');
@@ -2822,55 +2650,20 @@
         wcRenderCheckboxList('wc-weitereList', 'wc-weitereEmpty', WEITERE_HAND, state.wc.weitere, wq, '🧩', 'Hand');
         wcRenderCheckboxList('wc-weaponList', 'wc-weaponEmpty', WEAPON, state.wc.weapon, wq, '🛡️', 'Weapon');
 
-        // OTHER
         var oq = document.getElementById('other-searchInput').value;
         otherRenderList('other-kraftList', 'other-kraftEmpty', OTHER_KRAFT, state.other.kraft, oq, '🏋️', 'Kraft');
         otherRenderList('other-boxenList', 'other-boxenEmpty', OTHER_BOXEN, state.other.boxen, oq, '🥊', 'Boxen');
         otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, oq, '🧘', 'Sonstiges');
 
-        // badge + date
         document.getElementById('train-dateNow').textContent = prettyDateDE(new Date());
         setBadge();
       }
 
-      // Hook term click delegation (for elements created later too)
-      document.addEventListener('click', function (e) {
-        var t = e.target;
-        if (!t) return;
-        var btn = t.closest ? t.closest('.js-term') : null;
-        if (!btn) return;
-        // Some term buttons inside other interactive wrappers can bubble; stop here
-        e.stopPropagation();
-        var term = btn.getAttribute('data-term') || btn.textContent;
-        var ctx = btn.getAttribute('data-ctx') || '';
-        openGlossary(term, ctx);
-      }, true);
-
-      // Ensure all terms from datasets have at least an auto entry (pre-fill)
-      (function prefillGlossary() {
-        // TKD
-        HYONGS.forEach(function (h) { ensureGlossary(h.id + ' ' + h.name, 'Taekwondo'); });
-        COMBOS.forEach(function (c) { ensureGlossary(c, 'Taekwondo'); });
-        SPARRING.forEach(function (s) { ensureGlossary(s, 'Taekwondo'); });
-        Object.keys(BASICS).forEach(function (k) {
-          BASICS[k].forEach(function (i) { ensureGlossary(i, 'Taekwondo'); });
-        });
-        // WC
-        FORMS.forEach(function (f) { ensureGlossary(f.id + ' ' + f.name, 'Wing Chun'); ensureGlossary(f.name, 'Wing Chun'); });
-        GRUNDLAGEN.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
-        ARM_HAND.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
-        BEINE.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
-        WEITERE_HAND.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
-        WEAPON.forEach(function (x) { ensureGlossary(x.t, 'Wing Chun'); });
-        // OTHER
-        OTHER_KRAFT.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
-        OTHER_BOXEN.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
-        OTHER_SONST.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
-      })();
-
-      // Initial render
-      rerenderAll();
+      // Timer init
       timerInit();
+
+      // First render
+      rerenderAll();
       showView('tkd');
       setBadge();
 
