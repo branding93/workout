@@ -568,8 +568,8 @@
     }
 
     .view {
-  display: block
-}
+      display: none
+    }
 
     .view.active {
       display: block
@@ -1085,7 +1085,17 @@
       border: 1px solid rgba(255,255,255,.14);
     }
 
-    /* Motion: subtil, aber respektiert Reduced Motion */
+    
+/* Timer – Fortschrittsring (visuell) */
+#timer-ringProgress{
+  stroke-dasharray: 0;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset .25s linear;
+}
+@media (prefers-reduced-motion: reduce){
+  #timer-ringProgress{ transition: none; }
+}
+/* Motion: subtil, aber respektiert Reduced Motion */
     @media (prefers-reduced-motion: no-preference){
       .card, .item, .subcard, .summaryBox, .miniCard{
         transition: transform .18s ease, box-shadow .18s ease;
@@ -1119,96 +1129,29 @@
 }
 
 
-/* =============================
-Scroll-Snap Hauptseiten (Browser übernimmt Swipe)
-============================= */
-.viewsSnapContainer{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
-}
-.viewsSnapContainer > .snapView{
-  flex: 0 0 100%;
-  width: 100%;
-  min-width: 100%;
-  scroll-snap-align: start;
-}
-/* verhindert, dass Flex-Contents die Seite breiter ziehen */
-.viewsSnapContainer, .viewsSnapContainer *{ min-width: 0; }
+    /* ====== Minimal requested UX tweaks (Training done + Counter pulse) ====== */
+    @media (prefers-reduced-motion: no-preference){
+      .summaryBox.trainingItem{ transition: opacity .18s ease, filter .18s ease; }
+      .summaryBox.trainingItem.done{ opacity: .62; filter: grayscale(.15); }
+      .summaryBox.trainingItem.done .doneTitle,
+      .summaryBox.trainingItem.done .doneDetails{
+        text-decoration: line-through;
+        text-decoration-thickness: 2px;
+        text-decoration-color: rgba(15,23,42,.35);
+      }
+      #selectedBadge{ transition: box-shadow .22s ease, transform .22s ease, filter .22s ease; }
+      #selectedBadge.pulse{
+        box-shadow: 0 0 0 4px var(--ring), 0 18px 55px rgba(2,6,23,.12);
+        transform: translateY(-1px);
+        filter: brightness(1.03);
+      }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .summaryBox.trainingItem.done .doneTitle,
+      .summaryBox.trainingItem.done .doneDetails{ text-decoration: line-through; }
+    }
 
-/* =============================
-Mobile: Navigation darf nicht die Viewport-Breite sprengen
-============================= */
-@media (max-width:560px){
-  .seg{
-    max-width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .seg::-webkit-scrollbar{ display:none; }
-  .seg button{ flex: 0 0 auto; }
-}
-
-/* =============================
-Timer – Fortschrittsring (visuell)
-============================= */
-#timer-ringProgress{
-  stroke-dasharray: 0;
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset .25s linear;
-}
-@media (prefers-reduced-motion: reduce){
-  #timer-ringProgress{ transition: none; }
-}
-
-/* =============================
-Training – erledigte Übungen
-============================= */
-.doneRow{
-  transition: background-color .25s ease, opacity .25s ease;
-}
-.doneRow.done{
-  opacity: .55;
-  background-color: rgba(15,23,42,.03);
-}
-.doneRow.done .doneTitle,
-.doneRow.done .doneDetails{
-  text-decoration: line-through;
-}
-
-/* =============================
-Planung – ausgewählte Checkbox-Zeilen
-============================= */
-.item.selected .checkRow label{
-  opacity: .7;
-}
-.item.selected .checkRow label span{
-  text-decoration: line-through;
-}
-
-/* =============================
-Micro-Feedback: Zähler oben rechts
-============================= */
-@keyframes counterPulse{
-  0%{ box-shadow: 0 0 0 0 rgba(99,102,241,.35); }
-  100%{ box-shadow: 0 0 0 14px rgba(99,102,241,0); }
-}
-.badge.pulse{
-  animation: counterPulse .35s ease;
-}
-@media (prefers-reduced-motion: reduce){
-  .badge.pulse{ animation: none; }
-}
-
-</style>
+  </style>
 </head>
 
 <body>
@@ -1244,8 +1187,7 @@ Micro-Feedback: Zähler oben rechts
     <div class="grid">
       <div class="card">
         <div class="pad">
-          <div class="viewsSnapContainer" id="viewsSnap" aria-label="Hauptseiten (Swipe)">
-        <section id="view-tkd" class="view active snapView" aria-label="TKD Planung">
+          <section id="view-tkd" class="view active" aria-label="TKD Planung">
             <div class="viewTitle">
               <h2>🥋 Taekwondo – Zusammenstellen</h2>
               <span class="pill">Planungsseite</span>
@@ -1293,7 +1235,7 @@ Micro-Feedback: Zähler oben rechts
               placeholder="z.B. Fokus: saubere Hüftrotation · Tempo: langsam→schnell · Atmung" style="width:100%" />
           </section>
 
-          <section id="view-wc" class="view snapView" aria-label="Wing Chun Planung">
+          <section id="view-wc" class="view" aria-label="Wing Chun Planung">
             <div class="viewTitle">
               <h2>🥋 Wing Chun – Zusammenstellen</h2>
               <span class="pill">Planungsseite</span>
@@ -1356,7 +1298,7 @@ Micro-Feedback: Zähler oben rechts
               placeholder="z.B. Fokus: Mittellinie · Struktur · Timing · Chi Sao Sensitivität" style="width:100%" />
           </section>
 
-          <section id="view-other" class="view snapView" aria-label="Weiteres Planung">
+          <section id="view-other" class="view" aria-label="Weiteres Planung">
             <div class="viewTitle">
               <h2>🏋️ Weiteres – Ergänzungstraining</h2>
               <span class="pill">Planungsseite</span>
@@ -1399,7 +1341,7 @@ Micro-Feedback: Zähler oben rechts
               placeholder="z.B. Fokus: saubere Wiederholungen · stabile Struktur · ruhige Atmung" style="width:100%" />
           </section>
 
-          <section id="view-training" class="view snapView" aria-label="Training Übersicht">
+          <section id="view-training" class="view" aria-label="Training Übersicht">
             <div class="viewTitle">
               <h2>📋 Training – Session-Übersicht</h2>
               <span class="pill">Übersicht</span>
@@ -1447,7 +1389,7 @@ Micro-Feedback: Zähler oben rechts
             </div>
           </section>
 
-          <section id="view-timer" class="view snapView" aria-label="Timer Seite">
+          <section id="view-timer" class="view" aria-label="Timer Seite">
             <div class="viewTitle">
               <h2>⏱️ Timer – Intervall-Modus (generell)</h2>
               <span class="pill">Timer</span>
@@ -1496,8 +1438,6 @@ Micro-Feedback: Zähler oben rechts
               </div>
             </div>
           </section>
-      </div>
-
         </div>
       </div>
 
@@ -2070,8 +2010,6 @@ Micro-Feedback: Zähler oben rechts
       }
 
       // ========= Router + Swipe =========
-      var USE_SCROLL_SNAP = true; // scroll-snap: Browser übernimmt Swipe
-
       var viewOrder = ['tkd', 'wc', 'other', 'training', 'timer'];
       var currentView = 'tkd';
       function setNavActive(id) {
@@ -2087,18 +2025,7 @@ Micro-Feedback: Zähler oben rechts
   if (_root) _root.setAttribute('data-theme', (name === 'tkd') ? 'tkd' : ((name === 'wc') ? 'wc' : ''));
         ['tkd', 'wc', 'other', 'training', 'timer'].forEach(function (v) {
           document.getElementById('view-' + v).classList.toggle('active', v === name);
-        
-        // Scroll-Snap: Browser übernimmt Swipe/Scroll
-        var host = document.getElementById('viewsSnap');
-        var target = document.getElementById('view-' + name);
-        if (USE_SCROLL_SNAP && host && target && target.scrollIntoView) {
-          try {
-            target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-          } catch (e) {
-            target.scrollIntoView();
-          }
-        }
-});
+        });
         if (name === 'tkd') setNavActive('navTKD');
         if (name === 'wc') setNavActive('navWC');
         if (name === 'other') setNavActive('navOTHER');
@@ -2114,119 +2041,73 @@ Micro-Feedback: Zähler oben rechts
       document.getElementById('navTRAIN').addEventListener('click', function () { showView('training'); });
       document.getElementById('navTIMER').addEventListener('click', function () { showView('timer'); });
 
-      // Scroll-Snap: aktive Hauptseite beim Wischen automatisch erkennen
-      (function setupSnapObserver() {
-        if (!USE_SCROLL_SNAP) return;
-        var host = document.getElementById('viewsSnap');
-        if (!host || !('IntersectionObserver' in window)) return;
-        var views = Array.prototype.slice.call(host.querySelectorAll('.snapView'));
-        if (!views.length) return;
-        var last = currentView;
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            if (!e.isIntersecting) return;
-            if (e.intersectionRatio < 0.6) return;
-            var id = e.target.id || '';
-            if (id.indexOf('view-') !== 0) return;
-            var name = id.replace('view-', '');
-            if (!name || name === last) return;
-            last = name;
-            currentView = name;
-
-            var _root = document.getElementById('appRoot');
-            if (_root) _root.setAttribute('data-theme', (name === 'tkd') ? 'tkd' : ((name === 'wc') ? 'wc' : ''));
-
-            ['tkd', 'wc', 'other', 'training', 'timer'].forEach(function (v) {
-              document.getElementById('view-' + v).classList.toggle('active', v === name);
-            });
-
-            if (name === 'tkd') setNavActive('navTKD');
-            if (name === 'wc') setNavActive('navWC');
-            if (name === 'other') setNavActive('navOTHER');
-            if (name === 'training') setNavActive('navTRAIN');
-            if (name === 'timer') setNavActive('navTIMER');
-
-            if (name === 'training') renderTraining();
-            if (name === 'timer') timerUpdate();
-            setBadge();
-          });
-        }, { root: host, threshold: [0.6] });
-
-        views.forEach(function (v) { io.observe(v); });
-      })();
-
-
-      if (!USE_SCROLL_SNAP) {
-        var swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, locked: null, t0: 0 };
-              function isInteractiveTarget(t) {
-                if (!t) return false;
-                var tag = (t.tagName || '').toLowerCase();
-                if (tag === 'input' || tag === 'textarea' || tag === 'select' || tag === 'button' || tag === 'label') return true;
-                if (t.closest && t.closest('input,textarea,select,button,label,.chips,.miniBtns,.tabs,.termWrap')) return true;
-                return false;
-              }
-              function canSwipeStart(e) {
-                var ae = document.activeElement;
-                if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return false;
-                if (isInteractiveTarget(e.target)) return false;
-                return true;
-              }
-              function goNext(dir) {
-                var idx = viewOrder.indexOf(currentView);
-                if (idx < 0) idx = 0;
-                var next = idx + dir;
-                if (next < 0 || next >= viewOrder.length) return;
-                showView(viewOrder[next]);
-              }
-              document.addEventListener('touchstart', function (e) {
-                if (e.touches && e.touches.length !== 1) return;
-                if (!canSwipeStart(e)) return;
-                swipe.active = true;
-                swipe.locked = null;
-                swipe.t0 = Date.now();
-                swipe.x0 = e.touches[0].clientX;
-                swipe.y0 = e.touches[0].clientY;
-                swipe.x1 = swipe.x0;
-                swipe.y1 = swipe.y0;
-              }, { passive: true });
-              document.addEventListener('touchmove', function (e) {
-                if (!swipe.active || !e.touches || e.touches.length !== 1) return;
-                swipe.x1 = e.touches[0].clientX;
-                swipe.y1 = e.touches[0].clientY;
-                var dx = swipe.x1 - swipe.x0;
-                var dy = swipe.y1 - swipe.y0;
-                if (!swipe.locked) {
-                  if (Math.abs(dx) > 12 || Math.abs(dy) > 12) {
-                    swipe.locked = (Math.abs(dy) > Math.abs(dx)) ? 'scroll' : 'swipe';
-                  }
-                }
-                if (swipe.locked === 'scroll') return;
-              }, { passive: true });
-              document.addEventListener('touchend', function () {
-                if (!swipe.active) return;
-                swipe.active = false;
-                if (swipe.locked !== 'swipe') return;
-                var dx = swipe.x1 - swipe.x0;
-                var dy = swipe.y1 - swipe.y0;
-                if (Math.abs(dy) > Math.abs(dx)) return;
-                if (Math.abs(dx) < 70) return;
-                if (Date.now() - swipe.t0 < 80) return;
-                if (dx < 0) goNext(+1); else goNext(-1);
-              }, { passive: true });
-              var wheelLock = { last: 0 };
-              document.addEventListener('wheel', function (e) {
-                if (Date.now() - wheelLock.last < 650) return;
-                if (Math.abs(e.deltaX) < 70) return;
-                if (Math.abs(e.deltaY) > 25) return;
-                if (isInteractiveTarget(e.target)) return;
-                var ae = document.activeElement;
-                if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return;
-                wheelLock.last = Date.now();
-                if (e.deltaX > 0) goNext(+1); else goNext(-1);
-              }, { passive: true });
-        
-              
+      var swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, locked: null, t0: 0 };
+      function isInteractiveTarget(t) {
+        if (!t) return false;
+        var tag = (t.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || tag === 'select' || tag === 'button' || tag === 'label') return true;
+        if (t.closest && t.closest('input,textarea,select,button,label,.chips,.miniBtns,.tabs,.termWrap')) return true;
+        return false;
       }
+      function canSwipeStart(e) {
+        var ae = document.activeElement;
+        if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return false;
+        if (isInteractiveTarget(e.target)) return false;
+        return true;
+      }
+      function goNext(dir) {
+        var idx = viewOrder.indexOf(currentView);
+        if (idx < 0) idx = 0;
+        var next = idx + dir;
+        if (next < 0 || next >= viewOrder.length) return;
+        showView(viewOrder[next]);
+      }
+      document.addEventListener('touchstart', function (e) {
+        if (e.touches && e.touches.length !== 1) return;
+        if (!canSwipeStart(e)) return;
+        swipe.active = true;
+        swipe.locked = null;
+        swipe.t0 = Date.now();
+        swipe.x0 = e.touches[0].clientX;
+        swipe.y0 = e.touches[0].clientY;
+        swipe.x1 = swipe.x0;
+        swipe.y1 = swipe.y0;
+      }, { passive: true });
+      document.addEventListener('touchmove', function (e) {
+        if (!swipe.active || !e.touches || e.touches.length !== 1) return;
+        swipe.x1 = e.touches[0].clientX;
+        swipe.y1 = e.touches[0].clientY;
+        var dx = swipe.x1 - swipe.x0;
+        var dy = swipe.y1 - swipe.y0;
+        if (!swipe.locked) {
+          if (Math.abs(dx) > 12 || Math.abs(dy) > 12) {
+            swipe.locked = (Math.abs(dy) > Math.abs(dx)) ? 'scroll' : 'swipe';
+          }
+        }
+        if (swipe.locked === 'scroll') return;
+      }, { passive: true });
+      document.addEventListener('touchend', function () {
+        if (!swipe.active) return;
+        swipe.active = false;
+        if (swipe.locked !== 'swipe') return;
+        var dx = swipe.x1 - swipe.x0;
+        var dy = swipe.y1 - swipe.y0;
+        if (Math.abs(dy) > Math.abs(dx)) return;
+        if (Math.abs(dx) < 70) return;
+        if (Date.now() - swipe.t0 < 80) return;
+        if (dx < 0) goNext(+1); else goNext(-1);
+      }, { passive: true });
+      var wheelLock = { last: 0 };
+      document.addEventListener('wheel', function (e) {
+        if (Date.now() - wheelLock.last < 650) return;
+        if (Math.abs(e.deltaX) < 70) return;
+        if (Math.abs(e.deltaY) > 25) return;
+        if (isInteractiveTarget(e.target)) return;
+        var ae = document.activeElement;
+        if (ae && ((ae.tagName || '').toLowerCase() === 'input' || (ae.tagName || '').toLowerCase() === 'textarea')) return;
+        wheelLock.last = Date.now();
+        if (e.deltaX > 0) goNext(+1); else goNext(-1);
+      }, { passive: true });
 
       // ========= Counts =========
       function countSelectedAll() {
@@ -2261,23 +2142,30 @@ Micro-Feedback: Zähler oben rechts
 
         return { tkd: tkd, wc: wc, other: other, all: (tkd + wc + other) };
       }
-      var lastTotal = null;
-      function setBadge() {
+      
+      var _lastBadgeTotal = null;
+      function pulseSelectedBadge(){
+        var el = document.getElementById('selectedBadge');
+        if(!el) return;
+        el.classList.remove('pulse');
+        void el.offsetWidth;
+        el.classList.add('pulse');
+        clearTimeout(pulseSelectedBadge._t);
+        pulseSelectedBadge._t = setTimeout(function(){ el.classList.remove('pulse'); }, 260);
+      }
+
+function setBadge() {
         var counts = countSelectedAll();
         var total = counts.all;
-        var badge = document.getElementById('selectedBadge');
-        badge.textContent = '📋 ' + total + ' Auswahl' + (total === 1 ? '' : 'en');
-        if (lastTotal !== null && total !== lastTotal) {
-          badge.classList.remove('pulse');
-          void badge.offsetWidth;
-          badge.classList.add('pulse');
-        }
-        lastTotal = total;
+        var _changed = (_lastBadgeTotal !== null && total !== _lastBadgeTotal);
+        document.getElementById('selectedBadge').textContent = '📋 ' + total + ' Auswahl' + (total === 1 ? '' : 'en');
         document.getElementById('kpi-tkd').textContent = String(counts.tkd);
         document.getElementById('kpi-wc').textContent = String(counts.wc);
         document.getElementById('kpi-other').textContent = String(counts.other);
         document.getElementById('kpi-all').textContent = String(total);
         document.getElementById('train-selectedCount').textContent = String(total);
+        if (_changed) pulseSelectedBadge();
+        _lastBadgeTotal = total;
       }
 
       // ========= TKD Tabs =========
@@ -2866,12 +2754,13 @@ Micro-Feedback: Zähler oben rechts
         Array.prototype.slice.call(host.querySelectorAll('.doneCb')).forEach(function (cb) {
           var key = cb.getAttribute('data-key');
           cb.checked = !!done[key];
-        var row = cb.closest('.doneRow');
-        if (row) row.classList.toggle('done', cb.checked);
+          var box = cb.closest ? cb.closest('.summaryBox') : null;
+          if (box) { box.classList.add('trainingItem'); box.classList.toggle('done', cb.checked); }
           cb.addEventListener('change', function () {
             done[key] = !!cb.checked;
             saveDoneMap(done);
             updateTrainingProgress(doneKeys, done);
+            if (box) box.classList.toggle('done', !!cb.checked);
           });
         });
 
@@ -2958,6 +2847,7 @@ Micro-Feedback: Zähler oben rechts
         _timerRing.prog = prog;
         _timerRing.C = C;
         prog.style.strokeDasharray = String(C);
+        // Start: voll
         prog.style.strokeDashoffset = '0';
       }
       function timerRingSet(progress) {
@@ -2988,6 +2878,7 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
         var total = Number(_timer.total) || 0;
         var rem = Number(_timer.remaining) || 0;
         if (!total) {
+          // Wenn Timer nicht läuft: orientiere dich am Work-Wert
           total = Number(document.getElementById('timer-workSec').value) || 0;
           rem = Number(_timer.remaining) || total;
         }
@@ -3005,7 +2896,7 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
           if (_timer.mode === 'work') {
             _timer.mode = 'rest';
             _timer.remaining = Number(document.getElementById('timer-restSec').value || 0);
-          _timer.total = _timer.remaining;
+            _timer.total = _timer.remaining;
           } else {
             _timer.round++;
             if (_timer.round >= Number(document.getElementById('timer-rounds').value || 0)) {
@@ -3015,8 +2906,7 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
             }
             _timer.mode = 'work';
             _timer.remaining = Number(document.getElementById('timer-workSec').value || 0);
-          _timer.total = _timer.remaining;
-          _timer.total = _timer.remaining;
+            _timer.total = _timer.remaining;
           }
           timerUpdate();
         }
@@ -3029,6 +2919,7 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
           _timer.mode = 'work';
           _timer.round = 0;
           _timer.remaining = Number(document.getElementById('timer-workSec').value || 0);
+          _timer.total = _timer.remaining;
         }
         _timer.paused = false;
         _timer.t = setInterval(timerTick, 1000);
@@ -3067,6 +2958,7 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
             timerSave();
             if (!_timer.t) {
               _timer.remaining = Number(document.getElementById('timer-workSec').value || 0);
+              _timer.total = _timer.remaining;
               timerUpdate();
             }
           });
@@ -3090,14 +2982,6 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
         document.getElementById('wc-searchInput').value = '';
         document.getElementById('other-searchInput').value = '';
         rerenderAll();
-      // Initial: ausgewählte Checkbox-Zeilen markieren
-      (function initSelectedVisuals(){
-        Array.prototype.slice.call(document.querySelectorAll('.item .checkRow input[type=checkbox]')).forEach(function(cb){
-          if (cb.classList && cb.classList.contains('doneCb')) return;
-          var it = cb.closest('.item');
-          if (it) it.classList.toggle('selected', !!cb.checked);
-        });
-      })();
         toast('↺ Alles zurückgesetzt');
         if (currentView === 'training') renderTraining();
       }
@@ -3114,27 +2998,7 @@ function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '
         openGlossary(term, ctx);
       }, true);
 
-      
-
-      // Visuelle Markierung: Done (Training) + Auswahl (Planung)
-      (function setupCheckboxVisuals() {
-        document.addEventListener('change', function (e) {
-          var t = e.target;
-          if (!t) return;
-
-          if (t.classList && t.classList.contains('doneCb')) {
-            var r = t.closest('.doneRow');
-            if (r) r.classList.toggle('done', !!t.checked);
-            return;
-          }
-
-          if (t.type === 'checkbox') {
-            var item = t.closest ? t.closest('.item') : null;
-            if (item) item.classList.toggle('selected', !!t.checked);
-          }
-        }, true);
-      })();
-// ========= Init =========
+      // ========= Init =========
       var state = safeLoad();
 
       document.getElementById('tkd-noteInput').value = state.tkd.note || '';
