@@ -149,6 +149,11 @@
     'Hwa-Rang Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/26/8-2608db0e.avif?src=images/stories/sonstiges/hyong/diagram/8.jpg&type=avif,75&hash=e1e438d7',
     'Chung-Mu': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/df/9-dfa0306d.avif?src=images/stories/sonstiges/hyong/diagram/9.jpg&type=avif,75&hash=8489c110',
     'Gwang-Gae Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/de/10_korr-dec0bfad.avif?src=images/stories/sonstiges/hyong/diagram/10_korr.jpg&type=avif,75&hash=f48946ec',
+    'Ap Chagui': 'https://c7.alamy.com/compde/jeynpj/tae-kwon-do-gruppe-vorfuhrung-in-kanada-150-multi-cultural-tag-ereignis-vancouver-british-columbia-kanada-jeynpj.jpg',
+    'Naeryo Chagui': 'https://c7.alamy.com/compde/2e3wfhj/personliche-ausbildung-kampfkunst-taekwondo-weibliche-trainerin-mit-taekwondo-kick-pad-sportschuhe-tritte-frau-tritt-schlagschild-spart-2e3wfhj.jpg',
+    'Dollyo Chagui': 'https://c7.alamy.com/compde/3dwb4gj/zwei-taekwondo-athleten-die-hohe-tritte-in-schutzausrustung-auf-blauem-hintergrund-ausfuhren-3dwb4gj.jpg',
+    'Yop Chagui': 'https://c7.alamy.com/compde/3cj2ny9/junge-manner-die-synchronisierte-taekwondo-kicks-mit-stadtischen-gebauden-im-hintergrund-ausfuhren-3cj2ny9.jpg',
+    'Twio Yop Chagui': 'https://c7.alamy.com/compde/2ggnk9f/karate-junge-tritt-in-die-luft-und-fliegt-uber-den-blauen-hintergrund-des-himmels-taekwondo-in-der-natur-praktizieren-schwarzer-gurtel-der-kampfkunst-2ggnk9f.jpg',
   };
 
   function normTermKey(s) { return String(s || '').trim(); }
