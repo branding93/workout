@@ -158,6 +158,45 @@
     'Chum Kiu': 'https://www.mypassion-wingchun.de/wp-content/uploads/2023/04/Yt-thumbnails-mp-chk2-1024x576.jpg',
   };
 
+  // ========= Glossary Zusatzfelder: Häufige Fehler (f) & Coach Hinweise (c) =========
+  // Schlüssel ist canonicalTerm(term). Einträge kurz, aber konkret technikbezogen.
+  const ENTRY_EXTRAS = {
+    // --- TKD Kicks ---
+    'Ap Chagui': { f: 'Knie zu niedrig; Standfuß dreht nicht; Oberkörper kippt; kein Recoil (Bein bleibt draußen).', c: 'Kammer: Knie hoch → strecken → sofort zurück. Standfuß leicht eindrehen, Hüfte schiebt. Gerade Linie.' },
+    'Naeryo Chagui': { f: 'Zu früh gestreckt (zu wenig Höhe); Rumpf kippt; Abwärtsweg unkontrolliert; instabile Landung.', c: 'Erst hoch ziehen, dann kontrolliert fällen. Rumpf stabil, Blick vorn. Langsam auf Ziel + saubere Landung.' },
+    'Dollyo Chagui': { f: 'Knie nicht sauber hoch; Standfuß bleibt; Hüfte dreht zu wenig; Deckung fällt.', c: 'Knie hoch → Hüfte drehen → treffen → Recoil. Standfuß dreht mit. Deckhand oben.' },
+    'Yop Chagui': { f: 'Hüfte nicht eingerastet; Treffer mit Spann; Körperlinie bricht; Rückzug fehlt.', c: 'Knie hoch, Ferse zielt, Hüfte einrasten, dann stoßen. Gerade rein/raus wie auf Schiene.' },
+    'Pandae Dollyo Chagui': { f: 'Zu große Rotation; Balanceverlust; Trefferlinie unklar; Fußweg zu lang.', c: 'Kompakt bleiben. Erst langsam Winkel finden, dann Rhythmus/Speed.' },
+    'Tui Chagui': { f: 'Blick zu spät; Kick driftet; zu viel Oberkörperdrehung; Standbein instabil.', c: 'Blick über Schulter zuerst. Ferse gerade nach hinten. Übe: drehen → schauen → stoßen.' },
+    'Twio Yop Chagui': { f: 'Absprung ohne Kammer; Linie in der Luft verloren; Landung hart; Körper kippt.', c: 'Kammer vor Absprung. In der Luft Linie halten, nach Treffer zurückziehen. Landung weich (Knie federt).' },
+
+    // --- Wing Chun Hand/Arm ---
+    'Fook Sao': { f: 'Schulter hoch; Druck statt Gefühl; Ellenbogen driftet; Handgelenk steif.', c: 'Locker, Ellenbogenlinie halten. Kontakt wie Feder: konstant, weich.' },
+    'Pak Sao': { f: 'Ausholen; Pak wird gehalten/gedrückt; kein gleichzeitiger Treffer.', c: 'Kurzer Impuls. Pak + Schlag gleichzeitig. Danach Linie übernehmen.' },
+    'Tan Sao': { f: 'Ellenbogen steigt; blocken statt leiten; Körper bleibt passiv.', c: 'Ellenbogen tief, Handfläche offen. Druck seitlich leiten und mit Körper nach vorn.' },
+    'Bong Sao': { f: 'Bong festgehalten; Ellenbogen zu hoch; Schulter öffnet; kein Übergang.', c: 'Bong ist Übergang. Winkel statt Kraft. Direkt in Tan/Fook/Lap wechseln.' },
+    'Jam Sao': { f: 'Zu stark drücken; Zentrum öffnet; Struktur bricht.', c: 'Dosiert sinken, Zentrum bleibt. Danach wieder vorwärts/linie nehmen.' },
+    'Lap Sao': { f: 'Zu lange ziehen; nur Arm; Öffnung nicht genutzt.', c: 'Lap kurz: greifen/ziehen und sofort schlagen/linie nehmen.' },
+    'Man Sao': { f: 'Überstrecken; hart; Mittellinie offen.', c: 'Leicht, flexibel, zentriert. Als Sensor nutzen.' },
+    'Wu Sao': { f: 'Passiv; zu weit hinten/oben; Ellenbogen driftet.', c: 'Zentrum aktiv schützen. Position so, dass Reaktion sofort möglich ist.' },
+    'Huen Sao': { f: 'Zu große Kreise; Kontakt verloren.', c: 'Mini-Kreis. Im Kontakt bleiben, nur Linie ändern.' },
+    'Lan Sao': { f: 'Arm gestreckt; Schulter arbeitet; ohne Stand/Rotation.', c: 'Aus Struktur + Körper. Winkel halten, Stand/Drehung nutzen, danach kontern.' },
+
+    // --- Wing Chun Beine/Drills ---
+    'Jing Gerk': { f: 'Zu groß geschwungen; Balance weg; Ausholen.', c: 'Kurz, stabil, direkt. Stopper: minimaler Weg, sofort zurück.' },
+    'Yap Gerk': { f: 'Zu spät; Stand instabil; Linie unklar.', c: 'Früh abdrücken, Stand stabil. Winkel früh setzen.' },
+    'Bong Gerk': { f: 'Zu weit geschwungen; Körper kippt.', c: 'Kompakt, Balance halten, Stand sofort herstellen.' },
+    'Einarmiges Dan Chi': { f: 'Zu viel Kraft; Rhythmus bricht; Ellenbogenlinie weg.', c: 'Konstanter Rhythmus. Fühlen vor machen. Schultern entspannt.' },
+    'Beidarmiges Pon Sao': { f: 'Große Kreise; Schultern hoch; Druck/Entlastung unklar.', c: 'Kleine Wege, klare Struktur. Kontakt konstant ohne Verkrampfen.' },
+    'Chi Sao („Klebende Hände")': { f: 'Zu viel Druck; Schultern hoch; Ellenbogenlinie verloren; festhalten.', c: 'Kontakt wie Feder. Fokus: Ellenbogenlinie + Mittellinie. Erst langsam, dann schneller.' },
+
+    // --- Formen (kurz, aber hilfreich) ---
+    'Siu Nim Tao': { f: 'Zu viel Spannung; Schultern hoch; Bewegungen zu groß; Atmung fehlt.', c: 'Zeitlupe: Ellenbogenlinie, entspannte Handgelenke, ruhige Atmung. Stopps helfen.' },
+    'Chum Kiu': { f: 'Drehung aus Schultern; Stand verliert Struktur; Arme entkoppeln.', c: 'Drehung aus Stand/Hüfte. Arme werden mitgenommen. Langsam mit Stopps üben.' },
+    'Biu Tze': { f: 'Hektik; Struktur bricht; große Wege.', c: 'Kompakt und strukturiert. Sequenzen sauber üben, dann verbinden.' },
+  };
+
+
   function normTermKey(s) { return String(s || '').trim(); }
 
   // NOTE: this avoids ES2018 Unicode codepoint escapes (\u{...}) to prevent syntax errors in some editors/browsers.
@@ -335,8 +374,25 @@
     let raw = normTermKey(term);
     if (!raw) return null;
     let canon = canonicalTerm(raw) || raw;
+
     if (!glossary[canon]) glossary[canon] = autoEntry(raw, ctxHint);
-    return glossary[canon];
+    let entry = glossary[canon];
+
+    // Zusatzfelder anreichern
+    if (typeof ENTRY_EXTRAS !== 'undefined') {
+      const extra = ENTRY_EXTRAS[canon] || ENTRY_EXTRAS[raw];
+      if (extra) {
+        if (!entry.f) entry.f = extra.f;
+        if (!entry.c) entry.c = extra.c;
+      }
+    }
+
+    // Fallbacks (niemals leer lassen)
+    if (!entry.f) entry.f = 'Zu viel Tempo vor Struktur; fehlender Reset/Zurückziehen; Atmung anhalten; Guard/Balance vernachlässigen.';
+    if (!entry.c) entry.c = 'Starte langsam (sauber → schnell). Setze pro Runde einen Fokus (z.B. Stand/Hüfte/Timing) und wiederhole bewusst.';
+
+    glossary[canon] = entry;
+    return entry;
   }
 
   function openGlossary(term, ctxHint) {
@@ -352,6 +408,13 @@
     document.getElementById('glossM').textContent = entry.m || '—';
     document.getElementById('glossZ').textContent = entry.z || '—';
     document.getElementById('glossP').textContent = entry.p || '—';
+
+    // Zusätzliche Felder: Häufige Fehler & Coach Hinweise
+    const _fEl = document.getElementById('glossF');
+    if (_fEl) _fEl.textContent = entry.f || '—';
+    const _cEl = document.getElementById('glossC');
+    if (_cEl) _cEl.textContent = entry.c || '—';
+
 
     // Erklärungsbild: Default oder pro Begriff überschreibbar
     const imgEl = document.getElementById('glossImg');
