@@ -154,6 +154,8 @@
     'Dollyo Chagui': 'https://c7.alamy.com/compde/3dwb4gj/zwei-taekwondo-athleten-die-hohe-tritte-in-schutzausrustung-auf-blauem-hintergrund-ausfuhren-3dwb4gj.jpg',
     'Yop Chagui': 'https://c7.alamy.com/compde/3cj2ny9/junge-manner-die-synchronisierte-taekwondo-kicks-mit-stadtischen-gebauden-im-hintergrund-ausfuhren-3cj2ny9.jpg',
     'Twio Yop Chagui': 'https://c7.alamy.com/compde/2ggnk9f/karate-junge-tritt-in-die-luft-und-fliegt-uber-den-blauen-hintergrund-des-himmels-taekwondo-in-der-natur-praktizieren-schwarzer-gurtel-der-kampfkunst-2ggnk9f.jpg',
+    'Siu Nim Tao': 'https://www.mypassion-wingchun.de/wp-content/uploads/2023/04/Yt-thumbnails-mp-snt-satz-1-1024x576.jpg',
+    'Chum Kiu': 'https://www.mypassion-wingchun.de/wp-content/uploads/2023/04/Yt-thumbnails-mp-chk2-1024x576.jpg',
   };
 
   function normTermKey(s) { return String(s || '').trim(); }
