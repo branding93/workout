@@ -139,6 +139,16 @@
     'Jam Sao': 'https://mypassion-wingchun-selfdefense.de/wp-content/uploads/2026/03/ModernSelfdefense__40_-removebg-preview1.png',
     'Gaun Sao': 'https://mypassion-wingchun-selfdefense.de/wp-content/uploads/2026/03/ModernSelfdefense__42_-removebg-preview1.png',
     'Gum Sao': 'https://mypassion-wingchun-selfdefense.de/wp-content/uploads/2026/03/ModernSelfdefense__43_-removebg-preview1.png',
+    'Chon-Ji Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/e1/1-e1bb1618.avif?src=images/stories/sonstiges/hyong/diagram/1.jpg&type=avif,75&hash=7e757bd5',
+    'Tan-Gun Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/24/2-24df60a8.avif?src=images/stories/sonstiges/hyong/diagram/2.jpg&type=avif,75&hash=3c4f00ed',
+    'To-San Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/4f/3-4f3ed6c6.avif?src=images/stories/sonstiges/hyong/diagram/3.jpg&type=avif,75&hash=3ecf06e8',
+    'Won-Hyo Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/74/4-74cb815a.avif?src=images/stories/sonstiges/hyong/diagram/4.jpg&type=avif,75&hash=c7178f69',
+    'Yul-Gok Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/ca/5_korr-caae026b.avif?src=images/stories/sonstiges/hyong/diagram/5_korr.jpg&type=avif,75&hash=1a54afae',
+    'Chung-Gun Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/86/6-86f50919.avif?src=images/stories/sonstiges/hyong/diagram/6.jpg&type=avif,75&hash=d3186610',
+    'Toi-Gye Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/2c/7-2cabfd37.avif?src=images/stories/sonstiges/hyong/diagram/7.jpg&type=avif,75&hash=43c9f6c4',
+    'Hwa-Rang Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/26/8-2608db0e.avif?src=images/stories/sonstiges/hyong/diagram/8.jpg&type=avif,75&hash=e1e438d7',
+    'Chung-Mu': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/df/9-dfa0306d.avif?src=images/stories/sonstiges/hyong/diagram/9.jpg&type=avif,75&hash=8489c110',
+    'Gwang-Gae Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/de/10_korr-dec0bfad.avif?src=images/stories/sonstiges/hyong/diagram/10_korr.jpg&type=avif,75&hash=f48946ec',
   };
 
   function normTermKey(s) { return String(s || '').trim(); }
