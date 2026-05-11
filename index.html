@@ -4,14 +4,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
+
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#005F78" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-<title>Workout 🥋</title>
-  
+  <title>Workout 🥋</title>
+
   <link rel="stylesheet" href="style.css" />
 
 </head>
@@ -116,7 +116,7 @@
             <div class="tabs wc" role="tablist" aria-label="Wing Chun Inhalte">
               <button class="tab active" data-wc-tab="forms" type="button">Formen</button>
               <button class="tab" data-wc-tab="grundlagen" type="button">Grundlagen</button>
-              <button class="tab" data-wc-tab="armhand" type="button">Arm &amp; Hand</button>
+              <button class="tab" data-wc-tab="armhand" type="button">Schutztechniken</button>
               <button class="tab" data-wc-tab="beine" type="button">Beine</button>
               <button class="tab" data-wc-tab="weitere" type="button">Weiteres</button>
               <button class="tab" data-wc-tab="weapon" type="button">Weapon Self Defence</button>
@@ -283,13 +283,15 @@
               </div>
 
               <div class="row" style="margin-top:10px; gap:10px; align-items:center">
-            <svg id="timer-ring" width="54" height="54" viewBox="0 0 120 120" aria-hidden="true" style="flex:0 0 auto">
-              <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(15,23,42,.12)" stroke-width="12"></circle>
-              <circle id="timer-ringProgress" cx="60" cy="60" r="52" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" transform="rotate(-90 60 60)"></circle>
-            </svg>
-            <div class="timerBig" id="timer-display">00:00</div>
-            <span class="desc">Tipp: 60/30 Technik · 40/20 Kondition · 90/30 Chi Sao</span>
-          </div>
+                <svg id="timer-ring" width="54" height="54" viewBox="0 0 120 120" aria-hidden="true"
+                  style="flex:0 0 auto">
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(15,23,42,.12)" stroke-width="12"></circle>
+                  <circle id="timer-ringProgress" cx="60" cy="60" r="52" fill="none" stroke="var(--accent)"
+                    stroke-width="12" stroke-linecap="round" transform="rotate(-90 60 60)"></circle>
+                </svg>
+                <div class="timerBig" id="timer-display">00:00</div>
+                <span class="desc">Tipp: 60/30 Technik · 40/20 Kondition · 90/30 Chi Sao</span>
+              </div>
 
               <div class="sep"></div>
 
@@ -364,6 +366,10 @@
         <button id="glossClose" class="btn" type="button">Schließen</button>
       </div>
       <div class="modalBody">
+
+        <div class="glossMedia">
+          <img id="glossImg" src="" alt="Erklärungsbild" loading="lazy" referrerpolicy="no-referrer" />
+        </div>
         <div class="grid2">
           <div class="miniCard">
             <div class="k">1) Übersetzung</div>
@@ -390,7 +396,7 @@
     </div>
   </div>
 
-  
+
   <script src="data.js"></script>
   <script src="app.js"></script>
 
