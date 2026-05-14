@@ -139,7 +139,7 @@
     'Chung-Gun Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/86/6-86f50919.avif?src=images/stories/sonstiges/hyong/diagram/6.jpg&type=avif,75&hash=d3186610',
     'Toi-Gye Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/2c/7-2cabfd37.avif?src=images/stories/sonstiges/hyong/diagram/7.jpg&type=avif,75&hash=43c9f6c4',
     'Hwa-Rang Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/26/8-2608db0e.avif?src=images/stories/sonstiges/hyong/diagram/8.jpg&type=avif,75&hash=e1e438d7',
-    'Chung-Mu': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/df/9-dfa0306d.avif?src=images/stories/sonstiges/hyong/diagram/9.jpg&type=avif,75&hash=8489c110',
+    'Chung-Mu Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/df/9-dfa0306d.avif?src=images/stories/sonstiges/hyong/diagram/9.jpg&type=avif,75&hash=8489c110',
     'Gwang-Gae Hyong': 'https://taekwon-do-ingolstadt.de/media/yootheme/cache/de/10_korr-dec0bfad.avif?src=images/stories/sonstiges/hyong/diagram/10_korr.jpg&type=avif,75&hash=f48946ec',
     'Ap Chagui': 'https://c7.alamy.com/compde/jeynpj/tae-kwon-do-gruppe-vorfuhrung-in-kanada-150-multi-cultural-tag-ereignis-vancouver-british-columbia-kanada-jeynpj.jpg',
     'Naeryo Chagui': 'https://c7.alamy.com/compde/2e3wfhj/personliche-ausbildung-kampfkunst-taekwondo-weibliche-trainerin-mit-taekwondo-kick-pad-sportschuhe-tritte-frau-tritt-schlagschild-spart-2e3wfhj.jpg',
