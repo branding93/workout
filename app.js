@@ -440,10 +440,10 @@
   };
 
   // ========= Router + Swipe =========
-  const viewOrder = ['tkd', 'wc', 'other', 'training', 'timer'];
+  const viewOrder = ['tkd', 'wc', 'other', 'training', 'timer', 'quiz'];
   let currentView = 'tkd';
   function setNavActive(id) {
-    ['navTKD', 'navWC', 'navOTHER', 'navTRAIN', 'navTIMER'].forEach(function (b) {
+    ['navTKD', 'navWC', 'navOTHER', 'navTRAIN', 'navTIMER', 'navQUIZ'].forEach(function (b) {
       let el = document.getElementById(b);
       el.classList.toggle('active', b === id);
       el.setAttribute('aria-selected', b === id ? 'true' : 'false');
@@ -453,7 +453,7 @@
     currentView = name;
     let _root = document.getElementById('appRoot');
     if (_root) _root.setAttribute('data-theme', (name === 'tkd') ? 'tkd' : ((name === 'wc') ? 'wc' : ''));
-    ['tkd', 'wc', 'other', 'training', 'timer'].forEach(function (v) {
+    ['tkd', 'wc', 'other', 'training', 'timer', 'quiz'].forEach(function (v) {
       document.getElementById('view-' + v).classList.toggle('active', v === name);
     });
     if (name === 'tkd') setNavActive('navTKD');
@@ -461,6 +461,7 @@
     if (name === 'other') setNavActive('navOTHER');
     if (name === 'training') setNavActive('navTRAIN');
     if (name === 'timer') setNavActive('navTIMER');
+  if (name === 'quiz') setNavActive('navQUIZ');
     if (name === 'training') renderTraining();
     if (name === 'timer') timerUpdate();
     setBadge();
@@ -470,6 +471,7 @@
   document.getElementById('navOTHER').addEventListener('click', () => { showView('other'); });
   document.getElementById('navTRAIN').addEventListener('click', () => { showView('training'); });
   document.getElementById('navTIMER').addEventListener('click', () => { showView('timer'); });
+  (function(){ const b=document.getElementById('navQUIZ'); if(b) b.addEventListener('click', ()=>{ showView('quiz'); }); })();
 
   const swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, locked: null, t0: 0 };
   function isInteractiveTarget(t) {
@@ -539,7 +541,180 @@
     if (e.deltaX > 0) goNext(+1); else goNext(-1);
   }, { passive: true });
 
-  // ========= Counts =========
+  
+
+  // ========= Quiz =========
+  const quizState = { discipline: null, bank: null, questions: [], idx: 0, score: 0, answered: false };
+
+  function pickUniqueQuestions(bank, n){
+    const out=[];
+    const seen=new Set();
+    const arr=(bank||[]).slice();
+    for(let i=arr.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const t=arr[i]; arr[i]=arr[j]; arr[j]=t;
+    }
+    for(const q of arr){
+      const key=(q && q.q) ? String(q.q).trim() : '';
+      if(!key || seen.has(key)) continue;
+      seen.add(key);
+      out.push(q);
+      if(out.length>=n) break;
+    }
+    return out;
+  }
+
+  function quizEls(){
+    return {
+      mode: document.getElementById('quiz-modePill'),
+      progress: document.getElementById('quiz-progressPill'),
+      score: document.getElementById('quiz-scorePill'),
+      setup: document.getElementById('quiz-setup'),
+      play: document.getElementById('quiz-play'),
+      result: document.getElementById('quiz-result'),
+      q: document.getElementById('quiz-question'),
+      opts: document.getElementById('quiz-options'),
+      next: document.getElementById('quiz-next'),
+      feedback: document.getElementById('quiz-feedback'),
+      start: document.getElementById('quiz-start'),
+      pickTkd: document.getElementById('quiz-pick-tkd'),
+      pickWc: document.getElementById('quiz-pick-wc'),
+      restart: document.getElementById('quiz-restart'),
+      again: document.getElementById('quiz-again'),
+      resultText: document.getElementById('quiz-resultText'),
+    };
+  }
+
+  function quizSetModeLabel(){
+    let el = quizEls();
+    if(!el.mode) return;
+    if(!quizState.discipline) el.mode.textContent = 'Modus: Auswahl';
+    else el.mode.textContent = 'Modus: ' + (quizState.discipline === 'tkd' ? 'Taekwondo' : 'Wing Chun');
+  }
+
+  function quizUpdateMeta(){
+    let el = quizEls();
+    if(el.score) el.score.textContent = 'Punkte: ' + quizState.score;
+    if(el.progress) el.progress.textContent = 'Frage ' + (quizState.questions.length ? (quizState.idx+1) : 0) + ' / 10';
+    quizSetModeLabel();
+  }
+
+  function quizReset(all){
+    quizState.questions = [];
+    quizState.idx = 0;
+    quizState.score = 0;
+    quizState.answered = false;
+    if(all) quizState.discipline = null;
+
+    let el = quizEls();
+    if(!el.setup) return;
+    el.setup.classList.remove('hidden');
+    el.play.classList.add('hidden');
+    el.result.classList.add('hidden');
+    if(el.start) el.start.disabled = !quizState.discipline;
+    if(el.feedback) el.feedback.textContent = '—';
+    quizUpdateMeta();
+  }
+
+  function quizPick(d){
+    quizState.discipline = d;
+    quizState.bank = (typeof QUIZ_BANKS !== 'undefined' && QUIZ_BANKS) ? (d==='tkd' ? QUIZ_BANKS.tkd : QUIZ_BANKS.wc) : [];
+    let el = quizEls();
+    if(el.start) el.start.disabled = !(quizState.bank && quizState.bank.length >= 10);
+    if(el.pickTkd) el.pickTkd.classList.toggle('primary', d==='tkd');
+    if(el.pickWc) el.pickWc.classList.toggle('primary', d==='wc');
+    quizSetModeLabel();
+  }
+
+  function quizStart(){
+    quizReset(false);
+    let bank = quizState.bank || [];
+    quizState.questions = pickUniqueQuestions(bank, 10);
+    quizState.idx = 0;
+    quizState.score = 0;
+    let el = quizEls();
+    el.setup.classList.add('hidden');
+    el.play.classList.remove('hidden');
+    el.result.classList.add('hidden');
+    quizRender();
+  }
+
+  function quizRender(){
+    let el = quizEls();
+    let qobj = quizState.questions[quizState.idx];
+    if(!qobj){ quizFinish(); return; }
+    quizState.answered = false;
+    if(el.next) el.next.disabled = true;
+    if(el.feedback) el.feedback.textContent = '—';
+    if(el.q) el.q.textContent = qobj.q;
+    if(el.opts) el.opts.innerHTML = '';
+    (qobj.options || []).forEach(function(opt, i){
+      let b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'quizOpt';
+      b.textContent = String.fromCharCode(65+i) + ') ' + opt;
+      b.addEventListener('click', function(){ quizAnswer(i); });
+      el.opts.appendChild(b);
+    });
+    quizUpdateMeta();
+  }
+
+  function quizAnswer(i){
+    if(quizState.answered) return;
+    quizState.answered = true;
+    let el = quizEls();
+    let qobj = quizState.questions[quizState.idx];
+    let btns = el.opts ? Array.prototype.slice.call(el.opts.querySelectorAll('.quizOpt')) : [];
+    btns.forEach(function(b, idx){
+      if(idx === qobj.a) b.classList.add('correct');
+      if(idx === i && i !== qobj.a) b.classList.add('wrong');
+      b.disabled = true;
+    });
+    if(i === qobj.a){
+      quizState.score += 1;
+      if(el.feedback) el.feedback.textContent = '✅ Korrekt';
+    } else {
+      if(el.feedback) el.feedback.textContent = '❌ Falsch – richtig ist ' + String.fromCharCode(65+qobj.a);
+    }
+    if(el.score) el.score.textContent = 'Punkte: ' + quizState.score;
+    if(el.next) el.next.disabled = false;
+  }
+
+  function quizNext(){
+    if(!quizState.answered) return;
+    quizState.idx += 1;
+    if(quizState.idx >= quizState.questions.length){ quizFinish(); return; }
+    quizRender();
+  }
+
+  function quizFinish(){
+    let el = quizEls();
+    el.setup.classList.add('hidden');
+    el.play.classList.add('hidden');
+    el.result.classList.remove('hidden');
+    quizUpdateMeta();
+    let msg = 'Du hast ' + quizState.score + ' / 10 Punkte erreicht.';
+    let extra = '';
+    if(quizState.score === 10) extra = ' Perfekt – stark!';
+    else if(quizState.score >= 8) extra = ' Sehr gut – weiter so!';
+    else if(quizState.score >= 5) extra = ' Solide – mit Wiederholung wird es schnell besser.';
+    else extra = ' Tipp: Nutze die Info-Popups (ⓘ) und wiederhole gezielt.';
+    if(el.resultText) el.resultText.textContent = msg + extra;
+  }
+
+  function quizInit(){
+    let el = quizEls();
+    if(!el.start) return;
+    if(el.pickTkd) el.pickTkd.addEventListener('click', function(){ quizPick('tkd'); });
+    if(el.pickWc) el.pickWc.addEventListener('click', function(){ quizPick('wc'); });
+    if(el.start) el.start.addEventListener('click', quizStart);
+    if(el.next) el.next.addEventListener('click', quizNext);
+    if(el.restart) el.restart.addEventListener('click', function(){ quizReset(true); });
+    if(el.again) el.again.addEventListener('click', quizStart);
+    quizReset(true);
+  }
+
+// ========= Counts =========
   function countSelectedAll() {
     let tkd = 0, wc = 0, other = 0;
 
@@ -1517,6 +1692,7 @@
     setBadge();
   }
 
+  quizInit();
   // Timer init
   timerInit();
 
@@ -1525,7 +1701,7 @@
   showView('tkd');
   setBadge();
   // ========= PWA: Service Worker Registrierung =========
-  if ('serviceWorker' in navigator) {
+  if ((location.protocol === 'http:' || location.protocol === 'https:') && 'serviceWorker' in navigator) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('sw.js').catch(function (err) {
         console.warn('Service Worker Registrierung fehlgeschlagen:', err);

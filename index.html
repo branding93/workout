@@ -39,6 +39,7 @@
             <button id="navOTHER" type="button" aria-selected="false">Weiteres</button>
             <button id="navTRAIN" type="button" aria-selected="false">Training</button>
             <button id="navTIMER" type="button" aria-selected="false">Timer</button>
+        <button id="navQUIZ" type="button" aria-selected="false">Quiz</button>
           </div>
         </div>
         <span id="selectedBadge" class="badge">📋 0 Auswahlen</span>
@@ -302,6 +303,63 @@
               </div>
             </div>
           </section>
+
+  <section id="view-quiz" class="view" aria-label="Quiz">
+      <div class="viewTitle">
+        <h2>🧠 Quiz – Wissen testen</h2>
+        <span class="pill">Quiz</span>
+      </div>
+      <p class="desc">Wähle ein Quiz (Taekwondo oder Wing Chun). Danach bekommst du 10 zufällige Fragen. Jede korrekt beantwortete Frage gibt 1 Punkt. Jede Frage kommt pro Durchlauf nur einmal vor.</p>
+      <div class="sep"></div>
+
+      <div class="subcard">
+        <div class="row" style="gap:10px;align-items:center;justify-content:space-between">
+          <div class="row" style="gap:10px;align-items:center;flex-wrap:wrap">
+            <span class="pill" id="quiz-modePill">Modus: Auswahl</span>
+            <span class="pill" id="quiz-progressPill">Frage 0 / 10</span>
+            <span class="pill" id="quiz-scorePill">Punkte: 0</span>
+          </div>
+          <div class="row" style="gap:8px">
+            <button id="quiz-restart" class="btn" type="button">↺ Neu</button>
+          </div>
+        </div>
+        <div class="sep" style="margin:12px 0"></div>
+
+        <div id="quiz-setup" class="quizSetup">
+          <div class="title">1) Disziplin wählen</div>
+          <div class="row" style="margin-top:10px;gap:10px">
+            <button id="quiz-pick-tkd" class="btn" type="button">🥋 Taekwondo</button>
+            <button id="quiz-pick-wc" class="btn" type="button">🥋 Wing Chun</button>
+          </div>
+          <div class="sep" style="margin:12px 0"></div>
+          <div class="title">2) Start</div>
+          <p class="desc" style="margin-top:6px">Hinweis: Fragen sind Multiple Choice oder Lückentext (ein Wort ergänzen). Antworten immer aus vier Optionen wählen.</p>
+          <div class="row" style="margin-top:10px">
+            <button id="quiz-start" class="btn primary" type="button" disabled>Start Quiz</button>
+          </div>
+        </div>
+
+        <div id="quiz-play" class="quizPlay hidden">
+          <div class="quizQ" id="quiz-question">—</div>
+          <div class="quizOptions" id="quiz-options" aria-live="polite"></div>
+          <div class="row" style="margin-top:12px;justify-content:space-between">
+            <button id="quiz-next" class="btn primary" type="button" disabled>Nächste Frage →</button>
+            <span class="desc" id="quiz-feedback" aria-live="polite">—</span>
+          </div>
+        </div>
+
+        <div id="quiz-result" class="quizResult hidden">
+          <div class="summaryBox" style="border-style:solid">
+            <div style="font-weight:1000;margin-bottom:6px">🏁 Ergebnis</div>
+            <div id="quiz-resultText">—</div>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <button id="quiz-again" class="btn primary" type="button">Nochmal spielen</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
         </div>
       </div>
 
