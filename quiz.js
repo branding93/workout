@@ -1,468 +1,398 @@
-/* quiz.js – separat gepflegte Quiz-Fragenbibliothek
-Abhängigkeit: data.js (HYONGS, BASICS, FORMS, GRUNDLAGEN, ARM_HAND, BEINE, WEITERE_HAND, WEAPON, TKD_VARIATIONS, WC_VARIATIONS, TKD_BELTS, WC_LEVELS, COMBOS)
-Export: global QUIZ_BANKS (oder window.QUIZ_BANKS) = { tkd: [...200], wc: [...200] }
+/* quiz.js – Sinnvolle, eindeutige Quiz-Fragen (datengetrieben)
+   Export: window.QUIZ_BANKS = { tkd: [...200], wc: [...200] }
 
-Regeln:
-- Jede Frage ist eindeutig über q (Fragetext)
-- Jede Frage hat genau 4 Antwortoptionen (options) und den Index der richtigen Antwort (a)
-- Mischung: ca. 50/50 Multiple-Choice & Lückentext (type: 'mcq' | 'cloze')
-- Keine externen Abhängigkeiten oder Web-Requests
-
-Hinweis:
-- Wenn Datenpools (z.B. nur 3 Wing-Chun-Formen) weniger als 4 Einträge enthalten,
-  werden neutrale Zusatz-Distraktoren ergänzt, damit jede Frage exakt 4 Optionen hat.
+   Ziele:
+   - exakt 200 Fragen je Disziplin (100 mcq + 100 cloze)
+   - jede Frage nur einmal (Dedup über Fragetext)
+   - keine generischen/unsinnigen Füllfragen ("Set 35" etc.)
+   - Antworten sind eindeutig & aus data.js ableitbar
 */
-
 (function () {
   'use strict';
 
-  // ---------- Helpers ----------
-  function asArr(x, fallback) { return Array.isArray(x) ? x : (fallback || []); }
-  function objKeys(o) { return (o && typeof o === 'object') ? Object.keys(o) : []; }
+  // ---------- helpers ----------
+  function asArr(x) { return Array.isArray(x) ? x : []; }
+  function safeStr(x) { return String(x == null ? '' : x); }
+
   function uniq(arr) {
     var out = [];
     var seen = new Set();
-    for (var i = 0; i < (arr || []).length; i++) {
-      var v = String(arr[i]);
-      if (!seen.has(v)) { seen.add(v); out.push(arr[i]); }
-    }
+    asArr(arr).forEach(function (v) {
+      var s = safeStr(v).trim();
+      if (!s) return;
+      if (!seen.has(s)) { seen.add(s); out.push(s); }
+    });
     return out;
   }
+
   function shuffle(arr) {
-    var a = (arr || []).slice();
+    var a = asArr(arr).slice();
     for (var i = a.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
       var t = a[i]; a[i] = a[j]; a[j] = t;
     }
     return a;
   }
-  function pickDistinct(pool, n, exclude) {
-    var ex = new Set((exclude || []).map(String));
-    var out = [];
-    for (var i = 0; i < (pool || []).length; i++) {
-      var v = pool[i];
-      if (!ex.has(String(v))) out.push(v);
+
+  function pick(pool, n, exclude) {
+    var ex = new Set(asArr(exclude).map(function (x) { return safeStr(x); }));
+    var p = uniq(pool).filter(function (x) { return !ex.has(safeStr(x)); });
+    return shuffle(p).slice(0, n);
+  }
+
+  // Erzeugt 4 Antwortoptionen (1 korrekt + 3 Distraktoren), garantiert unique.
+  function makeOptions(correct, wrongPool, fallbackPool) {
+    var c = safeStr(correct).trim();
+    var wrong = pick(wrongPool, 3, [c]);
+
+    // Falls zu wenig Distraktoren vorhanden: aus fallback auffüllen
+    if (wrong.length < 3) {
+      var extra = pick(uniq(asArr(fallbackPool).concat(wrongPool)), 30, [c].concat(wrong));
+      while (wrong.length < 3 && extra.length) wrong.push(extra.shift());
     }
-    return shuffle(out).slice(0, n);
+
+    // Letzter Sicherheitsfallback (sollte praktisch nie greifen):
+    var emergency = ['Struktur', 'Timing', 'Distanz', 'Balance', 'Mittellinie', 'Deckung', 'Hüfte', 'Atmung'];
+    while (wrong.length < 3) {
+      var e = pick(emergency, 1, [c].concat(wrong));
+      wrong.push(e.length ? e[0] : ('Option ' + (wrong.length + 1)));
+    }
+
+    var opts = uniq([c].concat(wrong));
+    // exakt 4 Optionen
+    if (opts.length > 4) opts = opts.slice(0, 4);
+    while (opts.length < 4) {
+      var add = pick(uniq(asArr(fallbackPool).concat(wrongPool, emergency)), 1, opts);
+      opts.push(add.length ? add[0] : ('Option ' + (opts.length + 1)));
+      opts = uniq(opts);
+    }
+
+    opts = shuffle(opts);
+    var a = opts.indexOf(c);
+    if (a < 0) { opts[0] = c; a = 0; }
+    // Final unique check
+    if (new Set(opts.map(safeStr)).size !== 4) {
+      opts = uniq(opts).slice(0, 4);
+      while (opts.length < 4) opts.push('Option ' + (opts.length + 1));
+      a = opts.indexOf(c);
+      if (a < 0) { opts[0] = c; a = 0; }
+    }
+    return { options: opts, a: a };
   }
-  function poolAtLeast4(pool, extras) {
-    var p = uniq(asArr(pool, []).concat(asArr(extras, [])));
-    // If still <4, pad with generic placeholders
-    var pad = ['(keine Angabe)', '(Variante)', '(Übung)', '(Begriff)'];
-    for (var i = 0; p.length < 4 && i < pad.length; i++) p.push(pad[i]);
-    return p;
+
+  // Fügt Frage hinzu, wenn Fragetext noch nicht existiert
+  function addQ(targetList, seenQ, type, q, correct, wrongPool, fallbackPool) {
+    q = safeStr(q).trim();
+    if (!q || seenQ.has(q)) return false;
+    var o = makeOptions(correct, wrongPool, fallbackPool);
+    if (!o || !o.options || o.options.length !== 4) return false;
+    if (new Set(o.options.map(safeStr)).size !== 4) return false;
+    targetList.push({ type: type, q: q, options: o.options, a: o.a });
+    seenQ.add(q);
+    return true;
   }
-  function ensure4Options(correct, pool, extras) {
-    var p = poolAtLeast4(pool, extras);
-    var distract = pickDistinct(p, 3, [correct]);
-    var opts = shuffle([correct].concat(distract));
-    return { options: opts, a: opts.indexOf(correct) };
-  }
-  function keyOf(qObj) {
-    return (qObj && qObj.q) ? String(qObj.q).trim() : '';
-  }
-  function pushUnique(arr, seen, qObj) {
-    var k = keyOf(qObj);
-    if (!k) return;
-    if (seen.has(k)) return;
-    if (!qObj.options || qObj.options.length !== 4) return;
-    if (typeof qObj.a !== 'number' || qObj.a < 0 || qObj.a > 3) return;
-    if (qObj.type !== 'mcq' && qObj.type !== 'cloze') return;
-    seen.add(k);
-    arr.push(qObj);
-  }
-  function ensureCount(arr, seen, n, factories) {
+
+  function fillTo(targetList, seenQ, type, desiredCount, genFn) {
     var guard = 0;
-    var f = asArr(factories, []);
-    while (arr.length < n && guard < 25000) {
+    while (targetList.length < desiredCount && guard < 5000) {
       guard++;
-      var idx = arr.length;
-      var factory = f[idx % f.length];
-      if (typeof factory === 'function') {
-        var qObj = factory(idx);
-        if (qObj) pushUnique(arr, seen, qObj);
-      } else {
-        break;
-      }
-    }
-    return arr.slice(0, n);
-  }
-  function splitHalf(arr, n) {
-    var mcq = arr.filter(function (x) { return x.type === 'mcq'; });
-    var clz = arr.filter(function (x) { return x.type === 'cloze'; });
-    var half = Math.floor(n / 2);
-    var out = mcq.slice(0, half).concat(clz.slice(0, half));
-    if (out.length < n) {
-      var rest = mcq.slice(half).concat(clz.slice(half));
-      for (var i = 0; i < rest.length && out.length < n; i++) out.push(rest[i]);
-    }
-    return shuffle(out).slice(0, n);
-  }
-  function safeStr(x) { return String(x == null ? '' : x); }
-
-  // ---------- Data from data.js (safe fallbacks) ----------
-  var HY = (typeof HYONGS !== 'undefined') ? asArr(HYONGS, []) : [];
-  var B = (typeof BASICS !== 'undefined') ? (BASICS || { kicks: [], blocks: [], strikes: [], stances: [], overview: [] }) : { kicks: [], blocks: [], strikes: [], stances: [], overview: [] };
-  var TKD_VAR = (typeof TKD_VARIATIONS !== 'undefined') ? asArr(TKD_VARIATIONS, []) : [];
-  var TKD_BELT = (typeof TKD_BELTS !== 'undefined') ? (TKD_BELTS || {}) : {};
-  var TKD_BELT_LABELS = objKeys(TKD_BELT).map(function (k) { return TKD_BELT[k].label; });
-  var COM = (typeof COMBOS !== 'undefined') ? asArr(COMBOS, []) : [];
-
-  var FOR = (typeof FORMS !== 'undefined') ? asArr(FORMS, []) : [];
-  var WC_VAR = (typeof WC_VARIATIONS !== 'undefined') ? asArr(WC_VARIATIONS, []) : [];
-  var WC_LVL = (typeof WC_LEVELS !== 'undefined') ? (WC_LEVELS || {}) : {};
-
-  var GR = (typeof GRUNDLAGEN !== 'undefined') ? asArr(GRUNDLAGEN, []) : [];
-  var AH = (typeof ARM_HAND !== 'undefined') ? asArr(ARM_HAND, []) : [];
-  var BN = (typeof BEINE !== 'undefined') ? asArr(BEINE, []) : [];
-  var WH = (typeof WEITERE_HAND !== 'undefined') ? asArr(WEITERE_HAND, []) : [];
-  var WP = (typeof WEAPON !== 'undefined') ? asArr(WEAPON, []) : [];
-
-  // Pools
-  var tkdKicks = asArr(B.kicks, []);
-  var tkdBlocks = asArr(B.blocks, []);
-  var tkdStrikes = asArr(B.strikes, []);
-  var tkdStances = asArr(B.stances, []);
-
-  var wcAllItems = [];
-  function pushCat(arr, cat, items) {
-    for (var i = 0; i < items.length; i++) {
-      wcAllItems.push({ cat: cat, t: items[i].t, d: items[i].d });
-      arr.push(items[i].t);
+      if (!genFn()) break;
     }
   }
-  var wcTerms = [];
-  pushCat(wcTerms, 'Grundlagen', GR);
-  pushCat(wcTerms, 'Schutztechniken', AH);
-  pushCat(wcTerms, 'Beine', BN);
-  pushCat(wcTerms, 'Weiteres', WH);
-  pushCat(wcTerms, 'Weapon', WP);
 
-  // ---------- Creative templates ----------
-  var principlePairs = [
-    { good: 'Kontrolle zuerst – Power folgt.', bad: 'Immer maximal hart, egal ob sauber.' },
-    { good: 'Sauber → schnell → stark.', bad: 'Schnell → unsauber → hoffen.' },
-    { good: 'Atmung ruhig, Blick klar.', bad: 'Atmung anhalten, Schultern hoch.' },
-    { good: 'Kurze Wege, klare Linie.', bad: 'Große Ausholbewegungen für alles.' },
-    { good: 'Balance & Struktur halten.', bad: 'Balance ignorieren – Hauptsache Treffer.' },
-    { good: 'Recoil/Reset nach dem Treffer.', bad: 'Bein/Arm nach Treffer draußen lassen.' },
-    { good: 'Timing schlägt rohe Kraft.', bad: 'Nur Kraft zählt, Timing ist egal.' },
-    { good: 'Wiederholung mit Fokus.', bad: 'Nie wiederholen – immer Neues.' }
+  function finalize(mcq, clz) {
+    // Erzwinge 100/100
+    mcq = mcq.slice(0, 100);
+    clz = clz.slice(0, 100);
+    return mcq.concat(clz);
+  }
+
+  // ---------- data from data.js ----------
+  var HY = (typeof HYONGS !== 'undefined') ? asArr(HYONGS) : [];
+  var BAS = (typeof BASICS !== 'undefined' && BASICS) ? BASICS : { kicks: [], blocks: [], strikes: [], stances: [], overview: [] };
+  var COMB = (typeof COMBOS !== 'undefined') ? asArr(COMBOS) : [];
+  var SPAR = (typeof SPARRING !== 'undefined') ? asArr(SPARRING) : [];
+  var TKD_VAR = (typeof TKD_VARIATIONS !== 'undefined') ? asArr(TKD_VARIATIONS) : [];
+  var TKD_BELT_OBJ = (typeof TKD_BELTS !== 'undefined' && TKD_BELTS) ? TKD_BELTS : {};
+
+  var FORMS_ = (typeof FORMS !== 'undefined') ? asArr(FORMS) : [];
+  var WC_VAR = (typeof WC_VARIATIONS !== 'undefined') ? asArr(WC_VARIATIONS) : [];
+  var WC_LEVEL_OBJ = (typeof WC_LEVELS !== 'undefined' && WC_LEVELS) ? WC_LEVELS : {};
+
+  var GR = (typeof GRUNDLAGEN !== 'undefined') ? asArr(GRUNDLAGEN) : [];
+  var AH = (typeof ARM_HAND !== 'undefined') ? asArr(ARM_HAND) : [];
+  var BN = (typeof BEINE !== 'undefined') ? asArr(BEINE) : [];
+  var WH = (typeof WEITERE_HAND !== 'undefined') ? asArr(WEITERE_HAND) : [];
+  var WP = (typeof WEAPON !== 'undefined') ? asArr(WEAPON) : [];
+
+  function beltLabel(key) {
+    key = safeStr(key);
+    try { return (TKD_BELT_OBJ[key] && TKD_BELT_OBJ[key].label) ? TKD_BELT_OBJ[key].label : key; }
+    catch (_) { return key; }
+  }
+  function levelLabel(key) {
+    key = safeStr(key);
+    try { return (WC_LEVEL_OBJ[key] && WC_LEVEL_OBJ[key].label) ? WC_LEVEL_OBJ[key].label : key; }
+    catch (_) { return key; }
+  }
+
+  // ---------- pools ----------
+  var tkdKicks = uniq(asArr(BAS.kicks));
+  var tkdBlocks = uniq(asArr(BAS.blocks));
+  var tkdStrikes = uniq(asArr(BAS.strikes));
+  var tkdStances = uniq(asArr(BAS.stances));
+  var tkdOverview = uniq(asArr(BAS.overview));
+  var tkdBasicsAll = uniq(tkdKicks.concat(tkdBlocks, tkdStrikes, tkdStances, tkdOverview));
+
+  var hyNames = uniq(HY.map(function (h) { return h && h.name; }));
+  var hyIds = uniq(HY.map(function (h) { return h && h.id; }));
+  var hyMoves = uniq(HY.map(function (h) { return h && String(h.moves); }));
+  var beltLabels = uniq(Object.keys(TKD_BELT_OBJ || {}).map(beltLabel));
+
+  var tkdAllTerms = uniq(tkdBasicsAll.concat(COMB, SPAR, hyNames, hyIds, TKD_VAR, beltLabels));
+
+  function wcTitles(arr) { return uniq(asArr(arr).map(function (x) { return x && x.t; })); }
+  function wcDescs(arr) { return uniq(asArr(arr).map(function (x) { return x && x.d; })); }
+
+  var wcCats = [
+    { key: 'Grundlagen', items: GR },
+    { key: 'Schutztechniken', items: AH },
+    { key: 'Beine', items: BN },
+    { key: 'Weiteres', items: WH },
+    { key: 'Weapon', items: WP }
   ];
+  var wcCatNames = wcCats.map(function (c) { return c.key; });
 
-  function makePrincipleMCQ(prefix, i) {
-    var p = principlePairs[i % principlePairs.length];
-    var opts = shuffle([p.good, p.bad, 'Nur Ausdauer zählt; Technik ist zweitrangig.', 'Wenn es weh tut, ist es richtig.']);
-    return { type: 'mcq', q: prefix + ' Welcher Satz passt am besten als Trainingsprinzip?', options: opts, a: opts.indexOf(p.good) };
-  }
+  var wcAllTitles = uniq(wcCats.reduce(function (acc, c) { return acc.concat(wcTitles(c.items)); }, []));
+  var wcAllDescs = uniq(wcCats.reduce(function (acc, c) { return acc.concat(wcDescs(c.items)); }, []));
+  var formNames = uniq(FORMS_.map(function (f) { return f && f.name; }));
+  var formCodes = uniq(FORMS_.map(function (f) { return f && f.code; }));
+  var formNotes = uniq(FORMS_.map(function (f) { return f && f.note; }));
+  var formParts = uniq(FORMS_.map(function (f) { return f && f.parts; }).filter(Boolean));
+  var levelLabels = uniq(Object.keys(WC_LEVEL_OBJ || {}).map(levelLabel));
 
-  function makePrincipleCloze(prefix, i) {
-    var targets = [
-      { word: 'Kontrolle', sentence: '____ zuerst – Power folgt.' },
-      { word: 'sauber', sentence: '____ üben ist kein Umweg – es ist der Turbo.' },
-      { word: 'Timing', sentence: '____ schlägt rohe Kraft (fast immer).' },
-      { word: 'Balance', sentence: '____ ist die Basis für Präzision.' },
-      { word: 'Recoil', sentence: 'Nach dem Treffer: ____ (zurückziehen/reset).' },
-    ];
-    var t = targets[i % targets.length];
-    var o = ensure4Options(t.word, ['Kontrolle', 'Timing', 'Balance', 'Recoil', 'Härte', 'Zufall', 'Hektik', 'Spannung']);
-    return { type: 'cloze', q: prefix + ' Ergänze: ' + t.sentence, options: o.options, a: o.a };
-  }
+  var wcAllTerms = uniq(wcAllTitles.concat(formNames, formCodes, WC_VAR, levelLabels, wcCatNames));
 
-  // ---------- TKD bank (200) ----------
+  // ---------- builders ----------
   function buildTKD() {
-    var out = [];
-    var seen = new Set();
+    var seenQ = new Set();
+    var mcq = [];
+    var clz = [];
 
-    var hyongNames = HY.map(function (h) { return h.name; });
-    var hyongIds = HY.map(function (h) { return h.id; });
-    var hyongMoves = HY.map(function (h) { return String(h.moves); });
+    // 1) Basics: Kategorie
+    tkdKicks.forEach(function (t) {
+      addQ(mcq, seenQ, 'mcq', 'Zu welcher Kategorie gehört "' + t + '" (TKD)?', 'Kick', ['Block', 'Schlag', 'Stellung'], ['Kick', 'Block', 'Schlag', 'Stellung']);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + t + '" ist ein _____.', 'Kick', ['Block', 'Schlag', 'Stellung'], ['Kick', 'Block', 'Schlag', 'Stellung']);
+    });
+    tkdBlocks.forEach(function (t) {
+      addQ(mcq, seenQ, 'mcq', 'Zu welcher Kategorie gehört "' + t + '" (TKD)?', 'Block', ['Kick', 'Schlag', 'Stellung'], ['Kick', 'Block', 'Schlag', 'Stellung']);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + t + '" ist ein _____.', 'Block', ['Kick', 'Schlag', 'Stellung'], ['Kick', 'Block', 'Schlag', 'Stellung']);
+    });
+    tkdStrikes.forEach(function (t) {
+      addQ(mcq, seenQ, 'mcq', 'Zu welcher Kategorie gehört "' + t + '" (TKD)?', 'Schlag', ['Kick', 'Block', 'Stellung'], ['Kick', 'Block', 'Schlag', 'Stellung']);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + t + '" ist ein _____.', 'Schlag', ['Kick', 'Block', 'Stellung'], ['Kick', 'Block', 'Schlag', 'Stellung']);
+    });
+    tkdStances.forEach(function (t) {
+      addQ(mcq, seenQ, 'mcq', 'Zu welcher Kategorie gehört "' + t + '" (TKD)?', 'Stellung', ['Kick', 'Block', 'Schlag'], ['Kick', 'Block', 'Schlag', 'Stellung']);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + t + '" ist eine _____.', 'Stellung', ['Kick', 'Block', 'Schlag'], ['Kick', 'Block', 'Schlag', 'Stellung']);
+    });
 
-    // Hyong questions
-    HY.forEach(function (h, idx) {
-      var oMoves = ensure4Options(String(h.moves), hyongMoves, ['24', '32', '36', '40']);
-      pushUnique(out, seen, { type: 'mcq', q: 'TKD: Wie viele Bewegungen hat ' + h.name + '?', options: oMoves.options, a: oMoves.a });
+    // 2) Hyongs: Moves, Gürtel, Kennung
+    HY.forEach(function (h) {
+      if (!h) return;
+      var b = beltLabel(h.belt);
+      addQ(mcq, seenQ, 'mcq', 'Wie viele Bewegungen hat die Hyong "' + h.name + '"?', String(h.moves), hyMoves, hyMoves);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + h.name + '" hat ____ Bewegungen.', String(h.moves), hyMoves, hyMoves);
 
-      if (TKD_BELT && TKD_BELT[h.belt]) {
-        var oBelt = ensure4Options(TKD_BELT[h.belt].label, TKD_BELT_LABELS, ['Weiß', 'Gelb', 'Grün', 'Blau', 'Rot', 'Schwarz']);
-        pushUnique(out, seen, { type: 'mcq', q: 'TKD: Zu welchem Gürtel gehört ' + h.name + '?', options: oBelt.options, a: oBelt.a });
+      addQ(mcq, seenQ, 'mcq', 'Zu welchem Gürtel gehört die Hyong "' + h.name + '"?', b, beltLabels, beltLabels);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + h.name + '" gehört zum Gürtel _____.', b, beltLabels, beltLabels);
+
+      addQ(mcq, seenQ, 'mcq', 'Welche Hyong hat die Kennung "' + h.id + '"?', h.name, hyNames, hyNames);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): Die Hyong mit der Kennung "' + h.id + '" heißt _____.', h.name, hyNames, hyNames);
+
+      addQ(mcq, seenQ, 'mcq', 'Welche Kennung hat die Hyong "' + h.name + '"?', h.id, hyIds, hyIds);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): Die Kennung der Hyong "' + h.name + '" ist _____.', h.id, hyIds, hyIds);
+    });
+
+    HY.forEach(function (h) {
+      if (!h) return;
+      addQ(mcq, seenQ, 'mcq', 'Welche Hyong hat ' + String(h.moves) + ' Bewegungen?', h.name, hyNames, hyNames);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): Die Hyong mit ' + String(h.moves) + ' Bewegungen heißt _____.', h.name, hyNames, hyNames);
+    });
+
+    // Reihenfolge-Fragen aus der App-Liste
+    HY.forEach(function (h, i) {
+      if (!h) return;
+      addQ(mcq, seenQ, 'mcq', 'Welche Hyong steht in der App-Liste an Position ' + (i + 1) + '?', h.name, hyNames, hyNames);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): In der App-Liste steht an Position ' + (i + 1) + ' die Hyong _____.', h.name, hyNames, hyNames);
+
+      if (i > 0 && HY[i - 1]) {
+        addQ(mcq, seenQ, 'mcq', 'Welche Hyong steht direkt vor "' + h.name + '"?', HY[i - 1].name, hyNames, hyNames);
+        addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): Direkt vor "' + h.name + '" steht _____.', HY[i - 1].name, hyNames, hyNames);
       }
-
-      var oId = ensure4Options(h.id, hyongIds, ['XI', 'XII', 'XIII', 'XIV']);
-      pushUnique(out, seen, { type: 'cloze', q: 'TKD: Hyong ____ heißt „' + h.name + '“.', options: oId.options, a: oId.a });
-
-      var oName = ensure4Options(h.name, hyongNames, ['Dan-Gun Hyong', 'Do-San Hyong', 'Kwang-Gae Hyong', 'Choong-Moo Hyong']);
-      pushUnique(out, seen, { type: 'cloze', q: 'TKD: Hyong ' + h.id + ' heißt ____ .', options: oName.options, a: oName.a });
-
-      if (HY.length >= 4) {
-        var prev = (idx > 0) ? HY[idx - 1].name : null;
-        var next = (idx < HY.length - 1) ? HY[idx + 1].name : null;
-        if (next) {
-          var oNext = ensure4Options(next, hyongNames, ['(keine)', '(Ende)', '(Start)', '(Pause)']);
-          pushUnique(out, seen, { type: 'mcq', q: 'TKD: Welche Hyong folgt in der Liste direkt auf ' + h.name + '?', options: oNext.options, a: oNext.a });
-        }
-        if (prev) {
-          var oPrev = ensure4Options(prev, hyongNames, ['(keine)', '(Ende)', '(Start)', '(Pause)']);
-          pushUnique(out, seen, { type: 'mcq', q: 'TKD: Welche Hyong steht in der Liste direkt vor ' + h.name + '?', options: oPrev.options, a: oPrev.a });
-        }
+      if (i < HY.length - 1 && HY[i + 1]) {
+        addQ(mcq, seenQ, 'mcq', 'Welche Hyong folgt direkt auf "' + h.name + '"?', HY[i + 1].name, hyNames, hyNames);
+        addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): Auf "' + h.name + '" folgt direkt _____.', HY[i + 1].name, hyNames, hyNames);
       }
     });
 
-    // Identify technique type (Kick/Block/Stellung)
-    var poolAllTech = tkdKicks.concat(tkdBlocks).concat(tkdStrikes).concat(tkdStances);
-    poolAllTech = poolAtLeast4(poolAllTech, ['Pak Sao', 'Tan Sao', 'Siu Nim Tao', 'Plank']);
-
-    tkdKicks.forEach(function (k) {
-      var o = ensure4Options(k, poolAllTech);
-      pushUnique(out, seen, { type: 'mcq', q: 'TKD: Welche Technik ist ein Kick?', options: o.options, a: o.a });
+    // 3) Kombos & Sparring: Typ
+    COMB.forEach(function (c) {
+      addQ(mcq, seenQ, 'mcq', 'Was ist "' + c + '" in der App (TKD)?', 'Kombination', ['Hyong', 'Grundübung', 'Sparring', 'Hyong-Variante'], ['Kombination', 'Hyong', 'Grundübung', 'Sparring', 'Hyong-Variante']);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + c + '" ist eine _____.', 'Kombination', ['Hyong', 'Grundübung', 'Sparring', 'Hyong-Variante'], ['Kombination', 'Hyong', 'Grundübung', 'Sparring', 'Hyong-Variante']);
     });
-    tkdBlocks.forEach(function (b) {
-      var o = ensure4Options(b, poolAllTech);
-      pushUnique(out, seen, { type: 'mcq', q: 'TKD: Welche Technik ist ein Block?', options: o.options, a: o.a });
-    });
-    tkdStances.forEach(function (s) {
-      var o = ensure4Options(s, poolAllTech);
-      pushUnique(out, seen, { type: 'mcq', q: 'TKD: Welche Technik ist eine Stellung?', options: o.options, a: o.a });
+    SPAR.forEach(function (s) {
+      addQ(mcq, seenQ, 'mcq', 'Was ist "' + s + '" in der App (TKD)?', 'Sparring', ['Hyong', 'Grundübung', 'Kombination', 'Hyong-Variante'], ['Sparring', 'Hyong', 'Grundübung', 'Kombination', 'Hyong-Variante']);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + s + '" ist ein _____.', 'Sparring', ['Hyong', 'Grundübung', 'Kombination', 'Hyong-Variante'], ['Sparring', 'Hyong', 'Grundübung', 'Kombination', 'Hyong-Variante']);
     });
 
-    // Variations & drills
-    TKD_VAR.forEach(function (v) {
-      var o = ensure4Options(v, TKD_VAR, ['normal', 'langsam', 'Timing', 'Struktur']);
-      pushUnique(out, seen, { type: 'mcq', q: 'TKD: Welche Option ist eine Hyong-Variante (in der App)?', options: o.options, a: o.a });
-      pushUnique(out, seen, { type: 'cloze', q: 'TKD: Eine Hyong-Variante lautet ____ .', options: o.options, a: o.a });
+    // 4) Varianten: Typ
+    uniq(TKD_VAR).forEach(function (v) {
+      addQ(mcq, seenQ, 'mcq', 'Wofür steht "' + v + '" in der TKD-Planung?', 'Hyong-Variante', ['Kombination', 'Grundübung', 'Sparring', 'Hyong'], ['Hyong-Variante', 'Kombination', 'Grundübung', 'Sparring', 'Hyong']);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + v + '" ist eine _____.', 'Hyong-Variante', ['Kombination', 'Grundübung', 'Sparring', 'Hyong'], ['Hyong-Variante', 'Kombination', 'Grundübung', 'Sparring', 'Hyong']);
     });
 
-    COM.forEach(function (c) {
-      var o = ensure4Options(c, COM, ['Kombination 1-20', 'Drill 9-12', 'Freikampf', 'Stretching']);
-      pushUnique(out, seen, { type: 'mcq', q: 'TKD: Welche der folgenden Angaben ist eine Kombination (Drill)?', options: o.options, a: o.a });
-    });
-
-    // Coaching-cues for kicks
-    var cueKick = [
-      { cue: 'Kammer (Knie hoch) → strecken → sofort zurückziehen (Recoil).', wrong: ['Bein nach dem Treffer draußen lassen.', 'Schultern hochziehen, um mehr Kraft zu erzeugen.', 'Atmung anhalten, um stabil zu bleiben.'] },
-      { cue: 'Standfuß mitdrehen und Hüfte aktiv einsetzen.', wrong: ['Standfuß festkleben, Hüfte bleibt neutral.', 'Oberkörper nach hinten werfen.', 'Arme komplett fallen lassen.'] },
-      { cue: 'Balance vor Power: erst sauber, dann schnell.', wrong: ['Schnell starten, Sauberkeit kommt später.', 'Nur Kraft zählt.', 'Immer maximaler Schwung.'] }
-    ];
-
-    tkdKicks.forEach(function (k, i) {
-      var c = cueKick[i % cueKick.length];
-      var opts = shuffle([c.cue].concat(c.wrong));
-      pushUnique(out, seen, { type: 'mcq', q: 'TKD: Was ist beim ' + k + ' als Coaching-Hinweis am sinnvollsten?', options: opts, a: opts.indexOf(c.cue) });
-
-      var cl = [
-        { word: 'Kammer', sentence: 'Der Kick beginnt mit der ____: Knie hoch.' },
-        { word: 'Recoil', sentence: 'Nach dem Treffer folgt der ____ (sofort zurückziehen).' },
-        { word: 'Standfuß', sentence: 'Der ____ dreht mit, damit die Hüfte arbeiten kann.' },
-        { word: 'Balance', sentence: '____ halten: Trefferbild bleibt stabil.' }
-      ];
-      var t = cl[i % cl.length];
-      var o = ensure4Options(t.word, ['Kammer', 'Recoil', 'Standfuß', 'Balance', 'Hektik', 'Zufall', 'Spannung', 'Schmerz']);
-      pushUnique(out, seen, { type: 'cloze', q: 'TKD: Ergänze: ' + t.sentence + ' (' + k + ')', options: o.options, a: o.a });
-    });
-
-    // Principles
-    for (var i = 0; i < 50; i++) {
-      pushUnique(out, seen, makePrincipleMCQ('TKD:', i));
-      pushUnique(out, seen, makePrincipleCloze('TKD:', i));
+    // 5) Falls noch nicht genug: objektive Zuordnung
+    function tkdKindOf(term) {
+      if (tkdKicks.indexOf(term) >= 0) return 'Kick';
+      if (tkdBlocks.indexOf(term) >= 0) return 'Block';
+      if (tkdStrikes.indexOf(term) >= 0) return 'Schlag';
+      if (tkdStances.indexOf(term) >= 0) return 'Stellung';
+      if (hyNames.indexOf(term) >= 0 || hyIds.indexOf(term) >= 0) return 'Hyong';
+      if (COMB.indexOf(term) >= 0) return 'Kombination';
+      if (SPAR.indexOf(term) >= 0) return 'Sparring';
+      if (TKD_VAR.indexOf(term) >= 0) return 'Hyong-Variante';
+      if (beltLabels.indexOf(term) >= 0) return 'Gürtel';
+      return 'Grundübung';
     }
+    var tkdTypePool = ['Kick', 'Block', 'Schlag', 'Stellung', 'Hyong', 'Kombination', 'Sparring', 'Hyong-Variante', 'Gürtel', 'Grundübung'];
+    var typeFillTerms = shuffle(tkdAllTerms).concat(shuffle(tkdAllTerms));
 
-    // Fillers to 220 then balance
-    var fillerFactories = [];
-
-    fillerFactories.push(function (i) {
-      var groups = [
-        { name: 'Kick', pool: tkdKicks, other: tkdBlocks.concat(tkdStrikes).concat(tkdStances) },
-        { name: 'Block', pool: tkdBlocks, other: tkdKicks.concat(tkdStrikes).concat(tkdStances) },
-        { name: 'Stellung', pool: tkdStances, other: tkdKicks.concat(tkdBlocks).concat(tkdStrikes) }
-      ];
-      var g = groups[i % groups.length];
-      if (g.pool.length < 1) return null;
-      var correct = g.pool[i % g.pool.length];
-      var opts = shuffle([correct].concat(pickDistinct(poolAtLeast4(g.other, ['Siu Nim Tao','Tan Sao','Pak Sao']), 3, [])));
-      return { type: (i % 2 === 0 ? 'mcq' : 'cloze'), q: 'TKD: Welche Option ist ein(e) ' + g.name + '?', options: opts, a: opts.indexOf(correct) };
+    fillTo(mcq, seenQ, 'mcq', 100, function () {
+      var term = typeFillTerms.length ? typeFillTerms.shift() : null;
+      if (!term) return false;
+      var corr = tkdKindOf(term);
+      return addQ(mcq, seenQ, 'mcq', 'Worum handelt es sich bei "' + term + '" (TKD)?', corr, tkdTypePool, tkdTypePool);
+    });
+    fillTo(clz, seenQ, 'cloze', 100, function () {
+      var term = typeFillTerms.length ? typeFillTerms.shift() : null;
+      if (!term) return false;
+      var corr = tkdKindOf(term);
+      return addQ(clz, seenQ, 'cloze', 'Lückentext (TKD): "' + term + '" ist ein/e _____.', corr, tkdTypePool, tkdTypePool);
     });
 
-    fillerFactories.push(function (i) {
-      if (HY.length < 1) return null;
-      var h = HY[i % HY.length];
-      var o = ensure4Options(String(h.moves), hyongMoves, ['24','32','36','40']);
-      return { type: 'cloze', q: 'TKD: ' + h.name + ' hat ____ Bewegungen.', options: o.options, a: o.a };
-    });
-
-    fillerFactories.push(function (i) {
-      var topics = ['Stand', 'Hüfte', 'Deckung', 'Atmung', 'Tempo', 'Blick', 'Distanz', 'Recoil'];
-      var t = topics[i % topics.length];
-      var good = 'Fokus: ' + t + ' – langsam starten und bewusst wiederholen.';
-      var opts = shuffle([good, 'Fokus: alles gleichzeitig, ohne Pause.', 'Fokus: nur Kraft, Technik egal.', 'Fokus: Zufall – einfach machen.']);
-      return { type: 'mcq', q: 'TKD: Was ist der beste Ansatz für eine „1%-besser“-Runde?', options: opts, a: opts.indexOf(good) };
-    });
-
-    fillerFactories.push(function (i) {
-      var pick = ['Kammer', 'Standfuß', 'Hüfte', 'Blick', 'Recoil', 'Deckung'];
-      var w = pick[i % pick.length];
-      var o = ensure4Options(w, pick.concat(['Timing','Balance','Kraft']));
-      return { type: 'cloze', q: 'TKD: Technik-Check: Der wichtigste Fokus in dieser Mini-Runde ist ____ .', options: o.options, a: o.a };
-    });
-
-    ensureCount(out, seen, 220, fillerFactories);
-    out = splitHalf(out, 200);
-    return out;
+    return finalize(mcq, clz);
   }
 
-  // ---------- WC bank (200) ----------
   function buildWC() {
-    var out = [];
-    var seen = new Set();
+    var seenQ = new Set();
+    var mcq = [];
+    var clz = [];
 
-    var formNames = FOR.map(function (f) { return f.name; });
-    var formCodes = FOR.map(function (f) { return f.code; });
-    var formNotes = FOR.map(function (f) { return f.note; });
-    var formParts = FOR.map(function (f) { return safeStr(f.parts); });
+    // 1) Formen: Code / Level / Notiz / Teile
+    FORMS_.forEach(function (f) {
+      if (!f) return;
+      var lvl = levelLabel(f.level);
+      addQ(mcq, seenQ, 'mcq', 'Welcher Code gehört zur Form "' + f.name + '"?', f.code, formCodes, formCodes);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (WC): Form-Code "' + f.code + '" = _____.', f.name, formNames, formNames);
 
-    // Fallback distractors (neutral, common terms; used only as answer options)
-    var extraFormNames = ['Muk Yan Jong', 'Baat Cham Dao', 'Luk Dim Boon Kwun', 'Chi Sao'];
-    var extraFormCodes = ['MYJ', 'BCD', 'LDBK', 'CS'];
-    var extraFormNotes = ['Holzpuppe / Dummy-Training', 'Doppelmesser (Waffen)', 'Langstock (Waffen)', 'Partnerdrill (Kontakt)'];
-    var extraParts = ['1 Teil', '2 Teile', '3 Teile', '8 Sätze'];
+      addQ(mcq, seenQ, 'mcq', 'Zu welchem Level gehört die Form "' + f.name + '"?', lvl, levelLabels, levelLabels);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (WC): "' + f.name + '" gehört zum Level _____.', lvl, levelLabels, levelLabels);
 
-    // 1) Forms questions (always possible via fallback pools)
-    FOR.forEach(function (f, idx) {
-      var o1 = ensure4Options(f.code, formCodes, extraFormCodes);
-      pushUnique(out, seen, { type: 'mcq', q: 'WC: Welches Kürzel (Code) hat die Form ' + f.name + '?', options: o1.options, a: o1.a });
-
-      var o2 = ensure4Options(f.note, formNotes, extraFormNotes);
-      pushUnique(out, seen, { type: 'mcq', q: 'WC: Welche Kurzbeschreibung passt zu ' + f.name + '?', options: o2.options, a: o2.a });
-
-      var o3 = ensure4Options(f.name, formNames, extraFormNames);
-      pushUnique(out, seen, { type: 'cloze', q: 'WC: Die Form ____ gehört zu Wing Chun (Code: ' + f.code + ').', options: o3.options, a: o3.a });
-
-      var o4 = ensure4Options(safeStr(f.parts), formParts, extraParts);
-      pushUnique(out, seen, { type: 'cloze', q: 'WC: ' + f.name + ' besteht aus ____ (' + safeStr(f.parts) + ').', options: o4.options, a: o4.a });
-
-      // Level question (if available)
-      if (WC_LVL && f.level && WC_LVL[f.level] && objKeys(WC_LVL).length >= 2) {
-        var lvlLabels = objKeys(WC_LVL).map(function (k) { return WC_LVL[k].label; });
-        var oL = ensure4Options(WC_LVL[f.level].label, lvlLabels, ['Basis','Aufbau','Vertiefung','Fortgeschritten']);
-        pushUnique(out, seen, { type: 'mcq', q: 'WC: Welches Level hat ' + f.name + ' (in der App)?', options: oL.options, a: oL.a });
+      if (f.note) {
+        addQ(mcq, seenQ, 'mcq', 'Welche Kurznotiz gehört zur Form "' + f.name + '"?', f.note, formNotes, formNotes);
+        addQ(clz, seenQ, 'cloze', 'Lückentext (WC): Die Kurznotiz zu "' + f.name + '" lautet _____.', f.note, formNotes, formNotes);
       }
-
-      if (FOR.length >= 2) {
-        var next = (idx < FOR.length - 1) ? FOR[idx + 1].name : null;
-        var prev = (idx > 0) ? FOR[idx - 1].name : null;
-        if (next) {
-          var oN = ensure4Options(next, formNames, extraFormNames);
-          pushUnique(out, seen, { type: 'mcq', q: 'WC: Welche Form folgt in der Liste direkt auf ' + f.name + '?', options: oN.options, a: oN.a });
-        }
-        if (prev) {
-          var oP = ensure4Options(prev, formNames, extraFormNames);
-          pushUnique(out, seen, { type: 'mcq', q: 'WC: Welche Form steht in der Liste direkt vor ' + f.name + '?', options: oP.options, a: oP.a });
-        }
+      if (f.parts) {
+        addQ(mcq, seenQ, 'mcq', 'Wie viele Teile/Sätze sind bei "' + f.name + '" angegeben?', f.parts, formParts, formParts);
+        addQ(clz, seenQ, 'cloze', 'Lückentext (WC): Bei "' + f.name + '" sind ____ angegeben.', f.parts, formParts, formParts);
       }
     });
 
-    // 2) Term definitions & categories
-    var cats = ['Grundlagen', 'Schutztechniken', 'Beine', 'Weiteres', 'Weapon', 'Formen'];
-    var extraDefs = ['Struktur halten', 'Timing finden', 'Mittellinie kontrollieren', 'Ökonomie der Bewegung'];
-
-    if (wcAllItems.length) {
-      wcAllItems.forEach(function (it, i) {
-        var defs = wcAllItems.map(function (x) { return x.d; });
-        var o1 = ensure4Options(it.d, defs, extraDefs);
-        pushUnique(out, seen, { type: 'mcq', q: 'WC: Was beschreibt „' + it.t + '“ am besten?', options: o1.options, a: o1.a });
-
-        var o2 = ensure4Options(it.cat, cats, ['Technik', 'Drill', 'Form', 'Waffe']);
-        pushUnique(out, seen, { type: 'mcq', q: 'WC: Zu welcher Kategorie gehört „' + it.t + '“?', options: o2.options, a: o2.a });
-
-        // cloze: choose a key word from definition
-        var words = safeStr(it.d).split(/\s+/).map(function (w) { return w.replace(/[.,;:()"'“”]/g, ''); })
-          .filter(function (w) { return w.length >= 6 && !/\d/.test(w); });
-        if (words.length) {
-          var w = words[i % words.length];
-          var pool = poolAtLeast4(words, ['Struktur', 'Timing', 'Mittellinie', 'Ökonomie']);
-          var o3 = ensure4Options(w, pool);
-          pushUnique(out, seen, { type: 'cloze', q: 'WC: Ergänze ein Schlüsselwort: „' + it.d.replace(w, '____') + '“ (' + it.t + ')', options: o3.options, a: o3.a });
-        }
+    // 2) Technik-Kategorien + Beschreibung
+    wcCats.forEach(function (cat) {
+      wcTitles(cat.items).forEach(function (t) {
+        addQ(mcq, seenQ, 'mcq', 'Zu welcher Kategorie gehört "' + t + '" (Wing Chun)?', cat.key, wcCatNames, wcCatNames);
+        addQ(clz, seenQ, 'cloze', 'Lückentext (WC): "' + t + '" gehört zur Kategorie _____.', cat.key, wcCatNames, wcCatNames);
       });
+    });
+
+    wcCats.forEach(function (cat) {
+      asArr(cat.items).forEach(function (it) {
+        if (!it || !it.t || !it.d) return;
+        addQ(mcq, seenQ, 'mcq', 'Welche Kurzbeschreibung passt zu "' + it.t + '"?', it.d, wcAllDescs, wcAllDescs);
+        addQ(clz, seenQ, 'cloze', 'Lückentext (WC): "' + it.t + '" – Beschreibung: _____.', it.d, wcAllDescs, wcAllDescs);
+
+        addQ(mcq, seenQ, 'mcq', 'Welche Technik passt zur Beschreibung: "' + it.d + '"?', it.t, wcAllTitles, wcAllTitles);
+        addQ(clz, seenQ, 'cloze', 'Lückentext (WC): Die Technik mit der Beschreibung "' + it.d + '" heißt _____.', it.t, wcAllTitles, wcAllTitles);
+      });
+    });
+
+    // 3) Kategorie -> Technik
+    wcCats.forEach(function (cat) {
+      var titles = wcTitles(cat.items);
+      titles.slice(0, 6).forEach(function (t) {
+        addQ(mcq, seenQ, 'mcq', 'Welche der folgenden Techniken gehört zur Kategorie "' + cat.key + '"?', t, titles, wcAllTitles);
+        addQ(clz, seenQ, 'cloze', 'Lückentext (WC): Zur Kategorie "' + cat.key + '" gehört u.a. _____.', t, titles, wcAllTitles);
+      });
+    });
+
+    // 4) Varianten
+    uniq(WC_VAR).forEach(function (v) {
+      addQ(mcq, seenQ, 'mcq', 'Welche Option ist eine Wing-Chun-Variante?', v, WC_VAR.concat(TKD_VAR), wcAllTerms);
+      addQ(clz, seenQ, 'cloze', 'Lückentext (WC): "' + v + '" ist eine Trainings-Variante.', v, WC_VAR.concat(TKD_VAR), wcAllTerms);
+    });
+
+    // 5) Falls noch nicht genug: Zuordnung
+    var wcTypePool = wcCatNames.concat(['Form', 'Variante']);
+    function wcKindOf(term) {
+      if (formNames.indexOf(term) >= 0 || formCodes.indexOf(term) >= 0) return 'Form';
+      if (WC_VAR.indexOf(term) >= 0) return 'Variante';
+      for (var i = 0; i < wcCats.length; i++) {
+        var titles = wcTitles(wcCats[i].items);
+        if (titles.indexOf(term) >= 0) return wcCats[i].key;
+      }
+      return 'Weiteres';
     }
+    var wcFillTerms = shuffle(wcAllTerms).concat(shuffle(wcAllTerms));
 
-    // 3) Core principles (creative)
-    var wcPrinciples = [
-      { good: 'Mittellinie schützen und übernehmen.', bad: 'Große Kreisbewegungen für jede Situation.' },
-      { good: 'Ellenbogenlinie stabil, Schultern entspannt.', bad: 'Schultern hochziehen, um "stärker" zu sein.' },
-      { good: 'Fühlen statt drücken (Sensitivität).', bad: 'Dauerhaft drücken, egal was passiert.' },
-      { good: 'Kleine Bewegung, große Wirkung (Ökonomie).', bad: 'Ausholen, damit es spektakulär aussieht.' },
-      { good: 'Timing + Struktur → kurze Power.', bad: 'Nur Tempo ohne Struktur.' },
-      { good: 'Übergänge statt Festhalten (Tan/Fook/Bong).', bad: 'Position festhalten, auch wenn sie nicht passt.' }
-    ];
-
-    for (var i = 0; i < 50; i++) {
-      var p = wcPrinciples[i % wcPrinciples.length];
-      var opts = shuffle([p.good, p.bad, 'Distanz ignorieren und hoffen.', 'Immer rückwärts gehen, nie Linie nehmen.']);
-      pushUnique(out, seen, { type: 'mcq', q: 'WC: Welcher Satz passt am besten zu Wing-Chun-Prinzipien?', options: opts, a: opts.indexOf(p.good) });
-
-      var cl = [
-        { word: 'Mittellinie', sentence: '____ zuerst – dann öffnen sich Optionen.' },
-        { word: 'Struktur', sentence: 'Ohne ____ wird Timing schwer.' },
-        { word: 'Timing', sentence: '____ schlägt Kraft, wenn die Struktur stimmt.' },
-        { word: 'Ökonomie', sentence: '____: kurze Wege, klare Linie.' },
-        { word: 'Ellenbogen', sentence: '____ tief und zentriert – Schulter locker.' }
-      ];
-      var t = cl[i % cl.length];
-      var o = ensure4Options(t.word, ['Mittellinie', 'Timing', 'Ökonomie', 'Struktur', 'Ellenbogen', 'Hektik', 'Zufall', 'Spannung']);
-      pushUnique(out, seen, { type: 'cloze', q: 'WC: Ergänze: ' + t.sentence, options: o.options, a: o.a });
-    }
-
-    // 4) Variations (always via fallbacks)
-    WC_VAR.forEach(function (v) {
-      var o = ensure4Options(v, WC_VAR, ['normal', 'langsam', 'Power', 'Timing']);
-      pushUnique(out, seen, { type: 'mcq', q: 'WC: Welche Option ist eine Form-Variante (in der App)?', options: o.options, a: o.a });
-      pushUnique(out, seen, { type: 'cloze', q: 'WC: Eine mögliche Übungs-Variante lautet ____ .', options: o.options, a: o.a });
+    fillTo(mcq, seenQ, 'mcq', 100, function () {
+      var term = wcFillTerms.length ? wcFillTerms.shift() : null;
+      if (!term) return false;
+      var corr = wcKindOf(term);
+      return addQ(mcq, seenQ, 'mcq', 'Wozu gehört "' + term + '" im Wing Chun Kontext?', corr, wcTypePool, wcTypePool);
+    });
+    fillTo(clz, seenQ, 'cloze', 100, function () {
+      var term = wcFillTerms.length ? wcFillTerms.shift() : null;
+      if (!term) return false;
+      var corr = wcKindOf(term);
+      return addQ(clz, seenQ, 'cloze', 'Lückentext (WC): "' + term + '" gehört zu _____.', corr, wcTypePool, wcTypePool);
     });
 
-    // 5) Fillers until 220, then balance
-    var fillerFactories = [];
-
-    fillerFactories.push(function (i) {
-      var base = poolAtLeast4(wcTerms, ['Tan Sao', 'Pak Sao', 'Bong Sao', 'Lap Sao']);
-      var correct = base[i % base.length];
-      var o = ensure4Options(correct, base);
-      return { type: (i % 2 === 0 ? 'mcq' : 'cloze'), q: 'WC: Welche Option ist ein Wing-Chun-Begriff aus der App?', options: o.options, a: o.a };
-    });
-
-    fillerFactories.push(function (i) {
-      var it = wcAllItems.length ? wcAllItems[i % wcAllItems.length] : { t: 'Chi Sao („Klebende Hände")', cat: 'Weiteres' };
-      var o = ensure4Options(it.cat, cats, ['Technik', 'Drill', 'Form', 'Waffe']);
-      return { type: 'cloze', q: 'WC: „' + it.t + '“ gehört zur Kategorie ____ .', options: o.options, a: o.a };
-    });
-
-    fillerFactories.push(function (i) {
-      // Mini-scenarios: Chi Sao / Dan Chi / Struktur
-      var good = [
-        'Kontakt wie Feder: konstant, weich – nicht drücken.',
-        'Ellenbogenlinie halten, dann Übergänge sauber wählen.',
-        'Tempo reduzieren, Struktur prüfen, dann wieder beschleunigen.',
-        'Vorwärtsdruck dosiert – nicht fallen, nicht verkrampfen.'
-      ][i % 4];
-      var opts = shuffle([good, 'Mehr Druck = immer besser.', 'Große Kreise, damit man sicher ist.', 'Atmung anhalten, damit es stabil bleibt.']);
-      return { type: 'mcq', q: 'WC: Was ist der beste Coaching-Hinweis für Sensitivitäts-Drills?', options: opts, a: opts.indexOf(good) };
-    });
-
-    fillerFactories.push(function (i) {
-      // Form knowledge cloze using fallback pools
-      var f = FOR.length ? FOR[i % FOR.length] : { name: 'Siu Nim Tao', code: 'SNT', note: 'Kleine Idee Form', parts: '8 Sätze' };
-      var o = ensure4Options(f.name, formNames, extraFormNames);
-      return { type: 'cloze', q: 'WC: Die Grundform (aus der App) heißt ____ .', options: o.options, a: o.a };
-    });
-
-    ensureCount(out, seen, 220, fillerFactories);
-    out = splitHalf(out, 200);
-    return out;
+    return finalize(mcq, clz);
   }
 
-  // ---------- Export ----------
-  var banks = { tkd: buildTKD(), wc: buildWC() };
+  // ---------- export ----------
+  var banks = { tkd: [], wc: [] };
+  try {
+    banks.tkd = buildTKD();
+  } catch (e) {
+    banks.tkd = [];
+    if (console && console.warn) console.warn('TKD quiz build failed', e);
+  }
+  try {
+    banks.wc = buildWC();
+  } catch (e) {
+    banks.wc = [];
+    if (console && console.warn) console.warn('WC quiz build failed', e);
+  }
 
   if (typeof window !== 'undefined') window.QUIZ_BANKS = banks;
-  try { if (typeof QUIZ_BANKS === 'undefined') { /* eslint-disable no-undef */ QUIZ_BANKS = banks; /* eslint-enable no-undef */ } } catch (e) { }
+  // optional global fallback
+  try {
+    /* eslint-disable no-undef */
+    if (typeof QUIZ_BANKS === 'undefined') { QUIZ_BANKS = banks; }
+    /* eslint-enable no-undef */
+  } catch (_) { }
 
 })();

@@ -1171,3 +1171,30 @@
 @media (max-width:480px){
   .quizOpt{ padding:12px 12px; font-size:13px; }
 }
+
+
+.hidden{ display:none; }
+
+
+/* ===== Top Navigation Menu (collapsible) ===== */
+.menuWrap{ position:relative; display:flex; align-items:center; }
+.menuBtn{ display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:999px; font-weight:1000; }
+.menuCurrent{ display:inline-flex; align-items:center; padding:2px 10px; border-radius:999px; background: var(--brand-tint, rgba(0,95,120,.12)); border:1px solid rgba(15,23,42,.10); }
+.menuPanel{ position:absolute; top:calc(100% + 10px); left:0; z-index:80; min-width:240px; padding:10px; border-radius:18px;
+  background: rgba(255,255,255,.96); backdrop-filter: blur(10px);
+  border:1px solid rgba(15,23,42,.12); box-shadow:0 22px 80px rgba(2,6,23,.18);
+  display:grid; gap:8px;
+}
+.menuPanel.hidden{ display:none !important; }
+.menuItem{ width:100%; display:flex; justify-content:space-between; align-items:center; gap:10px;
+  text-align:left; padding:12px 12px; border-radius:16px; border:1px solid var(--line, rgba(15,23,42,.12));
+  background:#fff; font-weight:900; cursor:pointer;
+}
+.menuItem:hover{ box-shadow:0 10px 30px rgba(2,6,23,.10); }
+.menuItem.active{ border-color: rgba(0,95,120,.35); background: rgba(0,95,120,.10); }
+#appRoot[data-theme="wc"] .menuItem.active{ border-color: rgba(249,195,1,.45); background: rgba(249,195,1,.14); }
+.menuHint{ font-size:12px; font-weight:800; opacity:.65; }
+@media (max-width:480px){
+  .menuPanel{ min-width: 220px; }
+  .menuItem{ padding:12px 10px; }
+}

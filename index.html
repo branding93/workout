@@ -32,17 +32,21 @@
       </div>
 
       <div class="actions">
-        <div class="menuWrap" aria-label="Navigation">
-          <div class="seg" role="tablist" aria-label="Hauptseiten">
-            <button id="navTKD" type="button" class="active" aria-selected="true">TKD</button>
-            <button id="navWC" type="button" aria-selected="false">Wing Chun</button>
-            <button id="navOTHER" type="button" aria-selected="false">Weiteres</button>
-            <button id="navTRAIN" type="button" aria-selected="false">Training</button>
-            <button id="navTIMER" type="button" aria-selected="false">Timer</button>
-        <button id="navQUIZ" type="button" aria-selected="false">Quiz</button>
-          </div>
-        </div>
-        <span id="selectedBadge" class="badge">📋 0 Auswahlen</span>
+        
+<div class="menuWrap" aria-label="Navigation">
+  <button id="navMenuBtn" class="btn menuBtn" type="button" aria-haspopup="true" aria-expanded="false">
+    ☰ Menü <span id="navCurrentLabel" class="menuCurrent">TKD</span>
+  </button>
+  <div id="navMenuPanel" class="menuPanel hidden" role="menu" aria-label="Hauptseiten">
+    <button id="navTKD" type="button" class="menuItem active" role="menuitemradio" aria-selected="true">TKD <span class="menuHint">Planung</span></button>
+    <button id="navWC" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Wing Chun <span class="menuHint">Planung</span></button>
+    <button id="navOTHER" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Weiteres <span class="menuHint">Planung</span></button>
+    <button id="navTRAIN" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Training <span class="menuHint">Übersicht</span></button>
+    <button id="navTIMER" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Timer <span class="menuHint">Intervall</span></button>
+    <button id="navQUIZ" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Quiz <span class="menuHint">10 Fragen</span></button>
+  </div>
+</div>
+<span id="selectedBadge" class="badge">📋 0 Auswahlen</span>
         <button id="resetAllBtn" class="btn" type="button">↺ Reset</button>
       </div>
     </div>
@@ -464,7 +468,8 @@
 
 
   <script src="data.js"></script>
-  <script src="app.js"></script>
+   <script src="quiz.js"></script>
+ <script src="app.js"></script>
 
 </body>
 

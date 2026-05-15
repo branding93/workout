@@ -442,6 +442,57 @@
   // ========= Router + Swipe =========
   const viewOrder = ['tkd', 'wc', 'other', 'training', 'timer', 'quiz'];
   let currentView = 'tkd';
+
+// ===== Collapsible top navigation (hamburger) =====
+function navLabelFor(view){
+  if(view==='tkd') return 'TKD';
+  if(view==='wc') return 'Wing Chun';
+  if(view==='other') return 'Weiteres';
+  if(view==='training') return 'Training';
+  if(view==='timer') return 'Timer';
+  if(view==='quiz') return 'Quiz';
+  return 'Menü';
+}
+function updateNavCurrentLabel(view){
+  var el = document.getElementById('navCurrentLabel');
+  if(!el) return;
+  el.textContent = navLabelFor(view || currentView);
+}
+function setMenuOpen(open){
+  var btn = document.getElementById('navMenuBtn');
+  var panel = document.getElementById('navMenuPanel');
+  if(!btn || !panel) return;
+  var isOpen = !panel.classList.contains('hidden');
+  var next = (open == null) ? !isOpen : !!open;
+  panel.classList.toggle('hidden', !next);
+  btn.setAttribute('aria-expanded', next ? 'true' : 'false');
+}
+function initNavMenu(){
+  var btn = document.getElementById('navMenuBtn');
+  var panel = document.getElementById('navMenuPanel');
+  if(!btn || !panel) return;
+  panel.classList.add('hidden');
+  btn.setAttribute('aria-expanded','false');
+  btn.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    setMenuOpen();
+  });
+  document.addEventListener('click', function(e){
+    if(panel.classList.contains('hidden')) return;
+    var t=e.target;
+    if(t===btn || (btn.contains && btn.contains(t))) return;
+    if(panel.contains && panel.contains(t)) return;
+    setMenuOpen(false);
+  }, true);
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') setMenuOpen(false);
+  });
+}
+function navGo(view){
+  showView(view);
+  setMenuOpen(false);
+}
   function setNavActive(id) {
     ['navTKD', 'navWC', 'navOTHER', 'navTRAIN', 'navTIMER', 'navQUIZ'].forEach(function (b) {
       let el = document.getElementById(b);
@@ -464,6 +515,7 @@
   if (name === 'quiz') setNavActive('navQUIZ');
     if (name === 'training') renderTraining();
     if (name === 'timer') timerUpdate();
+    updateNavCurrentLabel(name);
     setBadge();
   }
   document.getElementById('navTKD').addEventListener('click', () => { showView('tkd'); });
@@ -471,7 +523,7 @@
   document.getElementById('navOTHER').addEventListener('click', () => { showView('other'); });
   document.getElementById('navTRAIN').addEventListener('click', () => { showView('training'); });
   document.getElementById('navTIMER').addEventListener('click', () => { showView('timer'); });
-  (function(){ const b=document.getElementById('navQUIZ'); if(b) b.addEventListener('click', ()=>{ showView('quiz'); }); })();
+  (function(){ const b=document.getElementById('navQUIZ'); if(b) b.addEventListener('click', ()=>{ navGo('quiz'); }); })();
 
   const swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, locked: null, t0: 0 };
   function isInteractiveTarget(t) {
@@ -1692,6 +1744,7 @@
     setBadge();
   }
 
+  initNavMenu();
   quizInit();
   // Timer init
   timerInit();
