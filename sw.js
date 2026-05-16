@@ -12,9 +12,8 @@ const PRECACHE_URLS = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-512-maskable.png"
-,
+  ,
   "./pics/default.png",
-  "./pics/unterer_block.png",
 ];
 
 self.addEventListener('install', (event) => {

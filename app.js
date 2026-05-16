@@ -142,11 +142,7 @@
     'Dollyo Chagui': 'https://c7.alamy.com/compde/3dwb4gj/zwei-taekwondo-athleten-die-hohe-tritte-in-schutzausrustung-auf-blauem-hintergrund-ausfuhren-3dwb4gj.jpg',
     'Yop Chagui': 'https://c7.alamy.com/compde/3cj2ny9/junge-manner-die-synchronisierte-taekwondo-kicks-mit-stadtischen-gebauden-im-hintergrund-ausfuhren-3cj2ny9.jpg',
     'Twio Yop Chagui': 'https://c7.alamy.com/compde/2ggnk9f/karate-junge-tritt-in-die-luft-und-fliegt-uber-den-blauen-hintergrund-des-himmels-taekwondo-in-der-natur-praktizieren-schwarzer-gurtel-der-kampfkunst-2ggnk9f.jpg',
-  
-    // Lokale Bilder (Overrides)
-    'Unteren Block': './pics/unterer_block.png',
-    'Unterer Block': './pics/unterer_block.png',
-};
+  };
 
   // ========= Glossary Zusatzfelder: Häufige Fehler (f) & Coach Hinweise (c) =========
   // Schlüssel ist canonicalTerm(term). Einträge kurz, aber konkret technikbezogen.
@@ -217,36 +213,36 @@
 
 
   function slugifyForPic(term) {
-  // Robust: entfernt Emojis/Sonderzeichen, normalisiert Umlaute, macht snake_case.
-  let s = String(term || '').trim();
-  // Entferne führende Bullet/Striche
-  s = s.replace(/^[\s•\-–—]+/, '');
-  // Entferne gängige Emoji/Symbol-Starts (surrogate pair oder BMP)
-  s = s.replace(/^(?:[\u2600-\u27BF]|[\uD83C-\uDBFF][\uDC00-\uDFFF])\s*/, '');
-  s = canonicalTerm(s) || s;
-  s = s.toLowerCase()
-       .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss');
-  // Nur Buchstaben/Zahlen/Leerzeichen behalten
-  s = s.replace(/[^a-z0-9\s]/g, ' ');
-  // Mehrfachspaces -> underscore
-  s = s.trim().replace(/\s+/g, '_');
-  return s;
-}
+    // Robust: entfernt Emojis/Sonderzeichen, normalisiert Umlaute, macht snake_case.
+    let s = String(term || '').trim();
+    // Entferne führende Bullet/Striche
+    s = s.replace(/^[\s•\-–—]+/, '');
+    // Entferne gängige Emoji/Symbol-Starts (surrogate pair oder BMP)
+    s = s.replace(/^(?:[\u2600-\u27BF]|[\uD83C-\uDBFF][\uDC00-\uDFFF])\s*/, '');
+    s = canonicalTerm(s) || s;
+    s = s.toLowerCase()
+      .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
+    // Nur Buchstaben/Zahlen/Leerzeichen behalten
+    s = s.replace(/[^a-z0-9\s]/g, ' ');
+    // Mehrfachspaces -> underscore
+    s = s.trim().replace(/\s+/g, '_');
+    return s;
+  }
 
-function termImageUrl(term) {
-  const raw = String(term || '').trim();
-  const canon = canonicalTerm(raw) || raw;
+  function termImageUrl(term) {
+    const raw = String(term || '').trim();
+    const canon = canonicalTerm(raw) || raw;
 
-  // 1) Manuelle Overrides
-  if (TERM_IMAGES && TERM_IMAGES[canon]) return TERM_IMAGES[canon];
+    // 1) Manuelle Overrides
+    if (TERM_IMAGES && TERM_IMAGES[canon]) return TERM_IMAGES[canon];
 
-  // 2) Automatisch: ./pics/<slug>.png
-  const slug = slugifyForPic(raw);
-  if (slug) return './pics/' + slug + '.png';
+    // 2) Automatisch: ./pics/<slug>.png
+    const slug = slugifyForPic(raw);
+    if (slug) return './pics/' + slug + '.png';
 
-  // 3) Fallback
-  return DEFAULT_INFO_IMAGE;
-}
+    // 3) Fallback
+    return DEFAULT_INFO_IMAGE;
+  }
 
 
   function addGloss(term, entry) { glossary[canonicalTerm(term)] = entry; }
@@ -260,25 +256,25 @@ function termImageUrl(term) {
   });
 
 
-// ========= TKD: Einschrittkampf – Unterscheidungen (Popups) =========
-addGloss('Stufe: Ilbo', { ctx:'Taekwondo', t:'Ilbo (1 Schritt)', m:'Ein Angriffsschritt -> Abwehr -> Konter.', z:'Timing + Distanz.', p:'Sauber vor schnell.' });
-addGloss('Stufe: Ibo', { ctx:'Taekwondo', t:'Ibo (2 Schritte)', m:'Zwei Schritte/Sequenz, Übergänge halten.', z:'Rhythmus + zweite Linie.', p:'Position sichern.' });
-addGloss('Stufe: Sambo', { ctx:'Taekwondo', t:'Sambo (3 Schritte)', m:'Längere Sequenz, dynamisch aber kontrolliert.', z:'Struktur unter Tempo.', p:'Stabilität vor Speed.' });
-addGloss('Angriff: Hand', { ctx:'Taekwondo', t:'Angriff Hand', m:'Gerade Linie (Faust/Handkante).', z:'Linie schließen -> kontern.', p:'Kurze Wege.' });
-addGloss('Angriff: Fuß', { ctx:'Taekwondo', t:'Angriff Fuß', m:'Kick-Linie (größere Distanz).', z:'Kick-Timing + Balance.', p:'Hüfte lesen.' });
-addGloss('Angriff: gemischt', { ctx:'Taekwondo', t:'Angriff gemischt', m:'Hand+Fuß kombiniert (Distanzwechsel).', z:'Übergänge erkennen.', p:'Kontrolle.' });
-addGloss('Zielhöhe: tief', { ctx:'Taekwondo', t:'Ziel tief', m:'Unteres Ziel (Bein/Unterkörper).', z:'Stabilität + Timing.', p:'Knie beugen statt kippen.' });
-addGloss('Zielhöhe: mittel', { ctx:'Taekwondo', t:'Ziel mittel', m:'Rumpf (Standardlinie).', z:'Distanz + Hüfte verbinden.', p:'Treffer aus Stand+Hüfte.' });
-addGloss('Zielhöhe: hoch', { ctx:'Taekwondo', t:'Ziel hoch', m:'Kopf/oben: Präzision + Kontrolle.', z:'Balance + Recoil.', p:'Kontrolle vor Power.' });
-addGloss('Verteidigung: Block', { ctx:'Taekwondo', t:'Block', m:'Linie schließen/umlenken.', z:'Schutz + Konterfenster.', p:'Kompakt.' });
-addGloss('Verteidigung: Ausweichen', { ctx:'Taekwondo', t:'Ausweichen', m:'Ziel aus Linie nehmen (Winkel/Schritt).', z:'Timing + Winkel.', p:'Wenig Bewegung.' });
-addGloss('Verteidigung: Abfangen', { ctx:'Taekwondo', t:'Abfangen', m:'Früh stoppen/lenken.', z:'Frühes Lesen.', p:'Impuls statt Kraft.' });
-addGloss('Konter: Hand', { ctx:'Taekwondo', t:'Konter Hand', m:'Direkter Abschluss per Handtechnik.', z:'Schneller Treffer.', p:'Kurze Linie.' });
-addGloss('Konter: Fuß', { ctx:'Taekwondo', t:'Konter Fuß', m:'Abschluss per Kick.', z:'Fenster auf Distanz.', p:'Balance + Kammer.' });
-addGloss('Konter: Kombi', { ctx:'Taekwondo', t:'Konter Kombi', m:'2-3 Aktionen als Abschluss.', z:'Rhythmuswechsel + Abschluss.', p:'Sauber verbinden.' });
-addGloss('Struktur: fest', { ctx:'Taekwondo', t:'fest', m:'Vorgegeben (Angriff/Abwehr/Konter).', z:'Wiederholbarkeit.', p:'Basics automatisieren.' });
-addGloss('Struktur: semi-free', { ctx:'Taekwondo', t:'semi-free', m:'Teil vorgegeben, Teil variiert.', z:'Anpassung im Rahmen.', p:'Erkennen -> wählen -> sauber.' });
-addGloss('Struktur: free-attack', { ctx:'Taekwondo', t:'free-attack', m:'Freier Angriff (kontrolliert) + strukturierte Reaktion.', z:'Reaktion/Distanzlesen.', p:'Safety + Reset.' });
+  // ========= TKD: Einschrittkampf – Unterscheidungen (Popups) =========
+  addGloss('Stufe: Ilbo', { ctx: 'Taekwondo', t: 'Ilbo (1 Schritt)', m: 'Ein Angriffsschritt -> Abwehr -> Konter.', z: 'Timing + Distanz.', p: 'Sauber vor schnell.' });
+  addGloss('Stufe: Ibo', { ctx: 'Taekwondo', t: 'Ibo (2 Schritte)', m: 'Zwei Schritte/Sequenz, Übergänge halten.', z: 'Rhythmus + zweite Linie.', p: 'Position sichern.' });
+  addGloss('Stufe: Sambo', { ctx: 'Taekwondo', t: 'Sambo (3 Schritte)', m: 'Längere Sequenz, dynamisch aber kontrolliert.', z: 'Struktur unter Tempo.', p: 'Stabilität vor Speed.' });
+  addGloss('Angriff: Hand', { ctx: 'Taekwondo', t: 'Angriff Hand', m: 'Gerade Linie (Faust/Handkante).', z: 'Linie schließen -> kontern.', p: 'Kurze Wege.' });
+  addGloss('Angriff: Fuß', { ctx: 'Taekwondo', t: 'Angriff Fuß', m: 'Kick-Linie (größere Distanz).', z: 'Kick-Timing + Balance.', p: 'Hüfte lesen.' });
+  addGloss('Angriff: gemischt', { ctx: 'Taekwondo', t: 'Angriff gemischt', m: 'Hand+Fuß kombiniert (Distanzwechsel).', z: 'Übergänge erkennen.', p: 'Kontrolle.' });
+  addGloss('Zielhöhe: tief', { ctx: 'Taekwondo', t: 'Ziel tief', m: 'Unteres Ziel (Bein/Unterkörper).', z: 'Stabilität + Timing.', p: 'Knie beugen statt kippen.' });
+  addGloss('Zielhöhe: mittel', { ctx: 'Taekwondo', t: 'Ziel mittel', m: 'Rumpf (Standardlinie).', z: 'Distanz + Hüfte verbinden.', p: 'Treffer aus Stand+Hüfte.' });
+  addGloss('Zielhöhe: hoch', { ctx: 'Taekwondo', t: 'Ziel hoch', m: 'Kopf/oben: Präzision + Kontrolle.', z: 'Balance + Recoil.', p: 'Kontrolle vor Power.' });
+  addGloss('Verteidigung: Block', { ctx: 'Taekwondo', t: 'Block', m: 'Linie schließen/umlenken.', z: 'Schutz + Konterfenster.', p: 'Kompakt.' });
+  addGloss('Verteidigung: Ausweichen', { ctx: 'Taekwondo', t: 'Ausweichen', m: 'Ziel aus Linie nehmen (Winkel/Schritt).', z: 'Timing + Winkel.', p: 'Wenig Bewegung.' });
+  addGloss('Verteidigung: Abfangen', { ctx: 'Taekwondo', t: 'Abfangen', m: 'Früh stoppen/lenken.', z: 'Frühes Lesen.', p: 'Impuls statt Kraft.' });
+  addGloss('Konter: Hand', { ctx: 'Taekwondo', t: 'Konter Hand', m: 'Direkter Abschluss per Handtechnik.', z: 'Schneller Treffer.', p: 'Kurze Linie.' });
+  addGloss('Konter: Fuß', { ctx: 'Taekwondo', t: 'Konter Fuß', m: 'Abschluss per Kick.', z: 'Fenster auf Distanz.', p: 'Balance + Kammer.' });
+  addGloss('Konter: Kombi', { ctx: 'Taekwondo', t: 'Konter Kombi', m: '2-3 Aktionen als Abschluss.', z: 'Rhythmuswechsel + Abschluss.', p: 'Sauber verbinden.' });
+  addGloss('Struktur: fest', { ctx: 'Taekwondo', t: 'fest', m: 'Vorgegeben (Angriff/Abwehr/Konter).', z: 'Wiederholbarkeit.', p: 'Basics automatisieren.' });
+  addGloss('Struktur: semi-free', { ctx: 'Taekwondo', t: 'semi-free', m: 'Teil vorgegeben, Teil variiert.', z: 'Anpassung im Rahmen.', p: 'Erkennen -> wählen -> sauber.' });
+  addGloss('Struktur: free-attack', { ctx: 'Taekwondo', t: 'free-attack', m: 'Freier Angriff (kontrolliert) + strukturierte Reaktion.', z: 'Reaktion/Distanzlesen.', p: 'Safety + Reset.' });
 
 
   function tkdKickEntry(term) {
@@ -456,8 +452,8 @@ addGloss('Struktur: free-attack', { ctx:'Taekwondo', t:'free-attack', m:'Freier 
     if (imgEl) {
       const src = (entry && entry.img) ? entry.img : termImageUrl(raw);
       // Fallback, falls Bilddatei nicht existiert
-    imgEl.onerror = function(){ this.onerror = null; this.src = DEFAULT_INFO_IMAGE; };
-    imgEl.src = src;
+      imgEl.onerror = function () { this.onerror = null; this.src = DEFAULT_INFO_IMAGE; };
+      imgEl.src = src;
       imgEl.alt = 'Erklärungsbild: ' + raw;
     }
 
@@ -490,56 +486,56 @@ addGloss('Struktur: free-attack', { ctx:'Taekwondo', t:'free-attack', m:'Freier 
   const viewOrder = ['tkd', 'wc', 'other', 'training', 'timer', 'quiz'];
   let currentView = 'tkd';
 
-// ===== Collapsible top navigation (hamburger) =====
-function navLabelFor(view){
-  if(view==='tkd') return 'TKD';
-  if(view==='wc') return 'Wing Chun';
-  if(view==='other') return 'Weiteres';
-  if(view==='training') return 'Training';
-  if(view==='timer') return 'Timer';
-  if(view==='quiz') return 'Quiz';
-  return 'Menü';
-}
-function updateNavCurrentLabel(view){
-  var el = document.getElementById('navCurrentLabel');
-  if(!el) return;
-  el.textContent = navLabelFor(view || currentView);
-}
-function setMenuOpen(open){
-  var btn = document.getElementById('navMenuBtn');
-  var panel = document.getElementById('navMenuPanel');
-  if(!btn || !panel) return;
-  var isOpen = !panel.classList.contains('hidden');
-  var next = (open == null) ? !isOpen : !!open;
-  panel.classList.toggle('hidden', !next);
-  btn.setAttribute('aria-expanded', next ? 'true' : 'false');
-}
-function initNavMenu(){
-  var btn = document.getElementById('navMenuBtn');
-  var panel = document.getElementById('navMenuPanel');
-  if(!btn || !panel) return;
-  panel.classList.add('hidden');
-  btn.setAttribute('aria-expanded','false');
-  btn.addEventListener('click', function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    setMenuOpen();
-  });
-  document.addEventListener('click', function(e){
-    if(panel.classList.contains('hidden')) return;
-    var t=e.target;
-    if(t===btn || (btn.contains && btn.contains(t))) return;
-    if(panel.contains && panel.contains(t)) return;
+  // ===== Collapsible top navigation (hamburger) =====
+  function navLabelFor(view) {
+    if (view === 'tkd') return 'TKD';
+    if (view === 'wc') return 'Wing Chun';
+    if (view === 'other') return 'Weiteres';
+    if (view === 'training') return 'Training';
+    if (view === 'timer') return 'Timer';
+    if (view === 'quiz') return 'Quiz';
+    return 'Menü';
+  }
+  function updateNavCurrentLabel(view) {
+    var el = document.getElementById('navCurrentLabel');
+    if (!el) return;
+    el.textContent = navLabelFor(view || currentView);
+  }
+  function setMenuOpen(open) {
+    var btn = document.getElementById('navMenuBtn');
+    var panel = document.getElementById('navMenuPanel');
+    if (!btn || !panel) return;
+    var isOpen = !panel.classList.contains('hidden');
+    var next = (open == null) ? !isOpen : !!open;
+    panel.classList.toggle('hidden', !next);
+    btn.setAttribute('aria-expanded', next ? 'true' : 'false');
+  }
+  function initNavMenu() {
+    var btn = document.getElementById('navMenuBtn');
+    var panel = document.getElementById('navMenuPanel');
+    if (!btn || !panel) return;
+    panel.classList.add('hidden');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      setMenuOpen();
+    });
+    document.addEventListener('click', function (e) {
+      if (panel.classList.contains('hidden')) return;
+      var t = e.target;
+      if (t === btn || (btn.contains && btn.contains(t))) return;
+      if (panel.contains && panel.contains(t)) return;
+      setMenuOpen(false);
+    }, true);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setMenuOpen(false);
+    });
+  }
+  function navGo(view) {
+    showView(view);
     setMenuOpen(false);
-  }, true);
-  document.addEventListener('keydown', function(e){
-    if(e.key==='Escape') setMenuOpen(false);
-  });
-}
-function navGo(view){
-  showView(view);
-  setMenuOpen(false);
-}
+  }
   function setNavActive(id) {
     ['navTKD', 'navWC', 'navOTHER', 'navTRAIN', 'navTIMER', 'navQUIZ'].forEach(function (b) {
       let el = document.getElementById(b);
@@ -559,7 +555,7 @@ function navGo(view){
     if (name === 'other') setNavActive('navOTHER');
     if (name === 'training') setNavActive('navTRAIN');
     if (name === 'timer') setNavActive('navTIMER');
-  if (name === 'quiz') setNavActive('navQUIZ');
+    if (name === 'quiz') setNavActive('navQUIZ');
     if (name === 'training') renderTraining();
     if (name === 'timer') timerUpdate();
     updateNavCurrentLabel(name);
@@ -570,7 +566,7 @@ function navGo(view){
   document.getElementById('navOTHER').addEventListener('click', () => { showView('other'); });
   document.getElementById('navTRAIN').addEventListener('click', () => { showView('training'); });
   document.getElementById('navTIMER').addEventListener('click', () => { showView('timer'); });
-  (function(){ const b=document.getElementById('navQUIZ'); if(b) b.addEventListener('click', ()=>{ navGo('quiz'); }); })();
+  (function () { const b = document.getElementById('navQUIZ'); if (b) b.addEventListener('click', () => { navGo('quiz'); }); })();
 
   const swipe = { active: false, x0: 0, y0: 0, x1: 0, y1: 0, locked: null, t0: 0 };
   function isInteractiveTarget(t) {
@@ -640,30 +636,30 @@ function navGo(view){
     if (e.deltaX > 0) goNext(+1); else goNext(-1);
   }, { passive: true });
 
-  
+
 
   // ========= Quiz =========
   const quizState = { discipline: null, bank: null, questions: [], idx: 0, score: 0, answered: false };
 
-  function pickUniqueQuestions(bank, n){
-    const out=[];
-    const seen=new Set();
-    const arr=(bank||[]).slice();
-    for(let i=arr.length-1;i>0;i--){
-      const j=Math.floor(Math.random()*(i+1));
-      const t=arr[i]; arr[i]=arr[j]; arr[j]=t;
+  function pickUniqueQuestions(bank, n) {
+    const out = [];
+    const seen = new Set();
+    const arr = (bank || []).slice();
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = arr[i]; arr[i] = arr[j]; arr[j] = t;
     }
-    for(const q of arr){
-      const key=(q && q.q) ? String(q.q).trim() : '';
-      if(!key || seen.has(key)) continue;
+    for (const q of arr) {
+      const key = (q && q.q) ? String(q.q).trim() : '';
+      if (!key || seen.has(key)) continue;
       seen.add(key);
       out.push(q);
-      if(out.length>=n) break;
+      if (out.length >= n) break;
     }
     return out;
   }
 
-  function quizEls(){
+  function quizEls() {
     return {
       mode: document.getElementById('quiz-modePill'),
       progress: document.getElementById('quiz-progressPill'),
@@ -684,48 +680,48 @@ function navGo(view){
     };
   }
 
-  function quizSetModeLabel(){
+  function quizSetModeLabel() {
     let el = quizEls();
-    if(!el.mode) return;
-    if(!quizState.discipline) el.mode.textContent = 'Modus: Auswahl';
+    if (!el.mode) return;
+    if (!quizState.discipline) el.mode.textContent = 'Modus: Auswahl';
     else el.mode.textContent = 'Modus: ' + (quizState.discipline === 'tkd' ? 'Taekwondo' : 'Wing Chun');
   }
 
-  function quizUpdateMeta(){
+  function quizUpdateMeta() {
     let el = quizEls();
-    if(el.score) el.score.textContent = 'Punkte: ' + quizState.score;
-    if(el.progress) el.progress.textContent = 'Frage ' + (quizState.questions.length ? (quizState.idx+1) : 0) + ' / 10';
+    if (el.score) el.score.textContent = 'Punkte: ' + quizState.score;
+    if (el.progress) el.progress.textContent = 'Frage ' + (quizState.questions.length ? (quizState.idx + 1) : 0) + ' / 10';
     quizSetModeLabel();
   }
 
-  function quizReset(all){
+  function quizReset(all) {
     quizState.questions = [];
     quizState.idx = 0;
     quizState.score = 0;
     quizState.answered = false;
-    if(all) quizState.discipline = null;
+    if (all) quizState.discipline = null;
 
     let el = quizEls();
-    if(!el.setup) return;
+    if (!el.setup) return;
     el.setup.classList.remove('hidden');
     el.play.classList.add('hidden');
     el.result.classList.add('hidden');
-    if(el.start) el.start.disabled = !quizState.discipline;
-    if(el.feedback) el.feedback.textContent = '—';
+    if (el.start) el.start.disabled = !quizState.discipline;
+    if (el.feedback) el.feedback.textContent = '—';
     quizUpdateMeta();
   }
 
-  function quizPick(d){
+  function quizPick(d) {
     quizState.discipline = d;
-    quizState.bank = (typeof QUIZ_BANKS !== 'undefined' && QUIZ_BANKS) ? (d==='tkd' ? QUIZ_BANKS.tkd : QUIZ_BANKS.wc) : [];
+    quizState.bank = (typeof QUIZ_BANKS !== 'undefined' && QUIZ_BANKS) ? (d === 'tkd' ? QUIZ_BANKS.tkd : QUIZ_BANKS.wc) : [];
     let el = quizEls();
-    if(el.start) el.start.disabled = !(quizState.bank && quizState.bank.length >= 10);
-    if(el.pickTkd) el.pickTkd.classList.toggle('primary', d==='tkd');
-    if(el.pickWc) el.pickWc.classList.toggle('primary', d==='wc');
+    if (el.start) el.start.disabled = !(quizState.bank && quizState.bank.length >= 10);
+    if (el.pickTkd) el.pickTkd.classList.toggle('primary', d === 'tkd');
+    if (el.pickWc) el.pickWc.classList.toggle('primary', d === 'wc');
     quizSetModeLabel();
   }
 
-  function quizStart(){
+  function quizStart() {
     quizReset(false);
     let bank = quizState.bank || [];
     quizState.questions = pickUniqueQuestions(bank, 10);
@@ -738,55 +734,55 @@ function navGo(view){
     quizRender();
   }
 
-  function quizRender(){
+  function quizRender() {
     let el = quizEls();
     let qobj = quizState.questions[quizState.idx];
-    if(!qobj){ quizFinish(); return; }
+    if (!qobj) { quizFinish(); return; }
     quizState.answered = false;
-    if(el.next) el.next.disabled = true;
-    if(el.feedback) el.feedback.textContent = '—';
-    if(el.q) el.q.textContent = qobj.q;
-    if(el.opts) el.opts.innerHTML = '';
-    (qobj.options || []).forEach(function(opt, i){
+    if (el.next) el.next.disabled = true;
+    if (el.feedback) el.feedback.textContent = '—';
+    if (el.q) el.q.textContent = qobj.q;
+    if (el.opts) el.opts.innerHTML = '';
+    (qobj.options || []).forEach(function (opt, i) {
       let b = document.createElement('button');
       b.type = 'button';
       b.className = 'quizOpt';
-      b.textContent = String.fromCharCode(65+i) + ') ' + opt;
-      b.addEventListener('click', function(){ quizAnswer(i); });
+      b.textContent = String.fromCharCode(65 + i) + ') ' + opt;
+      b.addEventListener('click', function () { quizAnswer(i); });
       el.opts.appendChild(b);
     });
     quizUpdateMeta();
   }
 
-  function quizAnswer(i){
-    if(quizState.answered) return;
+  function quizAnswer(i) {
+    if (quizState.answered) return;
     quizState.answered = true;
     let el = quizEls();
     let qobj = quizState.questions[quizState.idx];
     let btns = el.opts ? Array.prototype.slice.call(el.opts.querySelectorAll('.quizOpt')) : [];
-    btns.forEach(function(b, idx){
-      if(idx === qobj.a) b.classList.add('correct');
-      if(idx === i && i !== qobj.a) b.classList.add('wrong');
+    btns.forEach(function (b, idx) {
+      if (idx === qobj.a) b.classList.add('correct');
+      if (idx === i && i !== qobj.a) b.classList.add('wrong');
       b.disabled = true;
     });
-    if(i === qobj.a){
+    if (i === qobj.a) {
       quizState.score += 1;
-      if(el.feedback) el.feedback.textContent = '✅ Korrekt';
+      if (el.feedback) el.feedback.textContent = '✅ Korrekt';
     } else {
-      if(el.feedback) el.feedback.textContent = '❌ Falsch – richtig ist ' + String.fromCharCode(65+qobj.a);
+      if (el.feedback) el.feedback.textContent = '❌ Falsch – richtig ist ' + String.fromCharCode(65 + qobj.a);
     }
-    if(el.score) el.score.textContent = 'Punkte: ' + quizState.score;
-    if(el.next) el.next.disabled = false;
+    if (el.score) el.score.textContent = 'Punkte: ' + quizState.score;
+    if (el.next) el.next.disabled = false;
   }
 
-  function quizNext(){
-    if(!quizState.answered) return;
+  function quizNext() {
+    if (!quizState.answered) return;
     quizState.idx += 1;
-    if(quizState.idx >= quizState.questions.length){ quizFinish(); return; }
+    if (quizState.idx >= quizState.questions.length) { quizFinish(); return; }
     quizRender();
   }
 
-  function quizFinish(){
+  function quizFinish() {
     let el = quizEls();
     el.setup.classList.add('hidden');
     el.play.classList.add('hidden');
@@ -794,26 +790,26 @@ function navGo(view){
     quizUpdateMeta();
     let msg = 'Du hast ' + quizState.score + ' / 10 Punkte erreicht.';
     let extra = '';
-    if(quizState.score === 10) extra = ' Perfekt – stark!';
-    else if(quizState.score >= 8) extra = ' Sehr gut – weiter so!';
-    else if(quizState.score >= 5) extra = ' Solide – mit Wiederholung wird es schnell besser.';
+    if (quizState.score === 10) extra = ' Perfekt – stark!';
+    else if (quizState.score >= 8) extra = ' Sehr gut – weiter so!';
+    else if (quizState.score >= 5) extra = ' Solide – mit Wiederholung wird es schnell besser.';
     else extra = ' Tipp: Nutze die Info-Popups (ⓘ) und wiederhole gezielt.';
-    if(el.resultText) el.resultText.textContent = msg + extra;
+    if (el.resultText) el.resultText.textContent = msg + extra;
   }
 
-  function quizInit(){
+  function quizInit() {
     let el = quizEls();
-    if(!el.start) return;
-    if(el.pickTkd) el.pickTkd.addEventListener('click', function(){ quizPick('tkd'); });
-    if(el.pickWc) el.pickWc.addEventListener('click', function(){ quizPick('wc'); });
-    if(el.start) el.start.addEventListener('click', quizStart);
-    if(el.next) el.next.addEventListener('click', quizNext);
-    if(el.restart) el.restart.addEventListener('click', function(){ quizReset(true); });
-    if(el.again) el.again.addEventListener('click', quizStart);
+    if (!el.start) return;
+    if (el.pickTkd) el.pickTkd.addEventListener('click', function () { quizPick('tkd'); });
+    if (el.pickWc) el.pickWc.addEventListener('click', function () { quizPick('wc'); });
+    if (el.start) el.start.addEventListener('click', quizStart);
+    if (el.next) el.next.addEventListener('click', quizNext);
+    if (el.restart) el.restart.addEventListener('click', function () { quizReset(true); });
+    if (el.again) el.again.addEventListener('click', quizStart);
     quizReset(true);
   }
 
-// ========= Counts =========
+  // ========= Counts =========
   function countSelectedAll() {
     let tkd = 0, wc = 0, other = 0;
 
@@ -983,127 +979,127 @@ function navGo(view){
     document.getElementById('tkd-comboEmpty').classList.toggle('hidden', shown !== 0);
   }
 
-  
-function tkdRenderIlbo() {
-  var host = document.getElementById('tkd-ilboList');
-  host.innerHTML = '';
 
-  // Gruppen aus data.js (optional)
-  var groups = (typeof TKD_SPARRING_GROUPS !== 'undefined' && TKD_SPARRING_GROUPS) ? TKD_SPARRING_GROUPS : null;
-  var groupKeys = {};
-  if (groups && Array.isArray(groups)) {
-    groups.forEach(function (g) {
-      (g.items || []).forEach(function (it) {
-        var k = String(it && it.key ? it.key : '').trim();
-        if (k) groupKeys[k] = true;
+  function tkdRenderIlbo() {
+    var host = document.getElementById('tkd-ilboList');
+    host.innerHTML = '';
+
+    // Gruppen aus data.js (optional)
+    var groups = (typeof TKD_SPARRING_GROUPS !== 'undefined' && TKD_SPARRING_GROUPS) ? TKD_SPARRING_GROUPS : null;
+    var groupKeys = {};
+    if (groups && Array.isArray(groups)) {
+      groups.forEach(function (g) {
+        (g.items || []).forEach(function (it) {
+          var k = String(it && it.key ? it.key : '').trim();
+          if (k) groupKeys[k] = true;
+        });
       });
-    });
-  }
-
-  // Basis-Einschrittkampf (alles, was nicht Gruppen-Key ist)
-  SPARRING.forEach(function (s) {
-    if (groupKeys[String(s)]) return;
-    var el = document.createElement('div');
-    el.className = 'item';
-    el.innerHTML = (
-      '<div class="checkRow">' +
-        '<label><input type="checkbox" ' + (state.tkd.sparring[s] ? 'checked' : '') + '> ' +
-          '<span>' + makeTermUI(s, 'Taekwondo', '🛡️') + '</span>' +
-        '</label>' +
-        '<small>Partner & Distanz</small>' +
-      '</div>'
-    );
-    var cb = el.querySelector('input');
-    cb.addEventListener('change', function () {
-      state.tkd.sparring[s] = !!cb.checked;
-      save();
-      setBadge();
-    });
-    host.appendChild(el);
-  });
-
-  // Unterscheidungen als Obergruppen
-  if (!groups || !Array.isArray(groups) || !groups.length) return;
-
-  groups.forEach(function (g) {
-    var items = (g.items || []).slice();
-    if (!items.length) return;
-
-    // ensure state keys
-    items.forEach(function (it) {
-      var k = String(it.key || '').trim();
-      if (!k) return;
-      if (typeof state.tkd.sparring[k] !== 'boolean') state.tkd.sparring[k] = false;
-    });
-
-    var allSelected = items.every(function (it) { return !!state.tkd.sparring[String(it.key)]; });
-    var anySelected = items.some(function (it) { return !!state.tkd.sparring[String(it.key)]; });
-
-    var box = document.createElement('div');
-    box.className = 'item';
-    box.innerHTML = (
-      '<div class="groupHead">' +
-        '<div class="groupTitle">' +
-          '<span class="pill">' + escapeHtml(String(g.icon || 'Gruppe')) + '</span>' +
-          escapeHtml(String(g.title || 'Gruppe')) +
-          ' <span class="pill">' + items.length + '</span>' +
-        '</div>' +
-        '<div class="miniBtns">' +
-          '<button class="mini" data-gact="all" type="button" ' + (allSelected ? 'disabled' : '') + '>Alle</button>' +
-          '<button class="mini" data-gact="none" type="button" ' + (!anySelected ? 'disabled' : '') + '>Keine</button>' +
-        '</div>' +
-      '</div>' +
-      '<div class="sep" style="margin:10px 0"></div>' +
-      '<div class="list" style="gap:8px"></div>'
-    );
-
-    var list = box.querySelector('.list');
-
-    // term UI: label anzeigen, key fürs Popup behalten
-    function termUIKeyLabel(key, label, ctxHint) {
-      var k = String(key || '').trim();
-      var lab = String(label || k).trim();
-      return (
-        '<span class="termWrap">' +
-          '<button class="termBtn js-term" type="button" data-term="' + escapeAttr(k) + '" data-ctx="' + escapeAttr(ctxHint || '') + '">' +
-            escapeHtml(lab) +
-          '</button>' +
-          '<button class="infoBtn js-term" type="button" aria-label="Erklärung" data-term="' + escapeAttr(k) + '" data-ctx="' + escapeAttr(ctxHint || '') + '">i</button>' +
-        '</span>'
-      );
     }
 
-    items.forEach(function (it) {
-      var k = String(it.key || '').trim();
-      if (!k) return;
-      var label = (it.label != null) ? String(it.label) : k;
-      var row = document.createElement('div');
-      row.className = 'checkRow';
-      row.innerHTML = '<label><input type="checkbox" ' + (state.tkd.sparring[k] ? 'checked' : '') + '> <span>' + termUIKeyLabel(k, label, 'Taekwondo') + '</span></label>';
-      var cb = row.querySelector('input');
+    // Basis-Einschrittkampf (alles, was nicht Gruppen-Key ist)
+    SPARRING.forEach(function (s) {
+      if (groupKeys[String(s)]) return;
+      var el = document.createElement('div');
+      el.className = 'item';
+      el.innerHTML = (
+        '<div class="checkRow">' +
+        '<label><input type="checkbox" ' + (state.tkd.sparring[s] ? 'checked' : '') + '> ' +
+        '<span>' + makeTermUI(s, 'Taekwondo', '🛡️') + '</span>' +
+        '</label>' +
+        '<small>Partner & Distanz</small>' +
+        '</div>'
+      );
+      var cb = el.querySelector('input');
       cb.addEventListener('change', function () {
-        state.tkd.sparring[k] = !!cb.checked;
+        state.tkd.sparring[s] = !!cb.checked;
+        save();
+        setBadge();
+      });
+      host.appendChild(el);
+    });
+
+    // Unterscheidungen als Obergruppen
+    if (!groups || !Array.isArray(groups) || !groups.length) return;
+
+    groups.forEach(function (g) {
+      var items = (g.items || []).slice();
+      if (!items.length) return;
+
+      // ensure state keys
+      items.forEach(function (it) {
+        var k = String(it.key || '').trim();
+        if (!k) return;
+        if (typeof state.tkd.sparring[k] !== 'boolean') state.tkd.sparring[k] = false;
+      });
+
+      var allSelected = items.every(function (it) { return !!state.tkd.sparring[String(it.key)]; });
+      var anySelected = items.some(function (it) { return !!state.tkd.sparring[String(it.key)]; });
+
+      var box = document.createElement('div');
+      box.className = 'item';
+      box.innerHTML = (
+        '<div class="groupHead">' +
+        '<div class="groupTitle">' +
+        '<span class="pill">' + escapeHtml(String(g.icon || 'Gruppe')) + '</span>' +
+        escapeHtml(String(g.title || 'Gruppe')) +
+        ' <span class="pill">' + items.length + '</span>' +
+        '</div>' +
+        '<div class="miniBtns">' +
+        '<button class="mini" data-gact="all" type="button" ' + (allSelected ? 'disabled' : '') + '>Alle</button>' +
+        '<button class="mini" data-gact="none" type="button" ' + (!anySelected ? 'disabled' : '') + '>Keine</button>' +
+        '</div>' +
+        '</div>' +
+        '<div class="sep" style="margin:10px 0"></div>' +
+        '<div class="list" style="gap:8px"></div>'
+      );
+
+      var list = box.querySelector('.list');
+
+      // term UI: label anzeigen, key fürs Popup behalten
+      function termUIKeyLabel(key, label, ctxHint) {
+        var k = String(key || '').trim();
+        var lab = String(label || k).trim();
+        return (
+          '<span class="termWrap">' +
+          '<button class="termBtn js-term" type="button" data-term="' + escapeAttr(k) + '" data-ctx="' + escapeAttr(ctxHint || '') + '">' +
+          escapeHtml(lab) +
+          '</button>' +
+          '<button class="infoBtn js-term" type="button" aria-label="Erklärung" data-term="' + escapeAttr(k) + '" data-ctx="' + escapeAttr(ctxHint || '') + '">i</button>' +
+          '</span>'
+        );
+      }
+
+      items.forEach(function (it) {
+        var k = String(it.key || '').trim();
+        if (!k) return;
+        var label = (it.label != null) ? String(it.label) : k;
+        var row = document.createElement('div');
+        row.className = 'checkRow';
+        row.innerHTML = '<label><input type="checkbox" ' + (state.tkd.sparring[k] ? 'checked' : '') + '> <span>' + termUIKeyLabel(k, label, 'Taekwondo') + '</span></label>';
+        var cb = row.querySelector('input');
+        cb.addEventListener('change', function () {
+          state.tkd.sparring[k] = !!cb.checked;
+          save();
+          tkdRenderIlbo();
+          setBadge();
+        });
+        list.appendChild(row);
+      });
+
+      box.addEventListener('click', function (e) {
+        var t = e.target;
+        if (!(t && t.classList && t.classList.contains('mini'))) return;
+        var act = t.getAttribute('data-gact');
+        if (act === 'all') items.forEach(function (it) { state.tkd.sparring[String(it.key)] = true; });
+        if (act === 'none') items.forEach(function (it) { state.tkd.sparring[String(it.key)] = false; });
         save();
         tkdRenderIlbo();
         setBadge();
       });
-      list.appendChild(row);
-    });
 
-    box.addEventListener('click', function (e) {
-      var t = e.target;
-      if (!(t && t.classList && t.classList.contains('mini'))) return;
-      var act = t.getAttribute('data-gact');
-      if (act === 'all') items.forEach(function (it) { state.tkd.sparring[String(it.key)] = true; });
-      if (act === 'none') items.forEach(function (it) { state.tkd.sparring[String(it.key)] = false; });
-      save();
-      tkdRenderIlbo();
-      setBadge();
+      host.appendChild(box);
     });
-
-    host.appendChild(box);
-  });
-}
+  }
 
 
   function tkdGroupMeta(key) {
