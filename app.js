@@ -122,7 +122,7 @@
   // ========= Glossary =========
   const glossary = {};
   // Standard-Erklärungsbild (wird genutzt, wenn pro Begriff kein anderes Bild gesetzt ist)
-  const DEFAULT_INFO_IMAGE = 'https://thumbs.dreamstime.com/b/taekwondo-und-karate-schattenbilder-66648929.jpg?w=576';
+  const DEFAULT_INFO_IMAGE = './pics/default.png';
 
   // Optional: pro Begriff individuelles Bild (nur Link)
   // Weitere Bilder können hier analog ergänzt werden: TERM_IMAGES['Begriff'] = 'https://...';
@@ -142,7 +142,11 @@
     'Dollyo Chagui': 'https://c7.alamy.com/compde/3dwb4gj/zwei-taekwondo-athleten-die-hohe-tritte-in-schutzausrustung-auf-blauem-hintergrund-ausfuhren-3dwb4gj.jpg',
     'Yop Chagui': 'https://c7.alamy.com/compde/3cj2ny9/junge-manner-die-synchronisierte-taekwondo-kicks-mit-stadtischen-gebauden-im-hintergrund-ausfuhren-3cj2ny9.jpg',
     'Twio Yop Chagui': 'https://c7.alamy.com/compde/2ggnk9f/karate-junge-tritt-in-die-luft-und-fliegt-uber-den-blauen-hintergrund-des-himmels-taekwondo-in-der-natur-praktizieren-schwarzer-gurtel-der-kampfkunst-2ggnk9f.jpg',
-  };
+  
+    // Lokale Bilder
+    'Unteren Block': './pics/unterer_block.png',
+    'Unterer Block': './pics/unterer_block.png',
+};
 
   // ========= Glossary Zusatzfelder: Häufige Fehler (f) & Coach Hinweise (c) =========
   // Schlüssel ist canonicalTerm(term). Einträge kurz, aber konkret technikbezogen.

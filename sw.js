@@ -11,7 +11,9 @@ const PRECACHE_URLS = [
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./icons/icon-512-maskable.png"
+  "./icons/icon-512-maskable.png",
+ "./pics/default.png",
+ "./pics/unterer_block.png"
 ];
 
 self.addEventListener('install', (event) => {
