@@ -143,7 +143,7 @@
     'Yop Chagui': 'https://c7.alamy.com/compde/3cj2ny9/junge-manner-die-synchronisierte-taekwondo-kicks-mit-stadtischen-gebauden-im-hintergrund-ausfuhren-3cj2ny9.jpg',
     'Twio Yop Chagui': 'https://c7.alamy.com/compde/2ggnk9f/karate-junge-tritt-in-die-luft-und-fliegt-uber-den-blauen-hintergrund-des-himmels-taekwondo-in-der-natur-praktizieren-schwarzer-gurtel-der-kampfkunst-2ggnk9f.jpg',
   
-    // Lokale Bilder
+    // Lokale Bilder (Overrides)
     'Unteren Block': './pics/unterer_block.png',
     'Unterer Block': './pics/unterer_block.png',
 };
@@ -216,15 +216,38 @@
   }
 
 
-  function termImageUrl(term) {
-    const raw = String(term || '').trim();
-    const canon = canonicalTerm(raw) || raw;
-    // 1) explizit im Entry gesetzt (entry.img) wird in openGlossary geprüft
-    // 2) term-spezifische Map
-    if (TERM_IMAGES && TERM_IMAGES[canon]) return TERM_IMAGES[canon];
-    // 3) Fallback
-    return DEFAULT_INFO_IMAGE;
-  }
+  function slugifyForPic(term) {
+  // Robust: entfernt Emojis/Sonderzeichen, normalisiert Umlaute, macht snake_case.
+  let s = String(term || '').trim();
+  // Entferne führende Bullet/Striche
+  s = s.replace(/^[\s•\-–—]+/, '');
+  // Entferne gängige Emoji/Symbol-Starts (surrogate pair oder BMP)
+  s = s.replace(/^(?:[\u2600-\u27BF]|[\uD83C-\uDBFF][\uDC00-\uDFFF])\s*/, '');
+  s = canonicalTerm(s) || s;
+  s = s.toLowerCase()
+       .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss');
+  // Nur Buchstaben/Zahlen/Leerzeichen behalten
+  s = s.replace(/[^a-z0-9\s]/g, ' ');
+  // Mehrfachspaces -> underscore
+  s = s.trim().replace(/\s+/g, '_');
+  return s;
+}
+
+function termImageUrl(term) {
+  const raw = String(term || '').trim();
+  const canon = canonicalTerm(raw) || raw;
+
+  // 1) Manuelle Overrides
+  if (TERM_IMAGES && TERM_IMAGES[canon]) return TERM_IMAGES[canon];
+
+  // 2) Automatisch: ./pics/<slug>.png
+  const slug = slugifyForPic(raw);
+  if (slug) return './pics/' + slug + '.png';
+
+  // 3) Fallback
+  return DEFAULT_INFO_IMAGE;
+}
+
 
   function addGloss(term, entry) { glossary[canonicalTerm(term)] = entry; }
 
@@ -432,7 +455,9 @@ addGloss('Struktur: free-attack', { ctx:'Taekwondo', t:'free-attack', m:'Freier 
     const imgEl = document.getElementById('glossImg');
     if (imgEl) {
       const src = (entry && entry.img) ? entry.img : termImageUrl(raw);
-      imgEl.src = src;
+      // Fallback, falls Bilddatei nicht existiert
+    imgEl.onerror = function(){ this.onerror = null; this.src = DEFAULT_INFO_IMAGE; };
+    imgEl.src = src;
       imgEl.alt = 'Erklärungsbild: ' + raw;
     }
 

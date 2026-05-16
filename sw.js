@@ -1,6 +1,6 @@
 /* Einfacher Service Worker für Offline-Nutzung (Cache-First). */
 
-const CACHE_NAME = 'martial-repertoire-pwa-v32';
+const CACHE_NAME = 'martial-repertoire-pwa-v33';
 const PRECACHE_URLS = [
   "./",
   "./index.html",
@@ -11,9 +11,10 @@ const PRECACHE_URLS = [
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./icons/icon-512-maskable.png",
- "./pics/default.png",
- "./pics/unterer_block.png"
+  "./icons/icon-512-maskable.png"
+,
+  "./pics/default.png",
+  "./pics/unterer_block.png",
 ];
 
 self.addEventListener('install', (event) => {
