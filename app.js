@@ -30,11 +30,11 @@
 
   function defaultHyongSelection() {
     let v = {}; TKD_VARIATIONS.forEach(function (x) { v[x] = false; });
-    return { variations: v, rounds: 1 };
+    return { variations: v };
   }
   function defaultFormSelection() {
     let v = {}; WC_VARIATIONS.forEach(function (x) { v[x] = false; });
-    return { variations: v, rounds: 1 };
+    return { variations: v };
   }
   function mapForStrings(arr) { let m = {}; arr.forEach(function (x) { m[x] = false; }); return m; }
   function mapForItems(arr) { let m = {}; arr.forEach(function (x) { m[x.t] = false; }); return m; }
@@ -95,16 +95,12 @@
       if (!merged.tkd.hyongs[h.id]) merged.tkd.hyongs[h.id] = defaultHyongSelection();
       if (!merged.tkd.hyongs[h.id].variations) merged.tkd.hyongs[h.id].variations = defaultHyongSelection().variations;
       TKD_VARIATIONS.forEach(function (v) { if (typeof merged.tkd.hyongs[h.id].variations[v] !== 'boolean') merged.tkd.hyongs[h.id].variations[v] = false; });
-      if (typeof merged.tkd.hyongs[h.id].rounds !== 'number') merged.tkd.hyongs[h.id].rounds = 1;
-      merged.tkd.hyongs[h.id].rounds = clamp(Math.round(merged.tkd.hyongs[h.id].rounds), 1, 20);
     });
 
     FORMS.forEach(function (f) {
       if (!merged.wc.forms[f.id]) merged.wc.forms[f.id] = defaultFormSelection();
       if (!merged.wc.forms[f.id].variations) merged.wc.forms[f.id].variations = defaultFormSelection().variations;
       WC_VARIATIONS.forEach(function (v) { if (typeof merged.wc.forms[f.id].variations[v] !== 'boolean') merged.wc.forms[f.id].variations[v] = false; });
-      if (typeof merged.wc.forms[f.id].rounds !== 'number') merged.wc.forms[f.id].rounds = 1;
-      merged.wc.forms[f.id].rounds = clamp(Math.round(merged.wc.forms[f.id].rounds), 1, 20);
     });
 
     return merged;
@@ -866,7 +862,6 @@ function navGo(view){
       <button class="mini" data-act="allOn" type="button">Alle</button>
       <button class="mini" data-act="allOff" type="button">Aus</button>
     </div>
-    <div class="pill" style="background:#fff">Runden <input class="roundInput" type="number" min="1" max="20" value="${sel.rounds}" style="width:64px;margin-left:8px;border-radius:999px;padding:6px 10px;border:1px solid #e2e8f0" /></div>
   </div>
 </div>
 <div class="sep" style="margin:10px 0"></div>
@@ -900,14 +895,6 @@ function navGo(view){
           tkdRenderHyongs(document.getElementById('tkd-searchInput').value);
           setBadge();
         }
-      });
-
-      let roundInput = el.querySelector('.roundInput');
-      roundInput.addEventListener('change', function () {
-        let val = clamp(parseInt(roundInput.value || '1', 10), 1, 20);
-        roundInput.value = String(val);
-        sel.rounds = val;
-        save();
       });
 
       host.appendChild(el);
@@ -1093,7 +1080,6 @@ function navGo(view){
       <button class="mini" data-act="allOn" type="button">Alle</button>
       <button class="mini" data-act="allOff" type="button">Aus</button>
     </div>
-    <div class="pill" style="background:#fff">Runden <input class="roundInput" type="number" min="1" max="20" value="${sel.rounds}" style="width:64px;margin-left:8px;border-radius:999px;padding:6px 10px;border:1px solid #e2e8f0" /></div>
   </div>
 </div>
 <div class="sep" style="margin:10px 0"></div>
@@ -1127,14 +1113,6 @@ function navGo(view){
           wcRenderForms(document.getElementById('wc-searchInput').value);
           setBadge();
         }
-      });
-
-      let roundInput = el.querySelector('.roundInput');
-      roundInput.addEventListener('change', function () {
-        let val = clamp(parseInt(roundInput.value || '1', 10), 1, 20);
-        roundInput.value = String(val);
-        sel.rounds = val;
-        save();
       });
 
       host.appendChild(el);
@@ -1250,7 +1228,7 @@ function navGo(view){
       out.tkd.hyongs.push({
         key: 'TKD|Hyong|' + h.id,
         title: h.id + ' ' + h.name + ' (' + h.moves + 'x)',
-        details: ['Varianten: ' + chosen.join(' · '), 'Runden: ' + sel.rounds]
+        details: ['Varianten: ' + chosen.join(' · ')]
       });
     });
 
@@ -1271,7 +1249,6 @@ function navGo(view){
           'Beschreibung: ' + f.note,
           'Teile/Sätze: ' + f.parts,
           'Varianten: ' + chosen.join(' · '),
-          'Runden: ' + sel.rounds
         ]
       });
     });
@@ -1764,4 +1741,3 @@ function navGo(view){
 
 
 })();
-

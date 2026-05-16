@@ -1198,3 +1198,41 @@
   .menuPanel{ min-width: 220px; }
   .menuItem{ padding:12px 10px; }
 }
+
+
+/* ===== Mobile Overflow Fix (TKD width issue) ===== */
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.item {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.title, .pill, .desc {
+  word-break: break-word;
+}
+
+body {
+  overflow-x: hidden;
+}
