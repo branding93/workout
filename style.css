@@ -208,12 +208,12 @@
 
     .tabs {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px
     }
 
     .tabs.wc {
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr))
+      grid-template-columns: repeat(auto-fit, minmax(0, 140px));
     }
 
     .tab {
@@ -224,6 +224,11 @@
       font-weight: 950;
       font-size: 13px;
       cursor: pointer
+    
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .tab.active {
@@ -607,6 +612,10 @@
       display: inline-flex;
       gap: 8px;
       align-items: flex-start
+    
+      flex-wrap: wrap;
+      max-width: 100%;
+      min-width: 0;
     }
 
     .termWrap .infoBtn {
@@ -1198,3 +1207,14 @@
   .menuPanel{ min-width: 220px; }
   .menuItem{ padding:12px 10px; }
 }
+
+
+/* ===== Overflow-Hotfix (Mobile): verhindert horizontales Verschieben durch lange Tab-Texte (z.B. "Einschrittkampf") ===== */
+@media (max-width: 520px){
+  .tabs{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tabs.wc{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Zusätzliche Sicherung: Grid/Flex-Children dürfen schrumpfen */
+.grid, .card, .pad, .view, .item, .itemTop, .row, .tabs, .tab{ min-width: 0; }
+html, body{ max-width:100%; overflow-x:hidden; }
