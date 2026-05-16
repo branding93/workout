@@ -1,52 +1,77 @@
-/* quiz.js – Lesbar strukturierte Quiz-Bibliothek
+/* quiz.js – komplett neu generiert: eindeutige Fragen (ohne Präfixe)
 
-Enthält:
-- 200 Fragen Taekwondo (100 mcq + 100 cloze)
-- 200 Fragen Wing Chun (100 mcq + 100 cloze)
-
-Regeln:
-- Jede Frage ist einzigartig (kein doppelter Fragetext).
-- Jede Frage hat 4 eindeutige Antwortoptionen.
-- Die richtige Antwort ist NICHT immer A; die Optionen wurden pro Frage deterministisch gemischt.
-
-Export für die App:
-  window.QUIZ_BANKS = { tkd: TKD_QUESTIONS, wc: WC_QUESTIONS }
+- TKD: 200 (100 MCQ + 100 Lückentext)
+- Wing Chun: 200 (100 MCQ + 100 Lückentext)
+- Jede Frage (q) ist eindeutig und so formuliert, dass nur 1 Antwort logisch richtig ist.
+- Pro Frage genau 1 richtige Antwort (Index a).
+- Antwortpositionen sind gemischt (A/B/C/D).
 */
 
 (function(){
   'use strict';
 
-  // =========================
-  // TKD – Taekwondo (200)
-  // =========================
-  const TKD_QUESTIONS = [
+  // ===== Taekwondo (TKD) =====
+  const TKD_MCQ = [
   {
     "type": "mcq",
-    "q": "TKD: Welche Technik ist ein Kick (Tritt) – Beispieltyp?",
+    "q": "Welcher Kick ist der Frontkick (nach vorn)?",
     "options": [
+      "Dollyo Chagui",
       "Ap Chagui",
-      "Mittleren Block",
-      "Unteren Block",
-      "Oberen Block"
+      "Yop Chagui",
+      "Naeryo Chagui"
     ],
-    "a": 0
+    "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD: Welche Technik ist ein Block?",
+    "q": "Welcher Kick ist der Axtkick (von oben nach unten)?",
     "options": [
-      "Naeryo Chagui",
-      "Unteren Block",
       "Ap Chagui",
+      "Naeryo Chagui",
+      "Yop Chagui",
       "Dollyo Chagui"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD: Welche Option ist eine Stellung (Stand)?",
+    "q": "Welcher Kick ist der Rundkick (Roundhouse)?",
     "options": [
-      "Vorwärts-Stellung (jeongul seogi)",
+      "Yop Chagui",
+      "Naeryo Chagui",
+      "Ap Chagui",
+      "Dollyo Chagui"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Kick ist der Seitkick (Side kick)?",
+    "options": [
+      "Naeryo Chagui",
+      "Ap Chagui",
+      "Yop Chagui",
+      "Dollyo Chagui"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Kick ist der Reverse-Roundhouse (Gegen-Rundkick)?",
+    "options": [
+      "Dollyo Chagui",
+      "Naeryo Chagui",
+      "Pandae Dollyo Chagui",
+      "Ap Chagui"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Kick ist der Back Kick (nach hinten)?",
+    "options": [
+      "Tui Chagui",
       "Dollyo Chagui",
       "Ap Chagui",
       "Naeryo Chagui"
@@ -55,285 +80,241 @@ Export für die App:
   },
   {
     "type": "mcq",
-    "q": "TKD: Welche Kombination entspricht den fünf Tenets?",
+    "q": "Welcher Kick ist der Jump Side Kick (Sprungseitkick)?",
     "options": [
-      "Respekt · Kraft · Schnelligkeit · Sieg · Ehre",
-      "Balance · Timing · Distanz · Reaktion · Härte",
-      "Mut · Technik · Ausdauer · Tradition · Ruhm",
-      "Courtesy · Integrity · Perseverance · Self-Control · Indomitable Spirit"
+      "Ap Chagui",
+      "Naeryo Chagui",
+      "Twio Yop Chagui",
+      "Dollyo Chagui"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik passt zu: Abwehr gegen niedrige Angriffe?",
+    "options": [
+      "Unteren Block",
+      "Oberen Block",
+      "Sudo Daebi Magki",
+      "Mittleren Block"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik passt zu: Abwehr gegen Angriffe zur Körpermitte?",
+    "options": [
+      "Oberen Block",
+      "Mittleren Block",
+      "Unteren Block",
+      "Sudo Daebi Magki"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik passt zu: Abwehr gegen hohe Angriffe zum Kopf?",
+    "options": [
+      "Sudo Daebi Magki",
+      "Unteren Block",
+      "Mittleren Block",
+      "Oberen Block"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD: Welcher Begriff gehört zu den fünf Tenets?",
+    "q": "Welche Technik passt zu: Handkanten-Schutzblock?",
     "options": [
-      "Flexibilität",
-      "Kata",
-      "Reichweite",
+      "Oberen Block",
+      "Unteren Block",
+      "Mittleren Block",
+      "Sudo Daebi Magki"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik passt zu: Unterarm-Schutzblock?",
+    "options": [
+      "Oberen Block",
+      "Mittleren Block",
+      "Unteren Block",
+      "Palmok Daebi Magki"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Stellung passt zu: langer Stand nach vorn?",
+    "options": [
+      "Vorwärts-Stellung (jeongul seogi)",
+      "Distanz",
+      "Rückwärts-Stellung (hugul seogi)",
+      "Timing"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Stellung passt zu: Gewicht eher hinten (defensiv)?",
+    "options": [
+      "Rückwärts-Stellung (hugul seogi)",
+      "Timing",
+      "Distanz",
+      "Vorwärts-Stellung (jeongul seogi)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Tenet bedeutet „Höflichkeit“?",
+    "options": [
+      "Courtesy",
+      "Integrity",
+      "Self-Control",
+      "Perseverance"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Tenet bedeutet „Integrität“?",
+    "options": [
+      "Integrity",
+      "Courtesy",
+      "Perseverance",
+      "Self-Control"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Tenet bedeutet „Durchhaltevermögen“?",
+    "options": [
+      "Self-Control",
+      "Integrity",
+      "Courtesy",
+      "Perseverance"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Tenet bedeutet „Selbstkontrolle“?",
+    "options": [
+      "Integrity",
+      "Self-Control",
+      "Courtesy",
+      "Perseverance"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Tenet bedeutet „Unbezwingbarer Geist“?",
+    "options": [
+      "Indomitable Spirit",
+      "Integrity",
+      "Perseverance",
       "Courtesy"
     ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Welche Beschreibung passt am besten zu „Kammer (Knie hoch)“?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Abstand so wählen, dass Technik sauber trifft"
-    ],
     "a": 0
   },
   {
     "type": "mcq",
-    "q": "TKD: Welche Beschreibung passt am besten zu „Recoil (Zurückziehen)“?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Welche Beschreibung passt am besten zu „Timing“?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Welche Beschreibung passt am besten zu „Distanz“?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Abstand so wählen, dass Technik sauber trifft"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Welche Beschreibung passt am besten zu „Deckung“?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Schutzposition der Hände/Arme",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Welche Beschreibung passt am besten zu „Balance“?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Stabilität auf dem Standbein",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Welche Beschreibung passt am besten zu „Hüftrotation“?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Drehung der Hüfte zur Kraftübertragung",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Welche Beschreibung passt am besten zu „Präzision“?",
-    "options": [
-      "Sauberes Trefferbild (Kontrolle vor Power)",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Welche Beschreibung passt am besten zu „Kontrolle“?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Sicher und dosiert – Partner/Sicherheit beachten"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „Chon-Ji Hyong“ (laut App)?",
+    "q": "Zu welchem Gürtel gehört „Chon-Ji Hyong“?",
     "options": [
       "Gelb",
       "Weiß",
-      "Grün",
-      "Blau"
+      "Blau",
+      "Grün"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „Chon-Ji Hyong“ (laut App)?",
+    "q": "Wie viele Bewegungen hat „Chon-Ji Hyong“?",
     "options": [
-      "19",
-      "21",
+      "23",
       "28",
-      "23"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „Tan-Gun Hyong“ (laut App)?",
-    "options": [
-      "Grün",
-      "Weiß",
-      "Gelb",
-      "Blau"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „Tan-Gun Hyong“ (laut App)?",
-    "options": [
       "21",
-      "28",
-      "19",
-      "23"
+      "19"
     ],
-    "a": 0
+    "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „To-San Hyong“ (laut App)?",
+    "q": "Zu welchem Gürtel gehört „Tan-Gun Hyong“?",
     "options": [
-      "Gelb",
-      "Grün",
+      "Blau",
       "Weiß",
-      "Blau"
+      "Grün",
+      "Gelb"
     ],
-    "a": 0
+    "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „To-San Hyong“ (laut App)?",
+    "q": "Wie viele Bewegungen hat „Tan-Gun Hyong“?",
     "options": [
       "21",
       "23",
       "28",
       "19"
     ],
-    "a": 1
+    "a": 0
   },
   {
     "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „Won-Hyo Hyong“ (laut App)?",
+    "q": "Zu welchem Gürtel gehört „To-San Hyong“?",
     "options": [
-      "Gelb",
-      "Weiß",
       "Blau",
-      "Grün"
+      "Grün",
+      "Gelb",
+      "Weiß"
     ],
-    "a": 3
+    "a": 2
   },
   {
     "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „Won-Hyo Hyong“ (laut App)?",
+    "q": "Wie viele Bewegungen hat „To-San Hyong“?",
     "options": [
+      "23",
       "21",
       "28",
-      "19",
-      "23"
+      "19"
     ],
-    "a": 1
+    "a": 0
   },
   {
     "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „Yul-Gok Hyong“ (laut App)?",
+    "q": "Zu welchem Gürtel gehört „Won-Hyo Hyong“?",
     "options": [
+      "Gelb",
       "Weiß",
       "Blau",
-      "Gelb",
       "Grün"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „Yul-Gok Hyong“ (laut App)?",
+    "q": "Wie viele Bewegungen hat „Won-Hyo Hyong“?",
     "options": [
-      "23",
-      "38",
       "19",
-      "21"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „Chung-Gun Hyong“ (laut App)?",
-    "options": [
-      "Gelb",
-      "Weiß",
-      "Blau",
-      "Grün"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „Chung-Gun Hyong“ (laut App)?",
-    "options": [
       "23",
       "21",
-      "19",
-      "32"
+      "28"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „Toi-Gye Hyong“ (laut App)?",
+    "q": "Zu welchem Gürtel gehört „Yul-Gok Hyong“?",
     "options": [
-      "Weiß",
-      "Gelb",
-      "Blau",
-      "Grün"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „Toi-Gye Hyong“ (laut App)?",
-    "options": [
-      "21",
-      "37",
-      "19",
-      "23"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „Hwa-Rang Hyong“ (laut App)?",
-    "options": [
-      "Rot",
       "Grün",
+      "Blau",
       "Weiß",
       "Gelb"
     ],
@@ -341,799 +322,878 @@ Export für die App:
   },
   {
     "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „Hwa-Rang Hyong“ (laut App)?",
+    "q": "Wie viele Bewegungen hat „Yul-Gok Hyong“?",
     "options": [
+      "38",
+      "19",
+      "23",
+      "21"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Zu welchem Gürtel gehört „Chung-Gun Hyong“?",
+    "options": [
+      "Gelb",
+      "Blau",
+      "Grün",
+      "Weiß"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Wie viele Bewegungen hat „Chung-Gun Hyong“?",
+    "options": [
+      "21",
       "23",
       "19",
-      "21",
-      "29"
+      "32"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „Chung-Mu Hyong“ (laut App)?",
+    "q": "Zu welchem Gürtel gehört „Toi-Gye Hyong“?",
     "options": [
-      "Grün",
-      "Weiß",
+      "Blau",
       "Gelb",
-      "Rot"
+      "Grün",
+      "Weiß"
     ],
-    "a": 3
+    "a": 0
   },
   {
     "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „Chung-Mu Hyong“ (laut App)?",
+    "q": "Wie viele Bewegungen hat „Toi-Gye Hyong“?",
     "options": [
+      "19",
+      "37",
       "23",
-      "30",
+      "21"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Zu welchem Gürtel gehört „Hwa-Rang Hyong“?",
+    "options": [
+      "Weiß",
+      "Grün",
+      "Rot",
+      "Gelb"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Wie viele Bewegungen hat „Hwa-Rang Hyong“?",
+    "options": [
       "21",
+      "23",
+      "29",
       "19"
     ],
-    "a": 1
+    "a": 2
   },
   {
     "type": "mcq",
-    "q": "TKD: Zu welcher Gürtelstufe gehört „Gwang-Gae Hyong“ (laut App)?",
+    "q": "Zu welchem Gürtel gehört „Chung-Mu Hyong“?",
     "options": [
-      "Weiß",
-      "Schwarz",
+      "Rot",
       "Gelb",
+      "Weiß",
       "Grün"
     ],
-    "a": 1
+    "a": 0
   },
   {
     "type": "mcq",
-    "q": "TKD: Wie viele Bewegungen hat „Gwang-Gae Hyong“ (laut App)?",
+    "q": "Wie viele Bewegungen hat „Chung-Mu Hyong“?",
     "options": [
-      "21",
+      "23",
+      "19",
+      "30",
+      "21"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Zu welchem Gürtel gehört „Gwang-Gae Hyong“?",
+    "options": [
+      "Schwarz",
+      "Weiß",
+      "Grün",
+      "Gelb"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wie viele Bewegungen hat „Gwang-Gae Hyong“?",
+    "options": [
       "39",
       "19",
-      "23"
+      "23",
+      "21"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Knie anheben und Kick vorbereiten“?",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Timing"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wie nennt man: „Knie anheben und Kick vorbereiten“?",
+    "options": [
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD: Welche Option ist ein Beispiel für eine Kombination (Kombi)?",
+    "q": "Welches Konzept beschreibt: „Knie anheben und Kick vorbereiten“?",
     "options": [
-      "Kombination 1-8",
-      "Kombination 1-14",
-      "Übung 1-8",
-      "4 Kicks + 6 Kicks + 6 Kicks mit Sprung"
+      "Distanz",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
     ],
     "a": 2
   },
   {
     "type": "mcq",
-    "q": "TKD: Was bedeutet „Ilbo“ im Einschrittkampf?",
+    "q": "Welcher Fachbegriff bedeutet: „Knie anheben und Kick vorbereiten“?",
     "options": [
-      "Freikampf",
-      "3 Schritte",
-      "2 Schritte",
-      "1 Schritt"
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD: Was bedeutet „Ibo“ im Einschrittkampf?",
+    "q": "Welcher Ausdruck steht für: „Knie anheben und Kick vorbereiten“?",
     "options": [
-      "1 Schritt",
-      "3 Schritte",
-      "Freikampf",
-      "2 Schritte"
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Distanz",
+      "Kammer (Knie hoch)"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD: Was bedeutet „Sambo“ im Einschrittkampf?",
+    "q": "Welche Bezeichnung passt zu: „Knie anheben und Kick vorbereiten“?",
     "options": [
-      "Freikampf",
-      "3 Schritte",
-      "2 Schritte",
-      "1 Schritt"
+      "Recoil (Zurückziehen)",
+      "Distanz",
+      "Timing",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff beschreibt am treffendsten: „Knie anheben und Kick vorbereiten“?",
+    "options": [
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 1: Welche Aussage beschreibt „Recoil (Zurückziehen)“ am besten?",
+    "q": "Welches Wort meint: „Knie anheben und Kick vorbereiten“?",
     "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr"
+      "Distanz",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
     ],
     "a": 2
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 2: Welche Aussage beschreibt „Timing“ am besten?",
+    "q": "Wie heißt das Prinzip: „Knie anheben und Kick vorbereiten“?",
     "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten"
+      "Distanz",
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)"
     ],
-    "a": 0
+    "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 3: Welche Aussage beschreibt „Distanz“ am besten?",
+    "q": "Welcher Terminus steht für: „Knie anheben und Kick vorbereiten“?",
     "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Distanz"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
+    "options": [
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 4: Welche Aussage beschreibt „Deckung“ am besten?",
+    "q": "Wie nennt man: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
     "options": [
-      "Schutzposition der Hände/Arme",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Distanz",
+      "Recoil (Zurückziehen)"
     ],
-    "a": 0
+    "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 5: Welche Aussage beschreibt „Balance“ am besten?",
+    "q": "Welches Konzept beschreibt: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
     "options": [
-      "Stabilität auf dem Standbein",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
+      "Timing",
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)"
     ],
-    "a": 0
+    "a": 2
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 6: Welche Aussage beschreibt „Hüftrotation“ am besten?",
+    "q": "Welcher Fachbegriff bedeutet: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
     "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Drehung der Hüfte zur Kraftübertragung",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr"
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck steht für: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
+    "options": [
+      "Timing",
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
+    "options": [
+      "Timing",
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff beschreibt am treffendsten: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Distanz"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welches Wort meint: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
+    "options": [
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Distanz",
+      "Kammer (Knie hoch)"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 7: Welche Aussage beschreibt „Präzision“ am besten?",
+    "q": "Wie heißt das Prinzip: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
     "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Sauberes Trefferbild (Kontrolle vor Power)",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 8: Welche Aussage beschreibt „Kontrolle“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Sicher und dosiert – Partner/Sicherheit beachten"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 9: Welche Aussage beschreibt „Kammer (Knie hoch)“ am besten?",
-    "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 10: Welche Aussage beschreibt „Recoil (Zurückziehen)“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 11: Welche Aussage beschreibt „Timing“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Abstand so wählen, dass Technik sauber trifft"
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Distanz"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 12: Welche Aussage beschreibt „Distanz“ am besten?",
+    "q": "Welcher Terminus steht für: „Nach dem Treffer zügig zurück in die Ausgangsposition“?",
     "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 13: Welche Aussage beschreibt „Deckung“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Schutzposition der Hände/Arme",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 14: Welche Aussage beschreibt „Balance“ am besten?",
-    "options": [
-      "Stabilität auf dem Standbein",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 15: Welche Aussage beschreibt „Hüftrotation“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Drehung der Hüfte zur Kraftübertragung",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 16: Welche Aussage beschreibt „Präzision“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Sauberes Trefferbild (Kontrolle vor Power)",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 17: Welche Aussage beschreibt „Kontrolle“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Sicher und dosiert – Partner/Sicherheit beachten"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 18: Welche Aussage beschreibt „Kammer (Knie hoch)“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 19: Welche Aussage beschreibt „Recoil (Zurückziehen)“ am besten?",
-    "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 20: Welche Aussage beschreibt „Timing“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Abstand so wählen, dass Technik sauber trifft"
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 21: Welche Aussage beschreibt „Distanz“ am besten?",
+    "q": "Welcher Begriff passt zu: „Richtiger Moment für Angriff/Abwehr“?",
     "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Abstand so wählen, dass Technik sauber trifft"
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 22: Welche Aussage beschreibt „Deckung“ am besten?",
+    "q": "Wie nennt man: „Richtiger Moment für Angriff/Abwehr“?",
     "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Schutzposition der Hände/Arme"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 23: Welche Aussage beschreibt „Balance“ am besten?",
-    "options": [
-      "Stabilität auf dem Standbein",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 24: Welche Aussage beschreibt „Hüftrotation“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Drehung der Hüfte zur Kraftübertragung"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 25: Welche Aussage beschreibt „Präzision“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Sauberes Trefferbild (Kontrolle vor Power)",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 26: Welche Aussage beschreibt „Kontrolle“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Sicher und dosiert – Partner/Sicherheit beachten",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 27: Welche Aussage beschreibt „Kammer (Knie hoch)“ am besten?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Distanz"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 28: Welche Aussage beschreibt „Recoil (Zurückziehen)“ am besten?",
+    "q": "Welches Konzept beschreibt: „Richtiger Moment für Angriff/Abwehr“?",
     "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Abstand so wählen, dass Technik sauber trifft"
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Distanz"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Fachbegriff bedeutet: „Richtiger Moment für Angriff/Abwehr“?",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Distanz"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck steht für: „Richtiger Moment für Angriff/Abwehr“?",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Timing"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Richtiger Moment für Angriff/Abwehr“?",
+    "options": [
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff beschreibt am treffendsten: „Richtiger Moment für Angriff/Abwehr“?",
+    "options": [
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Distanz",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welches Wort meint: „Richtiger Moment für Angriff/Abwehr“?",
+    "options": [
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Distanz"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wie heißt das Prinzip: „Richtiger Moment für Angriff/Abwehr“?",
+    "options": [
+      "Distanz",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 29: Welche Aussage beschreibt „Timing“ am besten?",
+    "q": "Welcher Terminus steht für: „Richtiger Moment für Angriff/Abwehr“?",
     "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Timing"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Abstand so wählen, dass Technik sauber trifft“?",
+    "options": [
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)"
     ],
     "a": 0
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 30: Welche Aussage beschreibt „Distanz“ am besten?",
+    "q": "Wie nennt man: „Abstand so wählen, dass Technik sauber trifft“?",
     "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Abstand so wählen, dass Technik sauber trifft"
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Distanz"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 31: Welche Aussage beschreibt „Deckung“ am besten?",
+    "q": "Welches Konzept beschreibt: „Abstand so wählen, dass Technik sauber trifft“?",
     "options": [
-      "Schutzposition der Hände/Arme",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 32: Welche Aussage beschreibt „Balance“ am besten?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Stabilität auf dem Standbein"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 33: Welche Aussage beschreibt „Hüftrotation“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Drehung der Hüfte zur Kraftübertragung"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 34: Welche Aussage beschreibt „Präzision“ am besten?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Sauberes Trefferbild (Kontrolle vor Power)",
-      "Knie anheben und Kick vorbereiten"
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Recoil (Zurückziehen)"
     ],
     "a": 2
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 35: Welche Aussage beschreibt „Kontrolle“ am besten?",
+    "q": "Welcher Fachbegriff bedeutet: „Abstand so wählen, dass Technik sauber trifft“?",
     "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Sicher und dosiert – Partner/Sicherheit beachten"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 36: Welche Aussage beschreibt „Kammer (Knie hoch)“ am besten?",
-    "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 37: Welche Aussage beschreibt „Recoil (Zurückziehen)“ am besten?",
-    "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 38: Welche Aussage beschreibt „Timing“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 39: Welche Aussage beschreibt „Distanz“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Abstand so wählen, dass Technik sauber trifft"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 40: Welche Aussage beschreibt „Deckung“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Schutzposition der Hände/Arme",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 41: Welche Aussage beschreibt „Balance“ am besten?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Stabilität auf dem Standbein",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 42: Welche Aussage beschreibt „Hüftrotation“ am besten?",
-    "options": [
-      "Drehung der Hüfte zur Kraftübertragung",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 43: Welche Aussage beschreibt „Präzision“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Sauberes Trefferbild (Kontrolle vor Power)",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 44: Welche Aussage beschreibt „Kontrolle“ am besten?",
-    "options": [
-      "Sicher und dosiert – Partner/Sicherheit beachten",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 45: Welche Aussage beschreibt „Kammer (Knie hoch)“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Abstand so wählen, dass Technik sauber trifft"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 46: Welche Aussage beschreibt „Recoil (Zurückziehen)“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Abstand so wählen, dass Technik sauber trifft"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 47: Welche Aussage beschreibt „Timing“ am besten?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 48: Welche Aussage beschreibt „Distanz“ am besten?",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 49: Welche Aussage beschreibt „Deckung“ am besten?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Schutzposition der Hände/Arme"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 50: Welche Aussage beschreibt „Balance“ am besten?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Stabilität auf dem Standbein",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten"
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Timing",
+      "Recoil (Zurückziehen)"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 51: Welche Aussage beschreibt „Hüftrotation“ am besten?",
+    "q": "Welcher Ausdruck steht für: „Abstand so wählen, dass Technik sauber trifft“?",
     "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Drehung der Hüfte zur Kraftübertragung",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 52: Welche Aussage beschreibt „Präzision“ am besten?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Sauberes Trefferbild (Kontrolle vor Power)",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 53: Welche Aussage beschreibt „Kontrolle“ am besten?",
-    "options": [
-      "Sicher und dosiert – Partner/Sicherheit beachten",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr"
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
     ],
     "a": 0
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 54: Welche Aussage beschreibt „Kammer (Knie hoch)“ am besten?",
+    "q": "Welche Bezeichnung passt zu: „Abstand so wählen, dass Technik sauber trifft“?",
     "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Knie anheben und Kick vorbereiten"
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Distanz"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 55: Welche Aussage beschreibt „Recoil (Zurückziehen)“ am besten?",
+    "q": "Welcher Begriff beschreibt am treffendsten: „Abstand so wählen, dass Technik sauber trifft“?",
     "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten"
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)"
     ],
-    "a": 1
+    "a": 0
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 56: Welche Aussage beschreibt „Timing“ am besten?",
+    "q": "Welches Wort meint: „Abstand so wählen, dass Technik sauber trifft“?",
     "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr"
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Wie heißt das Prinzip: „Abstand so wählen, dass Technik sauber trifft“?",
+    "options": [
+      "Distanz",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Terminus steht für: „Abstand so wählen, dass Technik sauber trifft“?",
+    "options": [
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Schutzposition der Hände/Arme“?",
+    "options": [
+      "Deckung",
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wie nennt man: „Schutzposition der Hände/Arme“?",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Deckung"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 57: Welche Aussage beschreibt „Distanz“ am besten?",
+    "q": "Welches Konzept beschreibt: „Schutzposition der Hände/Arme“?",
     "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
+      "Deckung",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
     ],
     "a": 0
   },
   {
     "type": "mcq",
-    "q": "TKD Technik-Qualität 58: Welche Aussage beschreibt „Deckung“ am besten?",
+    "q": "Welcher Fachbegriff bedeutet: „Schutzposition der Hände/Arme“?",
     "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Schutzposition der Hände/Arme",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 59: Welche Aussage beschreibt „Balance“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Stabilität auf dem Standbein",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 60: Welche Aussage beschreibt „Hüftrotation“ am besten?",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Drehung der Hüfte zur Kraftübertragung",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 61: Welche Aussage beschreibt „Präzision“ am besten?",
-    "options": [
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Sauberes Trefferbild (Kontrolle vor Power)",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "TKD Technik-Qualität 62: Welche Aussage beschreibt „Kontrolle“ am besten?",
-    "options": [
-      "Sicher und dosiert – Partner/Sicherheit beachten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
+      "Deckung",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing"
     ],
     "a": 0
   },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck steht für: „Schutzposition der Hände/Arme“?",
+    "options": [
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Deckung"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Schutzposition der Hände/Arme“?",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Deckung",
+      "Kammer (Knie hoch)",
+      "Timing"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff beschreibt am treffendsten: „Schutzposition der Hände/Arme“?",
+    "options": [
+      "Deckung",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welches Wort meint: „Schutzposition der Hände/Arme“?",
+    "options": [
+      "Deckung",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wie heißt das Prinzip: „Schutzposition der Hände/Arme“?",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Deckung",
+      "Recoil (Zurückziehen)",
+      "Timing"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Terminus steht für: „Schutzposition der Hände/Arme“?",
+    "options": [
+      "Timing",
+      "Deckung",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Balance",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Wie nennt man: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Balance",
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welches Konzept beschreibt: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Balance",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Fachbegriff bedeutet: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Balance"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck steht für: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Balance"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Balance",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff beschreibt am treffendsten: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Balance",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welches Wort meint: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Balance",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wie heißt das Prinzip: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Balance"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Terminus steht für: „Stabilität auf dem Standbein“?",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Balance",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Drehung der Hüfte zur Kraftübertragung“?",
+    "options": [
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Hüftrotation"
+    ],
+    "a": 3
+  }
+];
+  const TKD_CLOZE = [
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): Der Tritt heißt ____.",
+    "q": "Wie heißt der Frontkick (nach vorn)? ____",
     "options": [
       "Ap Chagui",
-      "Naeryo Chagui",
       "Dollyo Chagui",
+      "Naeryo Chagui",
       "Yop Chagui"
     ],
     "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): Ein Block heißt ____.",
+    "q": "Wie heißt der Axtkick (von oben nach unten)? ____",
+    "options": [
+      "Ap Chagui",
+      "Dollyo Chagui",
+      "Yop Chagui",
+      "Naeryo Chagui"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt der Rundkick (Roundhouse)? ____",
+    "options": [
+      "Yop Chagui",
+      "Dollyo Chagui",
+      "Naeryo Chagui",
+      "Ap Chagui"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt der Seitkick (Side kick)? ____",
+    "options": [
+      "Naeryo Chagui",
+      "Yop Chagui",
+      "Ap Chagui",
+      "Dollyo Chagui"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt der Reverse-Roundhouse (Gegen-Rundkick)? ____",
+    "options": [
+      "Dollyo Chagui",
+      "Pandae Dollyo Chagui",
+      "Ap Chagui",
+      "Naeryo Chagui"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt der Back Kick (nach hinten)? ____",
+    "options": [
+      "Dollyo Chagui",
+      "Tui Chagui",
+      "Ap Chagui",
+      "Naeryo Chagui"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt der Jump Side Kick (Sprungseitkick)? ____",
+    "options": [
+      "Dollyo Chagui",
+      "Twio Yop Chagui",
+      "Naeryo Chagui",
+      "Ap Chagui"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik passt zu: Abwehr gegen niedrige Angriffe? ____",
     "options": [
       "Sudo Daebi Magki",
       "Mittleren Block",
@@ -1144,183 +1204,249 @@ Export für die App:
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): Eine Stellung heißt ____.",
+    "q": "Welche Technik passt zu: Abwehr gegen Angriffe zur Körpermitte? ____",
     "options": [
+      "Unteren Block",
+      "Sudo Daebi Magki",
+      "Mittleren Block",
+      "Oberen Block"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik passt zu: Abwehr gegen hohe Angriffe zum Kopf? ____",
+    "options": [
+      "Unteren Block",
+      "Sudo Daebi Magki",
+      "Mittleren Block",
+      "Oberen Block"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik passt zu: Handkanten-Schutzblock? ____",
+    "options": [
+      "Mittleren Block",
+      "Sudo Daebi Magki",
+      "Oberen Block",
+      "Unteren Block"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik passt zu: Unterarm-Schutzblock? ____",
+    "options": [
+      "Mittleren Block",
+      "Palmok Daebi Magki",
+      "Unteren Block",
+      "Oberen Block"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die Stellung: langer Stand nach vorn? ____",
+    "options": [
+      "Vorwärts-Stellung (jeongul seogi)",
       "Distanz",
       "Rückwärts-Stellung (hugul seogi)",
-      "Timing",
-      "Vorwärts-Stellung (jeongul seogi)"
+      "Timing"
     ],
-    "a": 3
+    "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): Ein Tenet heißt ____.",
+    "q": "Wie heißt die Stellung: Gewicht eher hinten (defensiv)? ____",
     "options": [
+      "Distanz",
+      "Vorwärts-Stellung (jeongul seogi)",
+      "Rückwärts-Stellung (hugul seogi)",
+      "Timing"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Tenet bedeutet „Höflichkeit“? ____",
+    "options": [
+      "Integrity",
+      "Courtesy",
+      "Self-Control",
+      "Perseverance"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Tenet bedeutet „Integrität“? ____",
+    "options": [
+      "Courtesy",
+      "Integrity",
       "Perseverance",
+      "Self-Control"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Tenet bedeutet „Durchhaltevermögen“? ____",
+    "options": [
+      "Self-Control",
+      "Perseverance",
+      "Courtesy",
+      "Integrity"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Tenet bedeutet „Selbstkontrolle“? ____",
+    "options": [
+      "Courtesy",
       "Integrity",
       "Self-Control",
+      "Perseverance"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Tenet bedeutet „Unbezwingbarer Geist“? ____",
+    "options": [
+      "Integrity",
+      "Indomitable Spirit",
+      "Perseverance",
       "Courtesy"
     ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Kammer (Knie hoch)“ bedeutet ____.",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Abstand so wählen, dass Technik sauber trifft"
-    ],
     "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „Recoil (Zurückziehen)“ bedeutet ____.",
+    "q": "Zu welchem Gürtel gehört „Chon-Ji Hyong“? ____",
     "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Timing“ bedeutet ____.",
-    "options": [
-      "Abstand so wählen, dass Technik sauber trifft",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Distanz“ bedeutet ____.",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Abstand so wählen, dass Technik sauber trifft"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Deckung“ bedeutet ____.",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Schutzposition der Hände/Arme",
-      "Knie anheben und Kick vorbereiten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Balance“ bedeutet ____.",
-    "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Stabilität auf dem Standbein"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Hüftrotation“ bedeutet ____.",
-    "options": [
-      "Drehung der Hüfte zur Kraftübertragung",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Knie anheben und Kick vorbereiten",
-      "Richtiger Moment für Angriff/Abwehr"
+      "Weiß",
+      "Grün",
+      "Gelb",
+      "Blau"
     ],
     "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „Präzision“ bedeutet ____.",
+    "q": "„Chon-Ji Hyong“ hat ____ Bewegungen.",
     "options": [
-      "Knie anheben und Kick vorbereiten",
-      "Sauberes Trefferbild (Kontrolle vor Power)",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition",
-      "Richtiger Moment für Angriff/Abwehr"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Kontrolle“ bedeutet ____.",
-    "options": [
-      "Richtiger Moment für Angriff/Abwehr",
-      "Knie anheben und Kick vorbereiten",
-      "Sicher und dosiert – Partner/Sicherheit beachten",
-      "Nach dem Treffer zügig zurück in die Ausgangsposition"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Chon-Ji Hyong“ hat ____ Bewegungen.",
-    "options": [
-      "28",
       "19",
       "21",
+      "28",
       "23"
     ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Zu welchem Gürtel gehört „Tan-Gun Hyong“? ____",
+    "options": [
+      "Grün",
+      "Gelb",
+      "Blau",
+      "Weiß"
+    ],
     "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „Tan-Gun Hyong“ hat ____ Bewegungen.",
+    "q": "„Tan-Gun Hyong“ hat ____ Bewegungen.",
     "options": [
       "21",
+      "19",
       "28",
+      "23"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Zu welchem Gürtel gehört „To-San Hyong“? ____",
+    "options": [
+      "Blau",
+      "Weiß",
+      "Gelb",
+      "Grün"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "„To-San Hyong“ hat ____ Bewegungen.",
+    "options": [
       "23",
+      "21",
+      "28",
       "19"
     ],
     "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „To-San Hyong“ hat ____ Bewegungen.",
+    "q": "Zu welchem Gürtel gehört „Won-Hyo Hyong“? ____",
     "options": [
-      "28",
-      "23",
-      "21",
-      "19"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Won-Hyo Hyong“ hat ____ Bewegungen.",
-    "options": [
-      "19",
-      "28",
-      "23",
-      "21"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): „Yul-Gok Hyong“ hat ____ Bewegungen.",
-    "options": [
-      "21",
-      "23",
-      "19",
-      "38"
+      "Blau",
+      "Gelb",
+      "Weiß",
+      "Grün"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „Chung-Gun Hyong“ hat ____ Bewegungen.",
+    "q": "„Won-Hyo Hyong“ hat ____ Bewegungen.",
+    "options": [
+      "23",
+      "19",
+      "21",
+      "28"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Zu welchem Gürtel gehört „Yul-Gok Hyong“? ____",
+    "options": [
+      "Gelb",
+      "Weiß",
+      "Grün",
+      "Blau"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "„Yul-Gok Hyong“ hat ____ Bewegungen.",
+    "options": [
+      "23",
+      "21",
+      "38",
+      "19"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Zu welchem Gürtel gehört „Chung-Gun Hyong“? ____",
+    "options": [
+      "Gelb",
+      "Grün",
+      "Weiß",
+      "Blau"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Chung-Gun Hyong“ hat ____ Bewegungen.",
     "options": [
       "32",
       "21",
@@ -1331,18 +1457,40 @@ Export für die App:
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „Toi-Gye Hyong“ hat ____ Bewegungen.",
+    "q": "Zu welchem Gürtel gehört „Toi-Gye Hyong“? ____",
     "options": [
-      "23",
-      "19",
-      "21",
-      "37"
+      "Gelb",
+      "Weiß",
+      "Blau",
+      "Grün"
     ],
-    "a": 3
+    "a": 2
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „Hwa-Rang Hyong“ hat ____ Bewegungen.",
+    "q": "„Toi-Gye Hyong“ hat ____ Bewegungen.",
+    "options": [
+      "19",
+      "37",
+      "23",
+      "21"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Zu welchem Gürtel gehört „Hwa-Rang Hyong“? ____",
+    "options": [
+      "Weiß",
+      "Gelb",
+      "Rot",
+      "Grün"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "„Hwa-Rang Hyong“ hat ____ Bewegungen.",
     "options": [
       "23",
       "21",
@@ -1353,983 +1501,1455 @@ Export für die App:
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „Chung-Mu Hyong“ hat ____ Bewegungen.",
+    "q": "Zu welchem Gürtel gehört „Chung-Mu Hyong“? ____",
     "options": [
+      "Gelb",
+      "Grün",
+      "Weiß",
+      "Rot"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Chung-Mu Hyong“ hat ____ Bewegungen.",
+    "options": [
+      "19",
       "23",
-      "21",
-      "19",
-      "30"
+      "30",
+      "21"
     ],
-    "a": 3
+    "a": 2
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „Gwang-Gae Hyong“ hat ____ Bewegungen.",
+    "q": "Zu welchem Gürtel gehört „Gwang-Gae Hyong“? ____",
+    "options": [
+      "Weiß",
+      "Grün",
+      "Schwarz",
+      "Gelb"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "„Gwang-Gae Hyong“ hat ____ Bewegungen.",
     "options": [
       "19",
-      "21",
       "39",
-      "23"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD): Ein Beispiel für eine Kombi ist ____.",
-    "options": [
-      "Kombination 1-8",
-      "Übung 1-8",
-      "Kombination 1-14",
-      "4 Kicks + 6 Kicks + 6 Kicks mit Sprung"
+      "23",
+      "21"
     ],
     "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD): „Ibo“ steht für ____.",
+    "q": "Begriff gesucht: „Knie anheben und Kick vorbereiten“ heißt ____.",
     "options": [
-      "4 Schritte",
-      "3 Schritte",
-      "2 Schritte",
-      "1 Schritt"
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Distanz"
     ],
-    "a": 2
+    "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 1: Ein Kick heißt ____.",
+    "q": "Wie heißt es? „Knie anheben und Kick vorbereiten“ -> ____",
     "options": [
-      "Ap Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui",
-      "Yop Chagui"
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Distanz"
     ],
-    "a": 2
+    "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 2: Ein Kick heißt ____.",
+    "q": "Fachbegriff: „Knie anheben und Kick vorbereiten“ = ____",
     "options": [
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Yop Chagui",
-      "Dollyo Chagui"
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Timing"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Wort gesucht für: „Knie anheben und Kick vorbereiten“ ____",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Distanz",
+      "Kammer (Knie hoch)"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 3: Ein Kick heißt ____.",
+    "q": "Das nennt man: „Knie anheben und Kick vorbereiten“ ____",
     "options": [
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Yop Chagui"
+      "Recoil (Zurückziehen)",
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Timing"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Bezeichnung gesucht: „Knie anheben und Kick vorbereiten“ = ____",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Distanz"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff trifft zu: „Knie anheben und Kick vorbereiten“? ____",
+    "options": [
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Distanz"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie nennt man das: „Knie anheben und Kick vorbereiten“ ____",
+    "options": [
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 4: Ein Kick heißt ____.",
+    "q": "Welcher Terminus passt zu: „Knie anheben und Kick vorbereiten“? ____",
     "options": [
-      "Ap Chagui",
-      "Pandae Dollyo Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui"
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing"
     ],
     "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 5: Ein Kick heißt ____.",
+    "q": "Passender Begriff für „Knie anheben und Kick vorbereiten“: ____",
     "options": [
-      "Ap Chagui",
-      "Tui Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui"
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing"
     ],
     "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 6: Ein Kick heißt ____.",
+    "q": "Begriff gesucht: „Nach dem Treffer zügig zurück in die Ausgangsposition“ heißt ____.",
     "options": [
-      "Twio Yop Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 7: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui",
-      "Yop Chagui"
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
     ],
     "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 8: Ein Kick heißt ____.",
+    "q": "Wie heißt es? „Nach dem Treffer zügig zurück in die Ausgangsposition“ -> ____",
     "options": [
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Yop Chagui",
-      "Naeryo Chagui"
+      "Distanz",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 9: Ein Kick heißt ____.",
+    "q": "Fachbegriff: „Nach dem Treffer zügig zurück in die Ausgangsposition“ = ____",
     "options": [
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Distanz"
     ],
-    "a": 1
+    "a": 2
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 10: Ein Kick heißt ____.",
+    "q": "Wort gesucht für: „Nach dem Treffer zügig zurück in die Ausgangsposition“ ____",
     "options": [
-      "Ap Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Yop Chagui"
+      "Timing",
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 11: Ein Kick heißt ____.",
+    "q": "Das nennt man: „Nach dem Treffer zügig zurück in die Ausgangsposition“ ____",
     "options": [
-      "Pandae Dollyo Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui"
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Distanz",
+      "Kammer (Knie hoch)"
     ],
     "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 12: Ein Kick heißt ____.",
+    "q": "Bezeichnung gesucht: „Nach dem Treffer zügig zurück in die Ausgangsposition“ = ____",
     "options": [
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Tui Chagui",
-      "Ap Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 13: Ein Kick heißt ____.",
-    "options": [
-      "Twio Yop Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 14: Ein Kick heißt ____.",
-    "options": [
-      "Ap Chagui",
-      "Yop Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 15: Ein Kick heißt ____.",
-    "options": [
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Yop Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 16: Ein Kick heißt ____.",
-    "options": [
-      "Yop Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 17: Ein Kick heißt ____.",
-    "options": [
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 18: Ein Kick heißt ____.",
-    "options": [
-      "Ap Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui",
-      "Pandae Dollyo Chagui"
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Timing",
+      "Recoil (Zurückziehen)"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 19: Ein Kick heißt ____.",
+    "q": "Welcher Begriff trifft zu: „Nach dem Treffer zügig zurück in die Ausgangsposition“? ____",
     "options": [
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Tui Chagui"
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Timing",
+      "Recoil (Zurückziehen)"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 20: Ein Kick heißt ____.",
+    "q": "Wie nennt man das: „Nach dem Treffer zügig zurück in die Ausgangsposition“ ____",
     "options": [
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Twio Yop Chagui"
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Terminus passt zu: „Nach dem Treffer zügig zurück in die Ausgangsposition“? ____",
+    "options": [
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff für „Nach dem Treffer zügig zurück in die Ausgangsposition“: ____",
+    "options": [
+      "Timing",
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 21: Ein Kick heißt ____.",
+    "q": "Begriff gesucht: „Richtiger Moment für Angriff/Abwehr“ heißt ____.",
     "options": [
-      "Dollyo Chagui",
-      "Yop Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui"
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Distanz"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt es? „Richtiger Moment für Angriff/Abwehr“ -> ____",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Distanz",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Fachbegriff: „Richtiger Moment für Angriff/Abwehr“ = ____",
+    "options": [
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Distanz",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Wort gesucht für: „Richtiger Moment für Angriff/Abwehr“ ____",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Distanz",
+      "Kammer (Knie hoch)",
+      "Timing"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 22: Ein Kick heißt ____.",
+    "q": "Das nennt man: „Richtiger Moment für Angriff/Abwehr“ ____",
     "options": [
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Yop Chagui",
-      "Dollyo Chagui"
+      "Distanz",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
     ],
-    "a": 0
+    "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 23: Ein Kick heißt ____.",
+    "q": "Bezeichnung gesucht: „Richtiger Moment für Angriff/Abwehr“ = ____",
     "options": [
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Yop Chagui",
-      "Naeryo Chagui"
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Distanz"
     ],
-    "a": 0
+    "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 24: Ein Kick heißt ____.",
+    "q": "Welcher Begriff trifft zu: „Richtiger Moment für Angriff/Abwehr“? ____",
     "options": [
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Yop Chagui"
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Distanz"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Wie nennt man das: „Richtiger Moment für Angriff/Abwehr“ ____",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Distanz",
+      "Timing"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 25: Ein Kick heißt ____.",
+    "q": "Welcher Terminus passt zu: „Richtiger Moment für Angriff/Abwehr“? ____",
     "options": [
-      "Pandae Dollyo Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui"
+      "Distanz",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff für „Richtiger Moment für Angriff/Abwehr“: ____",
+    "options": [
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Distanz"
     ],
     "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 26: Ein Kick heißt ____.",
+    "q": "Begriff gesucht: „Abstand so wählen, dass Technik sauber trifft“ heißt ____.",
     "options": [
-      "Ap Chagui",
-      "Naeryo Chagui",
-      "Tui Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 27: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Twio Yop Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 28: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Yop Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 29: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui",
-      "Yop Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 30: Ein Kick heißt ____.",
-    "options": [
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 31: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui",
-      "Yop Chagui"
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Distanz"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 32: Ein Kick heißt ____.",
+    "q": "Wie heißt es? „Abstand so wählen, dass Technik sauber trifft“ -> ____",
     "options": [
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Pandae Dollyo Chagui",
-      "Naeryo Chagui"
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Distanz",
+      "Kammer (Knie hoch)"
     ],
     "a": 2
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 33: Ein Kick heißt ____.",
+    "q": "Fachbegriff: „Abstand so wählen, dass Technik sauber trifft“ = ____",
     "options": [
-      "Tui Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 34: Ein Kick heißt ____.",
-    "options": [
-      "Twio Yop Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 35: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Yop Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Timing"
     ],
     "a": 2
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 36: Ein Kick heißt ____.",
+    "q": "Wort gesucht für: „Abstand so wählen, dass Technik sauber trifft“ ____",
     "options": [
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Distanz"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 37: Ein Kick heißt ____.",
+    "q": "Das nennt man: „Abstand so wählen, dass Technik sauber trifft“ ____",
     "options": [
-      "Naeryo Chagui",
-      "Yop Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui"
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Bezeichnung gesucht: „Abstand so wählen, dass Technik sauber trifft“ = ____",
+    "options": [
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Distanz"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 38: Ein Kick heißt ____.",
+    "q": "Welcher Begriff trifft zu: „Abstand so wählen, dass Technik sauber trifft“? ____",
     "options": [
-      "Naeryo Chagui",
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 39: Ein Kick heißt ____.",
-    "options": [
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui",
-      "Pandae Dollyo Chagui"
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Distanz"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 40: Ein Kick heißt ____.",
+    "q": "Wie nennt man das: „Abstand so wählen, dass Technik sauber trifft“ ____",
     "options": [
-      "Dollyo Chagui",
-      "Naeryo Chagui",
-      "Tui Chagui",
-      "Ap Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 41: Ein Kick heißt ____.",
-    "options": [
-      "Twio Yop Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 42: Ein Kick heißt ____.",
-    "options": [
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 43: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Yop Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 44: Ein Kick heißt ____.",
-    "options": [
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Yop Chagui",
-      "Dollyo Chagui"
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Distanz"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 45: Ein Kick heißt ____.",
+    "q": "Welcher Terminus passt zu: „Abstand so wählen, dass Technik sauber trifft“? ____",
     "options": [
-      "Ap Chagui",
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui"
+      "Distanz",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff für „Abstand so wählen, dass Technik sauber trifft“: ____",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Distanz",
+      "Timing",
+      "Recoil (Zurückziehen)"
     ],
     "a": 1
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 46: Ein Kick heißt ____.",
+    "q": "Begriff gesucht: „Schutzposition der Hände/Arme“ heißt ____.",
     "options": [
-      "Pandae Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 47: Ein Kick heißt ____.",
-    "options": [
-      "Tui Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 48: Ein Kick heißt ____.",
-    "options": [
-      "Twio Yop Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 49: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Yop Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Deckung",
+      "Timing"
     ],
     "a": 2
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 50: Ein Kick heißt ____.",
+    "q": "Wie heißt es? „Schutzposition der Hände/Arme“ -> ____",
     "options": [
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui",
-      "Yop Chagui"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 51: Ein Kick heißt ____.",
-    "options": [
-      "Ap Chagui",
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui"
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Deckung",
+      "Kammer (Knie hoch)"
     ],
     "a": 2
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 52: Ein Kick heißt ____.",
+    "q": "Fachbegriff: „Schutzposition der Hände/Arme“ = ____",
     "options": [
-      "Dollyo Chagui",
-      "Naeryo Chagui",
-      "Yop Chagui",
-      "Ap Chagui"
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Deckung",
+      "Recoil (Zurückziehen)"
     ],
     "a": 2
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 53: Ein Kick heißt ____.",
+    "q": "Wort gesucht für: „Schutzposition der Hände/Arme“ ____",
     "options": [
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Pandae Dollyo Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 54: Ein Kick heißt ____.",
-    "options": [
-      "Ap Chagui",
-      "Tui Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 55: Ein Kick heißt ____.",
-    "options": [
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Twio Yop Chagui"
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Deckung"
     ],
     "a": 3
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 56: Ein Kick heißt ____.",
+    "q": "Das nennt man: „Schutzposition der Hände/Arme“ ____",
     "options": [
-      "Ap Chagui",
-      "Dollyo Chagui",
-      "Yop Chagui",
-      "Naeryo Chagui"
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Deckung",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Bezeichnung gesucht: „Schutzposition der Hände/Arme“ = ____",
+    "options": [
+      "Timing",
+      "Deckung",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff trifft zu: „Schutzposition der Hände/Arme“? ____",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)",
+      "Deckung",
+      "Timing"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Wie nennt man das: „Schutzposition der Hände/Arme“ ____",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Deckung",
+      "Recoil (Zurückziehen)",
+      "Timing"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Terminus passt zu: „Schutzposition der Hände/Arme“? ____",
+    "options": [
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Deckung",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff für „Schutzposition der Hände/Arme“: ____",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Deckung",
+      "Timing"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Stabilität auf dem Standbein“ heißt ____.",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Balance",
+      "Timing",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt es? „Stabilität auf dem Standbein“ -> ____",
+    "options": [
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)",
+      "Balance"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Fachbegriff: „Stabilität auf dem Standbein“ = ____",
+    "options": [
+      "Balance",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing"
     ],
     "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 57: Ein Kick heißt ____.",
+    "q": "Wort gesucht für: „Stabilität auf dem Standbein“ ____",
     "options": [
-      "Yop Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 58: Ein Kick heißt ____.",
-    "options": [
-      "Naeryo Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Yop Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 59: Ein Kick heißt ____.",
-    "options": [
-      "Naeryo Chagui",
-      "Yop Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 60: Ein Kick heißt ____.",
-    "options": [
-      "Pandae Dollyo Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui"
+      "Balance",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Recoil (Zurückziehen)"
     ],
     "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 61: Ein Kick heißt ____.",
+    "q": "Das nennt man: „Stabilität auf dem Standbein“ ____",
     "options": [
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Tui Chagui",
-      "Dollyo Chagui"
+      "Timing",
+      "Balance",
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Bezeichnung gesucht: „Stabilität auf dem Standbein“ = ____",
+    "options": [
+      "Timing",
+      "Balance",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff trifft zu: „Stabilität auf dem Standbein“? ____",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Timing",
+      "Balance",
+      "Kammer (Knie hoch)"
     ],
     "a": 2
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 62: Ein Kick heißt ____.",
+    "q": "Wie nennt man das: „Stabilität auf dem Standbein“ ____",
     "options": [
-      "Twio Yop Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Balance"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Terminus passt zu: „Stabilität auf dem Standbein“? ____",
+    "options": [
+      "Recoil (Zurückziehen)",
+      "Kammer (Knie hoch)",
+      "Timing",
+      "Balance"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff für „Stabilität auf dem Standbein“: ____",
+    "options": [
+      "Balance",
+      "Timing",
+      "Kammer (Knie hoch)",
+      "Recoil (Zurückziehen)"
     ],
     "a": 0
   },
   {
     "type": "cloze",
-    "q": "Lückentext (TKD) 63: Ein Kick heißt ____.",
+    "q": "Begriff gesucht: „Drehung der Hüfte zur Kraftübertragung“ heißt ____.",
     "options": [
-      "Yop Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 64: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Yop Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 65: Ein Kick heißt ____.",
-    "options": [
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 66: Ein Kick heißt ____.",
-    "options": [
-      "Ap Chagui",
-      "Dollyo Chagui",
-      "Yop Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 67: Ein Kick heißt ____.",
-    "options": [
-      "Ap Chagui",
-      "Pandae Dollyo Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 68: Ein Kick heißt ____.",
-    "options": [
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Tui Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 69: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Twio Yop Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 70: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Yop Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 71: Ein Kick heißt ____.",
-    "options": [
-      "Yop Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 72: Ein Kick heißt ____.",
-    "options": [
-      "Yop Chagui",
-      "Dollyo Chagui",
-      "Naeryo Chagui",
-      "Ap Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 73: Ein Kick heißt ____.",
-    "options": [
-      "Dollyo Chagui",
-      "Yop Chagui",
-      "Ap Chagui",
-      "Naeryo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 74: Ein Kick heißt ____.",
-    "options": [
-      "Naeryo Chagui",
-      "Pandae Dollyo Chagui",
-      "Ap Chagui",
-      "Dollyo Chagui"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (TKD) 75: Ein Kick heißt ____.",
-    "options": [
-      "Ap Chagui",
-      "Tui Chagui",
-      "Naeryo Chagui",
-      "Dollyo Chagui"
+      "Kammer (Knie hoch)",
+      "Hüftrotation",
+      "Timing",
+      "Recoil (Zurückziehen)"
     ],
     "a": 1
   }
 ];
+  const TKD_QUESTIONS = TKD_MCQ.concat(TKD_CLOZE);
 
-  // =========================
-  // WC – Wing Chun (200)
-  // =========================
-  const WC_QUESTIONS  = [
+  // ===== Wing Chun (WC) =====
+  const WC_MCQ = [
   {
     "type": "mcq",
-    "q": "WC: Was beschreibt „Centerline“ am besten?",
+    "q": "Welches Prinzip passt zu: „Prinzip der Mittellinie“?",
     "options": [
-      "Angriff & Schutz entlang der zentralen Linie (kürzester Weg)",
-      "Nur Bodenkampf",
-      "Nur hohe Kicks",
-      "Nur große Kreisbewegungen"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Was bedeutet „Economy of Motion“?",
-    "options": [
-      "Immer zurückweichen",
-      "Extra große Ausholbewegungen",
-      "So kurz und direkt wie möglich bewegen",
-      "Nur mit Kraft arbeiten"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Was ist das Hauptziel von Chi Sao?",
-    "options": [
-      "Kicks auf Distanz üben",
-      "Waffenwechsel üben",
-      "Sensitivität/Reflexe durch Kontakt entwickeln",
-      "Ausdauerlauf trainieren"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Welches Element ist ein Kernprinzip im Wing Chun?",
-    "options": [
+      "Sensitivity (Chi Sao)",
       "Centerline Theory",
-      "Aikido-Würfe",
-      "Kata (Karate)",
-      "Grappling-only"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Welche Beschreibung passt am besten zu „Centerline Theory“?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen"
+      "Simultaneous Attack and Defense",
+      "Economy of Motion"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "WC: Welche Beschreibung passt am besten zu „Economy of Motion“?",
+    "q": "Welches Prinzip passt zu: „Ökonomie der Bewegung“?",
     "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Welche Beschreibung passt am besten zu „Simultaneous Attack and Defense“?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
+      "Economy of Motion",
+      "Simultaneous Attack and Defense",
+      "Sensitivity (Chi Sao)",
+      "Centerline Theory"
     ],
     "a": 0
   },
   {
     "type": "mcq",
-    "q": "WC: Welche Beschreibung passt am besten zu „Chi Sao“?",
+    "q": "Welches Prinzip passt zu: „Angriff und Abwehr gleichzeitig“?",
     "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
+      "Simultaneous Attack and Defense",
+      "Sensitivity (Chi Sao)",
+      "Economy of Motion",
+      "Centerline Theory"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welches Prinzip passt zu: „Sensitivität durch Kontakt“?",
+    "options": [
+      "Economy of Motion",
+      "Sensitivity (Chi Sao)",
+      "Simultaneous Attack and Defense",
+      "Centerline Theory"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welches Prinzip passt zu: „Struktur und Balance“?",
+    "options": [
+      "Structure & Balance",
+      "Economy of Motion",
+      "Centerline Theory",
+      "Simultaneous Attack and Defense"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Stand & Struktur“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
     ],
     "a": 3
   },
   {
     "type": "mcq",
-    "q": "WC: Welche Beschreibung passt am besten zu „Structure & Balance“?",
+    "q": "Welche Technik/Übung wird so beschrieben: „Stand & Struktur“?",
     "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Stabile Struktur und Balance als Basis",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Stand & Struktur“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
     ],
     "a": 2
   },
   {
     "type": "mcq",
-    "q": "WC: Welche Option ist eine Arm-/Handtechnik (Sao)?",
+    "q": "Welcher Ausdruck beschreibt: „Stand & Struktur“?",
+    "options": [
+      "Richtungs-Wechsel",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Stand & Struktur“?",
+    "options": [
+      "Richtungs-Wechsel",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Stabilität am Boden“?",
+    "options": [
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Stabilität am Boden“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Stabilität am Boden“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Stabilität am Boden“?",
+    "options": [
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Stabilität am Boden“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Kontrolle & Sicherheit“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Kontrolle & Sicherheit“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Kontrolle & Sicherheit“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Kontrolle & Sicherheit“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Kontrolle & Sicherheit“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Bewegung & Winkel“?",
+    "options": [
+      "Richtungs-Wechsel",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Bewegung & Winkel“?",
+    "options": [
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Bewegung & Winkel“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Bewegung & Winkel“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Bewegung & Winkel“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Schutz & Reset“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Sicherheitsstellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Schutz & Reset“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Sicherheitsstellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Schutz & Reset“?",
+    "options": [
+      "Sicherheitsstellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Schutz & Reset“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Sicherheitsstellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Schutz & Reset“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Sicherheitsstellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Basis für Struktur“?",
+    "options": [
+      "Trainingsstand / Adduktorenstand",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Basis für Struktur“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Trainingsstand / Adduktorenstand",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Basis für Struktur“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Trainingsstand / Adduktorenstand",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Basis für Struktur“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Trainingsstand / Adduktorenstand"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Basis für Struktur“?",
+    "options": [
+      "Trainingsstand / Adduktorenstand",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Fußarbeit“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kreuzschritt",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Fußarbeit“?",
+    "options": [
+      "Kreuzschritt",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Fußarbeit“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kreuzschritt"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Fußarbeit“?",
+    "options": [
+      "Kreuzschritt",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Fußarbeit“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kreuzschritt",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Vorstufe Chi Sao“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Einarmiges Dan Chi"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Vorstufe Chi Sao“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Einarmiges Dan Chi",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Vorstufe Chi Sao“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Einarmiges Dan Chi",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Vorstufe Chi Sao“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Einarmiges Dan Chi",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Vorstufe Chi Sao“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Einarmiges Dan Chi"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Sensitivität · Reflexe · Gefühl für den Gegner“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Chi Sao („Klebende Hände\")"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Sensitivität · Reflexe · Gefühl für den Gegner“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Chi Sao („Klebende Hände\")",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Sensitivität · Reflexe · Gefühl für den Gegner“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Chi Sao („Klebende Hände\")"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Sensitivität · Reflexe · Gefühl für den Gegner“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Chi Sao („Klebende Hände\")",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Sensitivität · Reflexe · Gefühl für den Gegner“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Chi Sao („Klebende Hände\")"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Fook Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“?",
     "options": [
       "Fook Sao",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Fook Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Fook Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Fook Sao",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Pak Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“?",
+    "options": [
+      "Pak Sao",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“?",
+    "options": [
+      "Pak Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Pak Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Pak Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Tan Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Tan Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Tan Sao",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“?",
+    "options": [
+      "Tan Sao",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Tan Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „„Flügelhand“ – schwingend ablenken.“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Bong Sao",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „„Flügelhand“ – schwingend ablenken.“?",
+    "options": [
+      "Bong Sao",
       "Boden-Liegend-Kampf-Stellung",
       "Kampfstellung / Vorwärts-Stoß-Stellung",
       "Boden-Kampf-Stellung"
@@ -2338,2097 +2958,1472 @@ Export für die App:
   },
   {
     "type": "mcq",
-    "q": "WC: Welche Option ist eine Beintechnik (Gerk)?",
+    "q": "Welche Bezeichnung passt zu: „„Flügelhand“ – schwingend ablenken.“?",
     "options": [
-      "Fook Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Bong Sao",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „„Flügelhand“ – schwingend ablenken.“?",
+    "options": [
+      "Bong Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „„Flügelhand“ – schwingend ablenken.“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Bong Sao",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „„offene Hand“ / „Innerer Schwingenarm““?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kao Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „„offene Hand“ / „Innerer Schwingenarm““?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kao Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „„offene Hand“ / „Innerer Schwingenarm““?",
+    "options": [
+      "Kao Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „„offene Hand“ / „Innerer Schwingenarm““?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kao Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „„offene Hand“ / „Innerer Schwingenarm““?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kao Sao",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“?",
+    "options": [
+      "Jam Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Jam Sao",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Jam Sao",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Jam Sao",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Jam Sao",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „„schneidende Hand“ / „zeichnender Arm““?",
+    "options": [
+      "Gaun Sao",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „„schneidende Hand“ / „zeichnender Arm““?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Gaun Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „„schneidende Hand“ / „zeichnender Arm““?",
+    "options": [
+      "Gaun Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „„schneidende Hand“ / „zeichnender Arm““?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Gaun Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „„schneidende Hand“ / „zeichnender Arm““?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Gaun Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Gum Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Gum Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Gum Sao",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“?",
+    "options": [
+      "Gum Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“?",
+    "options": [
+      "Gum Sao",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Kombination aus Gaun Sao und hohem Jam Sao.“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Scheren-Gaun"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Kombination aus Gaun Sao und hohem Jam Sao.“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Scheren-Gaun"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Bezeichnung passt zu: „Kombination aus Gaun Sao und hohem Jam Sao.“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Scheren-Gaun",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Kombination aus Gaun Sao und hohem Jam Sao.“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Scheren-Gaun",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Kombination aus Gaun Sao und hohem Jam Sao.“?",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Scheren-Gaun"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff passt zu: „Fronttritt.“?",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Jing Gerk"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Technik/Übung wird so beschrieben: „Fronttritt.“?",
+    "options": [
+      "Boden-Kampf-Stellung",
       "Jing Gerk",
-      "Tan Sao",
-      "Pak Sao"
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
     ],
     "a": 1
   },
   {
     "type": "mcq",
-    "q": "WC: Welcher Code gehört zur Form „Siu Nim Tao“?",
+    "q": "Welche Bezeichnung passt zu: „Fronttritt.“?",
     "options": [
-      "BT",
-      "CK",
-      "SNT",
-      "Timing"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Welche Form hat den Code „SNT“?",
-    "options": [
-      "Chum Kiu",
-      "Siu Nim Tao",
-      "Timing",
-      "Biu Tze"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Welcher Code gehört zur Form „Chum Kiu“?",
-    "options": [
-      "BT",
-      "Timing",
-      "CK",
-      "SNT"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Welche Form hat den Code „CK“?",
-    "options": [
-      "Biu Tze",
-      "Timing",
-      "Chum Kiu",
-      "Siu Nim Tao"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Welcher Code gehört zur Form „Biu Tze“?",
-    "options": [
-      "BT",
-      "SNT",
-      "CK",
-      "Timing"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC: Welche Form hat den Code „BT“?",
-    "options": [
-      "Chum Kiu",
-      "Timing",
-      "Biu Tze",
-      "Siu Nim Tao"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 1: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 2: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 3: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 4: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Stabile Struktur und Balance als Basis",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 5: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 6: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 7: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 8: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 9: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen",
-      "Stabile Struktur und Balance als Basis",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 10: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 11: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 12: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 13: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 14: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Stabile Struktur und Balance als Basis",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 15: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 16: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 17: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 18: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 19: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Stabile Struktur und Balance als Basis",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 20: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 21: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 22: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 23: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 24: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Stabile Struktur und Balance als Basis",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 25: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 26: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 27: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 28: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 29: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Stabile Struktur und Balance als Basis",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 30: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 31: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 32: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 33: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 34: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Stabile Struktur und Balance als Basis"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 35: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 36: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 37: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 38: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 39: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen",
-      "Stabile Struktur und Balance als Basis",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 40: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 41: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 42: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 43: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 44: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Stabile Struktur und Balance als Basis",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 45: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 46: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 47: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 48: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 49: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Stabile Struktur und Balance als Basis"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 50: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 51: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 52: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 53: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 54: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen",
-      "Stabile Struktur und Balance als Basis"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 55: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 56: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 57: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 58: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 59: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Stabile Struktur und Balance als Basis",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 60: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 61: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 62: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 63: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 64: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Stabile Struktur und Balance als Basis",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 65: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 66: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 67: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 0
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 68: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 69: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Stabile Struktur und Balance als Basis",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 70: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 71: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 72: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 73: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 74: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Stabile Struktur und Balance als Basis",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 75: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 76: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 77: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 78: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 79: Welche Aussage beschreibt „Structure & Balance“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Stabile Struktur und Balance als Basis",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 80: Welche Aussage beschreibt „Centerline Theory“ am besten?",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 3
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 81: Welche Aussage beschreibt „Economy of Motion“ am besten?",
-    "options": [
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 1
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 82: Welche Aussage beschreibt „Simultaneous Attack and Defense“ am besten?",
-    "options": [
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient"
-    ],
-    "a": 2
-  },
-  {
-    "type": "mcq",
-    "q": "WC Prinzip-Check 83: Welche Aussage beschreibt „Chi Sao“ am besten?",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Centerline Theory“ bedeutet ____.",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Economy of Motion“ bedeutet ____.",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Gleichzeitig abwehren und treffen",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Simultaneous Attack and Defense“ bedeutet ____.",
-    "options": [
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen",
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Chi Sao“ bedeutet ____.",
-    "options": [
-      "Kontakt-Drill zur Sensitivitäts- und Reflexschulung",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Structure & Balance“ bedeutet ____.",
-    "options": [
-      "Stabile Struktur und Balance als Basis",
-      "Fokus auf die zentrale Linie (kürzester Weg) für Angriff & Schutz",
-      "Unnötige Bewegungen vermeiden – direkt und effizient",
-      "Gleichzeitig abwehren und treffen"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Fook Sao“ ist eine ____ Technik.",
-    "options": [
-      "Waffe",
-      "Stand",
-      "Bein",
-      "Arm/Hand"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Pak Sao“ ist eine ____ Technik.",
-    "options": [
-      "Stand",
-      "Waffe",
-      "Bein",
-      "Arm/Hand"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Tan Sao“ ist eine ____ Technik.",
-    "options": [
-      "Stand",
-      "Arm/Hand",
-      "Bein",
-      "Waffe"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Bong Sao“ ist eine ____ Technik.",
-    "options": [
-      "Arm/Hand",
-      "Waffe",
-      "Stand",
-      "Bein"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Kao Sao“ ist eine ____ Technik.",
-    "options": [
-      "Bein",
-      "Arm/Hand",
-      "Waffe",
-      "Stand"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Jam Sao“ ist eine ____ Technik.",
-    "options": [
-      "Bein",
-      "Arm/Hand",
-      "Stand",
-      "Waffe"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Gaun Sao“ ist eine ____ Technik.",
-    "options": [
-      "Arm/Hand",
-      "Bein",
-      "Waffe",
-      "Stand"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Gum Sao“ ist eine ____ Technik.",
-    "options": [
-      "Bein",
-      "Arm/Hand",
-      "Waffe",
-      "Stand"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): „Scheren-Gaun“ ist eine ____ Technik.",
-    "options": [
-      "Waffe",
-      "Stand",
-      "Bein",
-      "Arm/Hand"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): Eine Beintechnik heißt ____.",
-    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
       "Jing Gerk",
-      "Yap Gerk",
-      "Bong Gerk",
-      "Timing"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): Der Code für „Siu Nim Tao“ ist ____.",
-    "options": [
-      "CK",
-      "Timing",
-      "BT",
-      "SNT"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): Der Code für „Chum Kiu“ ist ____.",
-    "options": [
-      "BT",
-      "CK",
-      "SNT",
-      "Timing"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC): Der Code für „Biu Tze“ ist ____.",
-    "options": [
-      "SNT",
-      "BT",
-      "CK",
-      "Timing"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 1: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 2: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 3: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense"
+      "Boden-Kampf-Stellung"
     ],
     "a": 2
   },
   {
-    "type": "cloze",
-    "q": "Lückentext (WC) 4: Ein Kernprinzip heißt ____.",
+    "type": "mcq",
+    "q": "Welcher Ausdruck beschreibt: „Fronttritt.“?",
     "options": [
-      "Structure & Balance",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 5: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 6: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 7: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Economy of Motion"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 8: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 9: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Simultaneous Attack and Defense",
-      "Structure & Balance",
-      "Centerline Theory"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 10: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 11: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 12: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 13: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 14: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Structure & Balance",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 15: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 16: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Economy of Motion"
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Jing Gerk"
     ],
     "a": 3
   },
   {
-    "type": "cloze",
-    "q": "Lückentext (WC) 17: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 18: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 19: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Structure & Balance",
-      "Centerline Theory",
-      "Economy of Motion"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 20: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 21: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 22: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 23: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 24: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Economy of Motion",
-      "Structure & Balance"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 25: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 26: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 27: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 28: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 29: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Structure & Balance",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 30: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 31: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 32: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 33: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 34: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Structure & Balance",
-      "Economy of Motion"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 35: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 36: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 37: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 38: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 39: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Structure & Balance",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Economy of Motion"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 40: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 41: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 42: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 43: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 44: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Structure & Balance",
-      "Economy of Motion"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 45: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 46: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 47: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 48: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 49: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Economy of Motion",
-      "Structure & Balance"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 50: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 51: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 52: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 53: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 54: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Economy of Motion",
-      "Structure & Balance",
-      "Centerline Theory"
-    ],
-    "a": 2
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 55: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 56: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 57: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 58: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 59: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense",
-      "Structure & Balance"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 60: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 61: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 62: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 63: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Economy of Motion"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 64: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Structure & Balance",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 65: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 66: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 67: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 68: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 69: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Economy of Motion",
-      "Simultaneous Attack and Defense",
-      "Structure & Balance"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 70: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 71: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 72: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 73: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 74: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Structure & Balance",
-      "Centerline Theory",
-      "Economy of Motion"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 75: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Economy of Motion",
-      "Centerline Theory",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 76: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense",
-      "Centerline Theory",
-      "Economy of Motion"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 77: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 0
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 78: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 79: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Structure & Balance",
-      "Simultaneous Attack and Defense",
-      "Economy of Motion"
-    ],
-    "a": 1
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 80: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Simultaneous Attack and Defense",
-      "Sensitivity (Chi Sao)",
-      "Economy of Motion",
-      "Centerline Theory"
-    ],
-    "a": 3
-  },
-  {
-    "type": "cloze",
-    "q": "Lückentext (WC) 81: Ein Kernprinzip heißt ____.",
-    "options": [
-      "Centerline Theory",
-      "Economy of Motion",
-      "Sensitivity (Chi Sao)",
-      "Simultaneous Attack and Defense"
+    "type": "mcq",
+    "q": "Welche Option entspricht der Beschreibung: „Fronttritt.“?",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Jing Gerk",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
     ],
     "a": 1
   }
 ];
+  const WC_CLOZE = [
+  {
+    "type": "cloze",
+    "q": "Welches Prinzip passt zu: „Prinzip der Mittellinie“? ____",
+    "options": [
+      "Centerline Theory",
+      "Simultaneous Attack and Defense",
+      "Sensitivity (Chi Sao)",
+      "Economy of Motion"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welches Prinzip passt zu: „Ökonomie der Bewegung“? ____",
+    "options": [
+      "Sensitivity (Chi Sao)",
+      "Centerline Theory",
+      "Economy of Motion",
+      "Simultaneous Attack and Defense"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welches Prinzip passt zu: „Angriff und Abwehr gleichzeitig“? ____",
+    "options": [
+      "Centerline Theory",
+      "Sensitivity (Chi Sao)",
+      "Economy of Motion",
+      "Simultaneous Attack and Defense"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welches Prinzip passt zu: „Sensitivität durch Kontakt“? ____",
+    "options": [
+      "Simultaneous Attack and Defense",
+      "Economy of Motion",
+      "Sensitivity (Chi Sao)",
+      "Centerline Theory"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welches Prinzip passt zu: „Struktur und Balance“? ____",
+    "options": [
+      "Centerline Theory",
+      "Economy of Motion",
+      "Simultaneous Attack and Defense",
+      "Structure & Balance"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Stand & Struktur“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Richtungs-Wechsel"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Stand & Struktur“ ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Stand & Struktur“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Stand & Struktur“? ____",
+    "options": [
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Stand & Struktur“: ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Stabilität am Boden“? ____",
+    "options": [
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Stabilität am Boden“ ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Stabilität am Boden“? ____",
+    "options": [
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Stabilität am Boden“? ____",
+    "options": [
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Stabilität am Boden“: ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Kontrolle & Sicherheit“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Kontrolle & Sicherheit“ ____",
+    "options": [
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Kontrolle & Sicherheit“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Kontrolle & Sicherheit“? ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Richtungs-Wechsel",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Kontrolle & Sicherheit“: ____",
+    "options": [
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Bewegung & Winkel“? ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Richtungs-Wechsel"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Bewegung & Winkel“ ____",
+    "options": [
+      "Richtungs-Wechsel",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Bewegung & Winkel“? ____",
+    "options": [
+      "Richtungs-Wechsel",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Bewegung & Winkel“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Bewegung & Winkel“: ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Richtungs-Wechsel"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Schutz & Reset“? ____",
+    "options": [
+      "Sicherheitsstellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Schutz & Reset“ ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Sicherheitsstellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Schutz & Reset“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Sicherheitsstellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Schutz & Reset“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Sicherheitsstellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Schutz & Reset“: ____",
+    "options": [
+      "Sicherheitsstellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Basis für Struktur“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Trainingsstand / Adduktorenstand",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Basis für Struktur“ ____",
+    "options": [
+      "Trainingsstand / Adduktorenstand",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Basis für Struktur“? ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Trainingsstand / Adduktorenstand",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Basis für Struktur“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Trainingsstand / Adduktorenstand",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Basis für Struktur“: ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Trainingsstand / Adduktorenstand",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Fußarbeit“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kreuzschritt",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Fußarbeit“ ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kreuzschritt"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Fußarbeit“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kreuzschritt"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Fußarbeit“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Kreuzschritt",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Fußarbeit“: ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kreuzschritt",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Vorstufe Chi Sao“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Einarmiges Dan Chi",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Vorstufe Chi Sao“ ____",
+    "options": [
+      "Einarmiges Dan Chi",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Vorstufe Chi Sao“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Einarmiges Dan Chi",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Vorstufe Chi Sao“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Einarmiges Dan Chi",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Vorstufe Chi Sao“: ____",
+    "options": [
+      "Einarmiges Dan Chi",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Sensitivität · Reflexe · Gefühl für den Gegner“? ____",
+    "options": [
+      "Chi Sao („Klebende Hände\")",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Sensitivität · Reflexe · Gefühl für den Gegner“ ____",
+    "options": [
+      "Chi Sao („Klebende Hände\")",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Sensitivität · Reflexe · Gefühl für den Gegner“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Chi Sao („Klebende Hände\")",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Sensitivität · Reflexe · Gefühl für den Gegner“? ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Chi Sao („Klebende Hände\")"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Sensitivität · Reflexe · Gefühl für den Gegner“: ____",
+    "options": [
+      "Chi Sao („Klebende Hände\")",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Fook Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“ ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Fook Sao",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Fook Sao",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Fook Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „„leitende/ kontrollierende/ gebeugte Hand“ – fixieren/fühlen.“: ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Fook Sao",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Pak Sao",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“ ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Pak Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“? ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Pak Sao",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Pak Sao",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „„führende/ schlagende Hand“ – ablenkend oder schlagend (Handfläche).“: ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Pak Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“? ____",
+    "options": [
+      "Tan Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“ ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Tan Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“? ____",
+    "options": [
+      "Tan Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Tan Sao",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „„tragende/ verteilende/ offene Hand“ – ablenkend/abwehrend (Handfläche oben).“: ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Tan Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „„Flügelhand“ – schwingend ablenken.“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Bong Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „„Flügelhand“ – schwingend ablenken.“ ____",
+    "options": [
+      "Bong Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „„Flügelhand“ – schwingend ablenken.“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Bong Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „„Flügelhand“ – schwingend ablenken.“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Bong Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „„Flügelhand“ – schwingend ablenken.“: ____",
+    "options": [
+      "Bong Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „„offene Hand“ / „Innerer Schwingenarm““? ____",
+    "options": [
+      "Kao Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „„offene Hand“ / „Innerer Schwingenarm““ ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kao Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „„offene Hand“ / „Innerer Schwingenarm““? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Kao Sao",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „„offene Hand“ / „Innerer Schwingenarm““? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Kao Sao",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „„offene Hand“ / „Innerer Schwingenarm““: ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Kao Sao",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“? ____",
+    "options": [
+      "Jam Sao",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“ ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Jam Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“? ____",
+    "options": [
+      "Jam Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Jam Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „„Sinkender Ellenbogen“ – Struktur stabilisieren, Kraft leiten.“: ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Jam Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „„schneidende Hand“ / „zeichnender Arm““? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Gaun Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „„schneidende Hand“ / „zeichnender Arm““ ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Gaun Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „„schneidende Hand“ / „zeichnender Arm““? ____",
+    "options": [
+      "Gaun Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „„schneidende Hand“ / „zeichnender Arm““? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Gaun Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „„schneidende Hand“ / „zeichnender Arm““: ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Gaun Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“? ____",
+    "options": [
+      "Gum Sao",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“ ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Gum Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“? ____",
+    "options": [
+      "Gum Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“? ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Gum Sao"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „„haltende/festnagelnde Hand“ – abwärts gerichtete Kontrolle.“: ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Gum Sao",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Kombination aus Gaun Sao und hohem Jam Sao.“? ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Scheren-Gaun",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Kombination aus Gaun Sao und hohem Jam Sao.“ ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Scheren-Gaun",
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Kombination aus Gaun Sao und hohem Jam Sao.“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Scheren-Gaun",
+      "Kampfstellung / Vorwärts-Stoß-Stellung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Kombination aus Gaun Sao und hohem Jam Sao.“? ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Scheren-Gaun"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Kombination aus Gaun Sao und hohem Jam Sao.“: ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Scheren-Gaun"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Welcher Begriff passt zu: „Fronttritt.“? ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Jing Gerk"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Begriff gesucht: „Fronttritt.“ ____",
+    "options": [
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung",
+      "Jing Gerk"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Wie heißt die beschriebene Technik: „Fronttritt.“? ____",
+    "options": [
+      "Boden-Liegend-Kampf-Stellung",
+      "Jing Gerk",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Welche Technik/Übung wird so beschrieben: „Fronttritt.“? ____",
+    "options": [
+      "Jing Gerk",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Kampf-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Passender Begriff zu „Fronttritt.“: ____",
+    "options": [
+      "Boden-Kampf-Stellung",
+      "Jing Gerk",
+      "Kampfstellung / Vorwärts-Stoß-Stellung",
+      "Boden-Liegend-Kampf-Stellung"
+    ],
+    "a": 1
+  }
+];
+  const WC_QUESTIONS = WC_MCQ.concat(WC_CLOZE);
 
-  // Export
   window.QUIZ_BANKS = { tkd: TKD_QUESTIONS, wc: WC_QUESTIONS };
   try { var QUIZ_BANKS = window.QUIZ_BANKS; } catch(e) {}
 })();
