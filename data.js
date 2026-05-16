@@ -31,6 +31,62 @@ const TKD_VARIATIONS = ['normal', 'Rückwärts', 'gespiegelt', 'front', 'gesprun
         'Vierrichtungs-Handkante mit Block/Schlag/Kick'
       ];
       const SPARRING = ['Einschrittkampf (ilbo daeryeon)'];
+
+// =========================
+// TKD: Einschrittkampf – Unterscheidungen als Obergruppen
+// UI-Ziel: Unterhalb der Obergruppe (z.B. „Stufe“) stehen die Unterpunkte (Ilbo/Ibo/Sambo).
+// Speicherung bleibt kompatibel: Auswahlwerte liegen weiterhin in state.tkd.sparring (Map).
+// =========================
+const TKD_SPARRING_GROUPS = [
+  { title: 'Stufe', icon: 'Stufe', items: [
+    { key: 'Stufe: Ilbo', label: 'Ilbo' },
+    { key: 'Stufe: Ibo', label: 'Ibo' },
+    { key: 'Stufe: Sambo', label: 'Sambo' },
+  ]},
+  { title: 'Angriff', icon: 'Angriff', items: [
+    { key: 'Angriff: Hand', label: 'Hand' },
+    { key: 'Angriff: Fuß', label: 'Fuß' },
+    { key: 'Angriff: gemischt', label: 'gemischt' },
+  ]},
+  { title: 'Zielhöhe', icon: 'Ziel', items: [
+    { key: 'Zielhöhe: tief', label: 'tief' },
+    { key: 'Zielhöhe: mittel', label: 'mittel' },
+    { key: 'Zielhöhe: hoch', label: 'hoch' },
+  ]},
+  { title: 'Verteidigung', icon: 'VTD', items: [
+    { key: 'Verteidigung: Block', label: 'Block' },
+    { key: 'Verteidigung: Ausweichen', label: 'Ausweichen' },
+    { key: 'Verteidigung: Abfangen', label: 'Abfangen' },
+  ]},
+  { title: 'Konter', icon: 'Konter', items: [
+    { key: 'Konter: Hand', label: 'Hand' },
+    { key: 'Konter: Fuß', label: 'Fuß' },
+    { key: 'Konter: Kombi', label: 'Kombi' },
+  ]},
+  { title: 'Struktur', icon: 'Struktur', items: [
+    { key: 'Struktur: fest', label: 'fest' },
+    { key: 'Struktur: semi-free', label: 'semi-free' },
+    { key: 'Struktur: free-attack', label: 'free-attack' },
+  ]},
+];
+
+// Alle Keys in SPARRING ergänzen (ohne Duplikate)
+(function ensureSparringGroups(){
+  try {
+    if (!Array.isArray(SPARRING)) return;
+    var seen = {};
+    for (var i=0;i<SPARRING.length;i++){ seen[String(SPARRING[i])] = true; }
+    for (var g=0; g<TKD_SPARRING_GROUPS.length; g++){
+      var items = TKD_SPARRING_GROUPS[g].items || [];
+      for (var j=0; j<items.length; j++){
+        var k = String(items[j].key || '').trim();
+        if (!k) continue;
+        if (!seen[k]) { seen[k] = true; SPARRING.push(k); }
+      }
+    }
+  } catch(e){}
+})();
+
       const BASICS = {
         overview: ['15 Grundübungen (5x Blöcke, 5x Schläge, 5x Kicks)'],
         kicks: ['Ap Chagui', 'Naeryo Chagui', 'Dollyo Chagui', 'Yop Chagui', 'Pandae Dollyo Chagui', 'Tui Chagui', 'Twio Yop Chagui'],

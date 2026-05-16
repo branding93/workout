@@ -232,6 +232,28 @@
     p: 'Ökonomie + Timing + Struktur (kleine Bewegung, große Wirkung).'
   });
 
+
+// ========= TKD: Einschrittkampf – Unterscheidungen (Popups) =========
+addGloss('Stufe: Ilbo', { ctx:'Taekwondo', t:'Ilbo (1 Schritt)', m:'Ein Angriffsschritt -> Abwehr -> Konter.', z:'Timing + Distanz.', p:'Sauber vor schnell.' });
+addGloss('Stufe: Ibo', { ctx:'Taekwondo', t:'Ibo (2 Schritte)', m:'Zwei Schritte/Sequenz, Übergänge halten.', z:'Rhythmus + zweite Linie.', p:'Position sichern.' });
+addGloss('Stufe: Sambo', { ctx:'Taekwondo', t:'Sambo (3 Schritte)', m:'Längere Sequenz, dynamisch aber kontrolliert.', z:'Struktur unter Tempo.', p:'Stabilität vor Speed.' });
+addGloss('Angriff: Hand', { ctx:'Taekwondo', t:'Angriff Hand', m:'Gerade Linie (Faust/Handkante).', z:'Linie schließen -> kontern.', p:'Kurze Wege.' });
+addGloss('Angriff: Fuß', { ctx:'Taekwondo', t:'Angriff Fuß', m:'Kick-Linie (größere Distanz).', z:'Kick-Timing + Balance.', p:'Hüfte lesen.' });
+addGloss('Angriff: gemischt', { ctx:'Taekwondo', t:'Angriff gemischt', m:'Hand+Fuß kombiniert (Distanzwechsel).', z:'Übergänge erkennen.', p:'Kontrolle.' });
+addGloss('Zielhöhe: tief', { ctx:'Taekwondo', t:'Ziel tief', m:'Unteres Ziel (Bein/Unterkörper).', z:'Stabilität + Timing.', p:'Knie beugen statt kippen.' });
+addGloss('Zielhöhe: mittel', { ctx:'Taekwondo', t:'Ziel mittel', m:'Rumpf (Standardlinie).', z:'Distanz + Hüfte verbinden.', p:'Treffer aus Stand+Hüfte.' });
+addGloss('Zielhöhe: hoch', { ctx:'Taekwondo', t:'Ziel hoch', m:'Kopf/oben: Präzision + Kontrolle.', z:'Balance + Recoil.', p:'Kontrolle vor Power.' });
+addGloss('Verteidigung: Block', { ctx:'Taekwondo', t:'Block', m:'Linie schließen/umlenken.', z:'Schutz + Konterfenster.', p:'Kompakt.' });
+addGloss('Verteidigung: Ausweichen', { ctx:'Taekwondo', t:'Ausweichen', m:'Ziel aus Linie nehmen (Winkel/Schritt).', z:'Timing + Winkel.', p:'Wenig Bewegung.' });
+addGloss('Verteidigung: Abfangen', { ctx:'Taekwondo', t:'Abfangen', m:'Früh stoppen/lenken.', z:'Frühes Lesen.', p:'Impuls statt Kraft.' });
+addGloss('Konter: Hand', { ctx:'Taekwondo', t:'Konter Hand', m:'Direkter Abschluss per Handtechnik.', z:'Schneller Treffer.', p:'Kurze Linie.' });
+addGloss('Konter: Fuß', { ctx:'Taekwondo', t:'Konter Fuß', m:'Abschluss per Kick.', z:'Fenster auf Distanz.', p:'Balance + Kammer.' });
+addGloss('Konter: Kombi', { ctx:'Taekwondo', t:'Konter Kombi', m:'2-3 Aktionen als Abschluss.', z:'Rhythmuswechsel + Abschluss.', p:'Sauber verbinden.' });
+addGloss('Struktur: fest', { ctx:'Taekwondo', t:'fest', m:'Vorgegeben (Angriff/Abwehr/Konter).', z:'Wiederholbarkeit.', p:'Basics automatisieren.' });
+addGloss('Struktur: semi-free', { ctx:'Taekwondo', t:'semi-free', m:'Teil vorgegeben, Teil variiert.', z:'Anpassung im Rahmen.', p:'Erkennen -> wählen -> sauber.' });
+addGloss('Struktur: free-attack', { ctx:'Taekwondo', t:'free-attack', m:'Freier Angriff (kontrolliert) + strukturierte Reaktion.', z:'Reaktion/Distanzlesen.', p:'Safety + Reset.' });
+
+
   function tkdKickEntry(term) {
     let t = canonicalTerm(term);
     let map = {
@@ -932,27 +954,128 @@ function navGo(view){
     document.getElementById('tkd-comboEmpty').classList.toggle('hidden', shown !== 0);
   }
 
-  function tkdRenderIlbo() {
-    let host = document.getElementById('tkd-ilboList');
-    host.innerHTML = '';
-    SPARRING.forEach(function (s) {
-      let el = document.createElement('div');
-      el.className = 'item';
-      el.innerHTML = `
-<div class="checkRow">
-  <label><input type="checkbox" ${state.tkd.sparring[s] ? 'checked' : ''}> <span>${makeTermUI(s, 'Taekwondo', '🛡️')}</span></label>
-  <small>Partner & Distanz</small>
-</div>
-`.trim();
-      let cb = el.querySelector('input');
-      cb.addEventListener('change', function () {
-        state.tkd.sparring[s] = !!cb.checked;
-        save();
-        setBadge();
+  
+function tkdRenderIlbo() {
+  var host = document.getElementById('tkd-ilboList');
+  host.innerHTML = '';
+
+  // Gruppen aus data.js (optional)
+  var groups = (typeof TKD_SPARRING_GROUPS !== 'undefined' && TKD_SPARRING_GROUPS) ? TKD_SPARRING_GROUPS : null;
+  var groupKeys = {};
+  if (groups && Array.isArray(groups)) {
+    groups.forEach(function (g) {
+      (g.items || []).forEach(function (it) {
+        var k = String(it && it.key ? it.key : '').trim();
+        if (k) groupKeys[k] = true;
       });
-      host.appendChild(el);
     });
   }
+
+  // Basis-Einschrittkampf (alles, was nicht Gruppen-Key ist)
+  SPARRING.forEach(function (s) {
+    if (groupKeys[String(s)]) return;
+    var el = document.createElement('div');
+    el.className = 'item';
+    el.innerHTML = (
+      '<div class="checkRow">' +
+        '<label><input type="checkbox" ' + (state.tkd.sparring[s] ? 'checked' : '') + '> ' +
+          '<span>' + makeTermUI(s, 'Taekwondo', '🛡️') + '</span>' +
+        '</label>' +
+        '<small>Partner & Distanz</small>' +
+      '</div>'
+    );
+    var cb = el.querySelector('input');
+    cb.addEventListener('change', function () {
+      state.tkd.sparring[s] = !!cb.checked;
+      save();
+      setBadge();
+    });
+    host.appendChild(el);
+  });
+
+  // Unterscheidungen als Obergruppen
+  if (!groups || !Array.isArray(groups) || !groups.length) return;
+
+  groups.forEach(function (g) {
+    var items = (g.items || []).slice();
+    if (!items.length) return;
+
+    // ensure state keys
+    items.forEach(function (it) {
+      var k = String(it.key || '').trim();
+      if (!k) return;
+      if (typeof state.tkd.sparring[k] !== 'boolean') state.tkd.sparring[k] = false;
+    });
+
+    var allSelected = items.every(function (it) { return !!state.tkd.sparring[String(it.key)]; });
+    var anySelected = items.some(function (it) { return !!state.tkd.sparring[String(it.key)]; });
+
+    var box = document.createElement('div');
+    box.className = 'item';
+    box.innerHTML = (
+      '<div class="groupHead">' +
+        '<div class="groupTitle">' +
+          '<span class="pill">' + escapeHtml(String(g.icon || 'Gruppe')) + '</span>' +
+          escapeHtml(String(g.title || 'Gruppe')) +
+          ' <span class="pill">' + items.length + '</span>' +
+        '</div>' +
+        '<div class="miniBtns">' +
+          '<button class="mini" data-gact="all" type="button" ' + (allSelected ? 'disabled' : '') + '>Alle</button>' +
+          '<button class="mini" data-gact="none" type="button" ' + (!anySelected ? 'disabled' : '') + '>Keine</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="sep" style="margin:10px 0"></div>' +
+      '<div class="list" style="gap:8px"></div>'
+    );
+
+    var list = box.querySelector('.list');
+
+    // term UI: label anzeigen, key fürs Popup behalten
+    function termUIKeyLabel(key, label, ctxHint) {
+      var k = String(key || '').trim();
+      var lab = String(label || k).trim();
+      return (
+        '<span class="termWrap">' +
+          '<button class="termBtn js-term" type="button" data-term="' + escapeAttr(k) + '" data-ctx="' + escapeAttr(ctxHint || '') + '">' +
+            escapeHtml(lab) +
+          '</button>' +
+          '<button class="infoBtn js-term" type="button" aria-label="Erklärung" data-term="' + escapeAttr(k) + '" data-ctx="' + escapeAttr(ctxHint || '') + '">i</button>' +
+        '</span>'
+      );
+    }
+
+    items.forEach(function (it) {
+      var k = String(it.key || '').trim();
+      if (!k) return;
+      var label = (it.label != null) ? String(it.label) : k;
+      var row = document.createElement('div');
+      row.className = 'checkRow';
+      row.innerHTML = '<label><input type="checkbox" ' + (state.tkd.sparring[k] ? 'checked' : '') + '> <span>' + termUIKeyLabel(k, label, 'Taekwondo') + '</span></label>';
+      var cb = row.querySelector('input');
+      cb.addEventListener('change', function () {
+        state.tkd.sparring[k] = !!cb.checked;
+        save();
+        tkdRenderIlbo();
+        setBadge();
+      });
+      list.appendChild(row);
+    });
+
+    box.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!(t && t.classList && t.classList.contains('mini'))) return;
+      var act = t.getAttribute('data-gact');
+      if (act === 'all') items.forEach(function (it) { state.tkd.sparring[String(it.key)] = true; });
+      if (act === 'none') items.forEach(function (it) { state.tkd.sparring[String(it.key)] = false; });
+      save();
+      tkdRenderIlbo();
+      setBadge();
+    });
+
+    host.appendChild(box);
+  });
+}
+
 
   function tkdGroupMeta(key) {
     if (key === 'overview') return { title: 'Übersicht', icon: '📋' };
