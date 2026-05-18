@@ -11,7 +11,54 @@
     let yyyy = d.getFullYear();
     return dd + '.' + mm + '.' + yyyy;
   }
+
+  function fixMojibake(input){
+    // Repairs common encoding artifacts (mojibake) defensively before display
+    try {
+      var s = String(input == null ? '' : input);
+      var map = {
+        'â€šÃ„Ã®':'—',
+        '‚Äî':'—',
+        'â€”':'—',
+        'â€“':'–',
+        'â€˜':'‘',
+        'â€™':'’',
+        'â€œ':'“',
+        'â€\u009D':'”',
+        'â€ž':'„',
+        'â€¦':'…',
+        'Â ':' ',
+        'Â·':'·',
+        'Â°':'°',
+        'Â€':'€',
+        'Ã¤':'ä', 'Ã„':'Ä', 'Ã¶':'ö', 'Ã–':'Ö', 'Ã¼':'ü', 'Ãœ':'Ü', 'ÃŸ':'ß',
+        'Bl√∂cken':'Blöcken',
+        'Schl√§gen':'Schlägen',
+        'St√§nden':'Ständen'
+      };
+      for (var k in map){
+        if (Object.prototype.hasOwnProperty.call(map,k) && s.indexOf(k) !== -1) s = s.split(k).join(map[k]);
+      }
+      // Best-effort latin1 bytes -> UTF-8 decode (only if it improves)
+      if (/[ÃÂ]|â€|√|\uFFFD/.test(s) && typeof TextDecoder !== 'undefined') {
+        try {
+          var bytes = [];
+          for (var i=0;i<s.length;i++){ bytes.push(s.charCodeAt(i) & 0xFF); }
+          var u8 = new Uint8Array(bytes);
+          var dec = new TextDecoder('utf-8', { fatal:false });
+          var cand = dec.decode(u8);
+          var score = function(x){ return (x.match(/[ÃÂ]|â€|√|\uFFFD/g)||[]).length; };
+          if (score(cand) < score(s)) s = cand;
+        } catch(e2){}
+      }
+      return s;
+    } catch(e){
+      return String(input == null ? '' : input);
+    }
+  }
+
   function toast(msg) {
+    msg = fixMojibake(msg);
     let t = document.getElementById('toast');
     t.textContent = msg;
     t.style.display = 'block';
@@ -19,6 +66,7 @@
     toast._t = setTimeout(function () { t.style.display = 'none'; }, 2200);
   }
   function escapeHtml(s) {
+    s = fixMojibake(s);
     return String(s || '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -1593,6 +1641,67 @@
   }
 
   // ========= Timer =========
+
+  // ===== Timer Settings Helpers (robust clamping) =====
+  function timerGetWorkSec(){
+    var v = parseInt(document.getElementById('timer-workSec').value || '60', 10);
+    return clamp(isNaN(v) ? 60 : v, 1, 3600);
+  }
+  function timerGetRestSec(){
+    var v = parseInt(document.getElementById('timer-restSec').value || '30', 10);
+    return clamp(isNaN(v) ? 30 : v, 0, 3600);
+  }
+  function timerGetRounds(){
+    var v = parseInt(document.getElementById('timer-rounds').value || '8', 10);
+    return clamp(isNaN(v) ? 8 : v, 1, 200);
+  }
+
+  // ===== Timer Sound Signals (WebAudio) =====
+  var _timerSound = { ctx: null, gain: null };
+  function ensureAudio(){
+    try {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return null;
+      if (!_timerSound.ctx) {
+        _timerSound.ctx = new Ctx();
+        _timerSound.gain = _timerSound.ctx.createGain();
+        _timerSound.gain.gain.value = 0.10; // audible but not too loud
+        _timerSound.gain.connect(_timerSound.ctx.destination);
+      }
+      if (_timerSound.ctx && _timerSound.ctx.state === 'suspended') {
+        _timerSound.ctx.resume().catch(function(){});
+      }
+      return _timerSound.ctx;
+    } catch(e){ return null; }
+  }
+  function beep(freq, durMs, type, volume){
+    var ctx = ensureAudio();
+    if (!ctx) return;
+    try {
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = freq || 440;
+      var v = (typeof volume === 'number') ? volume : 0.10;
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(Math.max(0.0001, v), ctx.currentTime + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + (durMs/1000.0));
+      o.connect(g);
+      g.connect(_timerSound.gain || ctx.destination);
+      o.start();
+      o.stop(ctx.currentTime + (durMs/1000.0) + 0.02);
+    } catch(e){}
+  }
+  function playTimerSignal(kind){
+    try {
+      if (kind === 'phase_end') { beep(880, 140, 'square', 0.12); return; }
+      if (kind === 'pause_start') { beep(330, 120, 'sine', 0.13); beep(330, 120, 'sine', 0.13); return; }
+      if (kind === 'pause_end') { beep(660, 120, 'sine', 0.13); beep(660, 120, 'sine', 0.13); return; }
+      if (kind === 'interval_end') { beep(990, 160, 'square', 0.12); return; }
+      if (kind === 'finished') { beep(523.25, 900, 'sawtooth', 0.14); return; }
+    } catch(e){}
+  }
+
   const _timer = { t: null, mode: 'work', remaining: 0, round: 0, paused: true, total: 0 };
   function fmt(s) {
     s = Math.max(0, Number(s) || 0);
@@ -1634,7 +1743,7 @@
   function timerUpdate() {
     document.getElementById('timer-display').textContent = fmt(_timer.remaining);
     document.getElementById('timer-phase').textContent = _timer.t ? (_timer.mode === 'work' ? 'WORK' : 'PAUSE') : '—';
-    let rounds = Number(document.getElementById('timer-rounds').value || 0);
+    let rounds = timerGetRounds();
     document.getElementById('timer-round').textContent = (_timer.t ? (_timer.round + 1) : 0) + ' / ' + rounds;
 
     // Ring-Fortschritt aktualisieren (voll → leer)
@@ -1642,7 +1751,7 @@
     let rem = Number(_timer.remaining) || 0;
     if (!total) {
       // Wenn Timer nicht läuft: orientiere dich am Work-Wert
-      total = Number(document.getElementById('timer-workSec').value) || 0;
+      total = timerGetWorkSec();
       rem = Number(_timer.remaining) || total;
     }
     let progress = total > 0 ? (rem / total) : 0;
@@ -1653,35 +1762,64 @@
     _timer.paused = true;
     timerUpdate();
   }
+
   function timerTick() {
     timerUpdate();
     if (_timer.remaining <= 0) {
+      var restSec = timerGetRestSec();
+      var rounds = timerGetRounds();
+
       if (_timer.mode === 'work') {
-        _timer.mode = 'rest';
-        _timer.remaining = Number(document.getElementById('timer-restSec').value || 0);
-        _timer.total = _timer.remaining;
+        if (restSec > 0) {
+          // Normal: Work -> Pause
+          playTimerSignal('phase_end');
+          _timer.mode = 'rest';
+          playTimerSignal('pause_start');
+          _timer.remaining = restSec;
+          _timer.total = _timer.remaining;
+        } else {
+          // Special: Pause = 0 -> no pause start/end sounds, only interval end
+          playTimerSignal('interval_end');
+          _timer.round++;
+          if (_timer.round >= rounds) {
+            timerStopInternal();
+            playTimerSignal('finished');
+            toast('⏱️ Timer fertig – stark!');
+            return;
+          }
+          _timer.mode = 'work';
+          _timer.remaining = timerGetWorkSec();
+          _timer.total = _timer.remaining;
+        }
       } else {
+        // Pause -> next work (pause end + interval end)
+        playTimerSignal('phase_end');
         _timer.round++;
-        if (_timer.round >= Number(document.getElementById('timer-rounds').value || 0)) {
+        playTimerSignal('pause_end');
+        playTimerSignal('interval_end');
+        if (_timer.round >= rounds) {
           timerStopInternal();
+          playTimerSignal('finished');
           toast('⏱️ Timer fertig – stark!');
           return;
         }
         _timer.mode = 'work';
-        _timer.remaining = Number(document.getElementById('timer-workSec').value || 0);
+        _timer.remaining = timerGetWorkSec();
         _timer.total = _timer.remaining;
       }
       timerUpdate();
     }
     _timer.remaining--;
   }
+
   function timerStart() {
     timerSave();
+    if (_timer.paused && _timer.remaining > 0) playTimerSignal('pause_end'); // manual resume
     if (_timer.t) return;
     if (_timer.paused && _timer.remaining <= 0) {
       _timer.mode = 'work';
       _timer.round = 0;
-      _timer.remaining = Number(document.getElementById('timer-workSec').value || 0);
+      _timer.remaining = timerGetWorkSec();
       _timer.total = _timer.remaining;
     }
     _timer.paused = false;
@@ -1690,6 +1828,7 @@
   }
   function timerPause() {
     if (!_timer.t) return;
+    playTimerSignal('pause_start'); // manual pause
     clearInterval(_timer.t);
     _timer.t = null;
     _timer.paused = true;
@@ -1699,7 +1838,7 @@
     timerStopInternal();
     _timer.mode = 'work';
     _timer.round = 0;
-    _timer.remaining = Number(document.getElementById('timer-workSec').value || 0);
+    _timer.remaining = timerGetWorkSec();
     _timer.total = _timer.remaining;
     timerUpdate();
   }
@@ -1715,19 +1854,19 @@
 
     ['timer-workSec', 'timer-restSec', 'timer-rounds'].forEach(function (id) {
       document.getElementById(id).addEventListener('change', function () {
-        if (id === 'timer-workSec') this.value = String(clamp(parseInt(this.value || '60', 10), 10, 3600));
+        if (id === 'timer-workSec') this.value = String(clamp(parseInt(this.value || '60', 10), 1, 3600));
         if (id === 'timer-restSec') this.value = String(clamp(parseInt(this.value || '30', 10), 0, 3600));
         if (id === 'timer-rounds') this.value = String(clamp(parseInt(this.value || '8', 10), 1, 200));
         timerSave();
         if (!_timer.t) {
-          _timer.remaining = Number(document.getElementById('timer-workSec').value || 0);
+          _timer.remaining = timerGetWorkSec();
           _timer.total = _timer.remaining;
           timerUpdate();
         }
       });
     });
 
-    _timer.remaining = Number(document.getElementById('timer-workSec').value || 0);
+    _timer.remaining = timerGetWorkSec();
     _timer.total = _timer.remaining;
     timerRingInit();
     timerUpdate();
