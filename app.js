@@ -1668,8 +1668,10 @@
   }
 
   function playTimerSignal(kind){
-    // Required: Round completed -> sound. For 5 rounds => 5 sounds.
-    // Additional distinct sounds can remain, but MUST NOT prevent round sound.
+    // Rules:
+    // - Round completed => 'round' beep (N rounds => N beeps)
+    // - If pause time > 0: beep at pause start and pause end
+    // - Timer finished => long beep
     try {
       if (kind === 'round') { beep(880, 140, 'square', 0.35); return; }
       if (kind === 'pause_start') { beep(330, 120, 'sine', 0.30); beep(330, 120, 'sine', 0.30); return; }
@@ -1732,10 +1734,9 @@
     timerUpdate();
   }
 
-  // ROUND SOUND RULE:
-  // - Every time a round is completed, playTimerSignal('round') must fire.
-  // - For N rounds -> N beeps.
-  // - If Pause=0, we still complete rounds (work end == round end).
+  // Round completion:
+  // - If restSec > 0, a round completes when PAUSE ends (work + pause)
+  // - If restSec == 0, a round completes when WORK ends
   function timerTick() {
     timerUpdate();
 
@@ -1744,9 +1745,8 @@
       var rounds = timerGetRounds();
 
       if (_timer.mode === 'work') {
-        // Work finished.
         if (restSec > 0) {
-          // go into rest
+          // Work -> Pause (sound at pause start)
           _timer.mode = 'rest';
           playTimerSignal('pause_start');
           _timer.remaining = restSec;
@@ -1767,10 +1767,10 @@
         }
 
       } else {
-        // Rest finished -> round completes here
+        // Pause finished -> round completes here (sound at pause end + round)
         _timer.round++;
-        playTimerSignal('round');
         playTimerSignal('pause_end');
+        playTimerSignal('round');
 
         if (_timer.round >= rounds) {
           timerStopInternal();
@@ -1812,7 +1812,6 @@
     if (!_timer.t) return;
     // Unlock audio on user gesture
     ensureAudio();
-    playTimerSignal('pause_start');
 
     clearInterval(_timer.t);
     _timer.t = null;
