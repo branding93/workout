@@ -117,7 +117,7 @@ const TKD_SPARRING_GROUPS = [
       const FORMS = [
         { id: 'I', code: 'SNT', name: 'Siu Nim Tao', note: 'Kleine Idee Form', parts: '8 Sätze', level: 'white' },
         { id: 'II', code: 'CK', name: 'Chum Kiu', note: 'Arme suchende Form', parts: '3 Teile', level: 'yellow' },
-        { id: 'III', code: 'BT', name: 'Biu Tze', note: 'Stossende Finger', parts: '-', level: 'green' }
+        { id: 'III', code: 'BT', name: 'Biu Tze', note: 'Stossende Finger', parts: '—', level: 'green' }
       ];
       const GRUNDLAGEN = [
         { t: 'Kampfstellung / Vorwärts-Stoß-Stellung', d: 'Stand & Struktur' },

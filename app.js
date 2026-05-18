@@ -11,54 +11,7 @@
     let yyyy = d.getFullYear();
     return dd + '.' + mm + '.' + yyyy;
   }
-
-  function fixMojibake(input){
-    // Repairs common encoding artifacts (mojibake) defensively before display
-    try {
-      var s = String(input == null ? '' : input);
-      var map = {
-        'â€šÃ„Ã®':'—',
-        '‚Äî':'—',
-        'â€”':'—',
-        'â€“':'–',
-        'â€˜':'‘',
-        'â€™':'’',
-        'â€œ':'“',
-        'â€\u009D':'”',
-        'â€ž':'„',
-        'â€¦':'…',
-        'Â ':' ',
-        'Â·':'·',
-        'Â°':'°',
-        'Â€':'€',
-        'Ã¤':'ä', 'Ã„':'Ä', 'Ã¶':'ö', 'Ã–':'Ö', 'Ã¼':'ü', 'Ãœ':'Ü', 'ÃŸ':'ß',
-        'Bl√∂cken':'Blöcken',
-        'Schl√§gen':'Schlägen',
-        'St√§nden':'Ständen'
-      };
-      for (var k in map){
-        if (Object.prototype.hasOwnProperty.call(map,k) && s.indexOf(k) !== -1) s = s.split(k).join(map[k]);
-      }
-      // Best-effort latin1 bytes -> UTF-8 decode (only if it improves)
-      if (/[ÃÂ]|â€|√|\uFFFD/.test(s) && typeof TextDecoder !== 'undefined') {
-        try {
-          var bytes = [];
-          for (var i=0;i<s.length;i++){ bytes.push(s.charCodeAt(i) & 0xFF); }
-          var u8 = new Uint8Array(bytes);
-          var dec = new TextDecoder('utf-8', { fatal:false });
-          var cand = dec.decode(u8);
-          var score = function(x){ return (x.match(/[ÃÂ]|â€|√|\uFFFD/g)||[]).length; };
-          if (score(cand) < score(s)) s = cand;
-        } catch(e2){}
-      }
-      return s;
-    } catch(e){
-      return String(input == null ? '' : input);
-    }
-  }
-
   function toast(msg) {
-    msg = fixMojibake(msg);
     let t = document.getElementById('toast');
     t.textContent = msg;
     t.style.display = 'block';
@@ -66,7 +19,6 @@
     toast._t = setTimeout(function () { t.style.display = 'none'; }, 2200);
   }
   function escapeHtml(s) {
-    s = fixMojibake(s);
     return String(s || '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -1641,72 +1593,89 @@
   }
 
   // ========= Timer =========
+  const _timer = { t: null, mode: 'work', remaining: 0, round: 0, paused: true, total: 0 };
 
-  // ===== Timer Settings Helpers (robust clamping) =====
+  function fmt(s) {
+    s = Math.max(0, Number(s) || 0);
+    let m = Math.floor(s / 60), ss = s % 60;
+    return String(m).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
+  }
+
+  // ===== Timer Settings Helpers =====
   function timerGetWorkSec(){
-    var v = parseInt(document.getElementById('timer-workSec').value || '60', 10);
+    var v = parseInt((document.getElementById('timer-workSec') || {}).value || '60', 10);
     return clamp(isNaN(v) ? 60 : v, 1, 3600);
   }
   function timerGetRestSec(){
-    var v = parseInt(document.getElementById('timer-restSec').value || '30', 10);
+    var v = parseInt((document.getElementById('timer-restSec') || {}).value || '30', 10);
     return clamp(isNaN(v) ? 30 : v, 0, 3600);
   }
   function timerGetRounds(){
-    var v = parseInt(document.getElementById('timer-rounds').value || '8', 10);
+    var v = parseInt((document.getElementById('timer-rounds') || {}).value || '8', 10);
     return clamp(isNaN(v) ? 8 : v, 1, 200);
   }
+  function timerGetVolume(){
+    // Slider 0..100 (%), returns 0..1
+    try {
+      var el = document.getElementById('timer-volume');
+      if (!el) return 0.25;
+      var v = parseInt(el.value || '25', 10);
+      v = isNaN(v) ? 25 : v;
+      v = clamp(v, 0, 100);
+      return v / 100;
+    } catch(e){ return 0.25; }
+  }
 
-  // ===== Timer Sound Signals (WebAudio) =====
-  var _timerSound = { ctx: null, gain: null };
+  // ===== Timer Sounds (WebAudio, no files) =====
+  var _timerSound = { ctx: null, master: null };
+
   function ensureAudio(){
     try {
       var Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return null;
       if (!_timerSound.ctx) {
         _timerSound.ctx = new Ctx();
-        _timerSound.gain = _timerSound.ctx.createGain();
-        _timerSound.gain.gain.value = 0.10; // audible but not too loud
-        _timerSound.gain.connect(_timerSound.ctx.destination);
+        _timerSound.master = _timerSound.ctx.createGain();
+        _timerSound.master.gain.value = timerGetVolume();
+        _timerSound.master.connect(_timerSound.ctx.destination);
+      } else {
+        try { _timerSound.master.gain.value = timerGetVolume(); } catch(e){}
       }
-      if (_timerSound.ctx && _timerSound.ctx.state === 'suspended') {
+      if (_timerSound.ctx.state === 'suspended') {
         _timerSound.ctx.resume().catch(function(){});
       }
       return _timerSound.ctx;
     } catch(e){ return null; }
   }
-  function beep(freq, durMs, type, volume){
+
+  function beep(freq, durMs, wave, amp){
     var ctx = ensureAudio();
     if (!ctx) return;
     try {
       var o = ctx.createOscillator();
       var g = ctx.createGain();
-      o.type = type || 'sine';
-      o.frequency.value = freq || 440;
-      var v = (typeof volume === 'number') ? volume : 0.10;
+      o.type = wave || 'sine';
+      o.frequency.value = freq || 880;
+      var a = (typeof amp === 'number') ? amp : 0.35; // per-beep amplitude (master volume is separate)
       g.gain.setValueAtTime(0.0001, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(Math.max(0.0001, v), ctx.currentTime + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + (durMs/1000.0));
+      g.gain.exponentialRampToValueAtTime(Math.max(0.0001, a), ctx.currentTime + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + (durMs/1000));
       o.connect(g);
-      g.connect(_timerSound.gain || ctx.destination);
+      g.connect(_timerSound.master || ctx.destination);
       o.start();
-      o.stop(ctx.currentTime + (durMs/1000.0) + 0.02);
-    } catch(e){}
-  }
-  function playTimerSignal(kind){
-    try {
-      if (kind === 'phase_end') { beep(880, 140, 'square', 0.12); return; }
-      if (kind === 'pause_start') { beep(330, 120, 'sine', 0.13); beep(330, 120, 'sine', 0.13); return; }
-      if (kind === 'pause_end') { beep(660, 120, 'sine', 0.13); beep(660, 120, 'sine', 0.13); return; }
-      if (kind === 'interval_end') { beep(990, 160, 'square', 0.12); return; }
-      if (kind === 'finished') { beep(523.25, 900, 'sawtooth', 0.14); return; }
+      o.stop(ctx.currentTime + (durMs/1000) + 0.02);
     } catch(e){}
   }
 
-  const _timer = { t: null, mode: 'work', remaining: 0, round: 0, paused: true, total: 0 };
-  function fmt(s) {
-    s = Math.max(0, Number(s) || 0);
-    let m = Math.floor(s / 60), ss = s % 60;
-    return String(m).padStart(2, '0') + ':' + String(ss).padStart(2, '0');
+  function playTimerSignal(kind){
+    // Required: Round completed -> sound. For 5 rounds => 5 sounds.
+    // Additional distinct sounds can remain, but MUST NOT prevent round sound.
+    try {
+      if (kind === 'round') { beep(880, 140, 'square', 0.35); return; }
+      if (kind === 'pause_start') { beep(330, 120, 'sine', 0.30); beep(330, 120, 'sine', 0.30); return; }
+      if (kind === 'pause_end') { beep(660, 120, 'sine', 0.30); beep(660, 120, 'sine', 0.30); return; }
+      if (kind === 'finished') { beep(523.25, 900, 'sawtooth', 0.38); return; }
+    } catch(e){}
   }
 
   // Timer – Fortschrittsring (visuell)
@@ -1719,7 +1688,6 @@
     _timerRing.prog = prog;
     _timerRing.C = C;
     prog.style.strokeDasharray = String(C);
-    // Start: voll
     prog.style.strokeDashoffset = '0';
   }
   function timerRingSet(progress) {
@@ -1731,56 +1699,62 @@
   }
 
   function timerLoad() { return safeParseJSON(localStorage.getItem(TIMER_KEY) || '{}', {}); }
+
   function timerSave() {
     try {
       localStorage.setItem(TIMER_KEY, JSON.stringify({
-        work: Number(document.getElementById('timer-workSec').value),
-        rest: Number(document.getElementById('timer-restSec').value),
-        rounds: Number(document.getElementById('timer-rounds').value)
+        work: Number((document.getElementById('timer-workSec') || {}).value),
+        rest: Number((document.getElementById('timer-restSec') || {}).value),
+        rounds: Number((document.getElementById('timer-rounds') || {}).value),
+        volume: timerGetVolume()
       }));
     } catch (e) { }
   }
+
   function timerUpdate() {
     document.getElementById('timer-display').textContent = fmt(_timer.remaining);
-    document.getElementById('timer-phase').textContent = _timer.t ? (_timer.mode === 'work' ? 'WORK' : 'PAUSE') : '—';
+    document.getElementById('timer-phase').textContent = _timer.t ? (_timer.mode === 'work' ? 'WORK' : 'PAUSE') : '-';
     let rounds = timerGetRounds();
     document.getElementById('timer-round').textContent = (_timer.t ? (_timer.round + 1) : 0) + ' / ' + rounds;
 
-    // Ring-Fortschritt aktualisieren (voll → leer)
     let total = Number(_timer.total) || 0;
     let rem = Number(_timer.remaining) || 0;
     if (!total) {
-      // Wenn Timer nicht läuft: orientiere dich am Work-Wert
       total = timerGetWorkSec();
       rem = Number(_timer.remaining) || total;
     }
-    let progress = total > 0 ? (rem / total) : 0;
-    timerRingSet(progress);
+    timerRingSet(total > 0 ? (rem / total) : 0);
   }
+
   function timerStopInternal() {
     if (_timer.t) { clearInterval(_timer.t); _timer.t = null; }
     _timer.paused = true;
     timerUpdate();
   }
 
+  // ROUND SOUND RULE:
+  // - Every time a round is completed, playTimerSignal('round') must fire.
+  // - For N rounds -> N beeps.
+  // - If Pause=0, we still complete rounds (work end == round end).
   function timerTick() {
     timerUpdate();
+
     if (_timer.remaining <= 0) {
       var restSec = timerGetRestSec();
       var rounds = timerGetRounds();
 
       if (_timer.mode === 'work') {
+        // Work finished.
         if (restSec > 0) {
-          // Normal: Work -> Pause
-          playTimerSignal('phase_end');
+          // go into rest
           _timer.mode = 'rest';
           playTimerSignal('pause_start');
           _timer.remaining = restSec;
           _timer.total = _timer.remaining;
         } else {
-          // Special: Pause = 0 -> no pause start/end sounds, only interval end
-          playTimerSignal('interval_end');
+          // Pause=0: round completes immediately at end of work
           _timer.round++;
+          playTimerSignal('round');
           if (_timer.round >= rounds) {
             timerStopInternal();
             playTimerSignal('finished');
@@ -1791,12 +1765,13 @@
           _timer.remaining = timerGetWorkSec();
           _timer.total = _timer.remaining;
         }
+
       } else {
-        // Pause -> next work (pause end + interval end)
-        playTimerSignal('phase_end');
+        // Rest finished -> round completes here
         _timer.round++;
+        playTimerSignal('round');
         playTimerSignal('pause_end');
-        playTimerSignal('interval_end');
+
         if (_timer.round >= rounds) {
           timerStopInternal();
           playTimerSignal('finished');
@@ -1807,33 +1782,44 @@
         _timer.remaining = timerGetWorkSec();
         _timer.total = _timer.remaining;
       }
+
       timerUpdate();
     }
+
     _timer.remaining--;
   }
 
   function timerStart() {
     timerSave();
-    if (_timer.paused && _timer.remaining > 0) playTimerSignal('pause_end'); // manual resume
+    // Unlock audio on user gesture
+    ensureAudio();
+
     if (_timer.t) return;
+
     if (_timer.paused && _timer.remaining <= 0) {
       _timer.mode = 'work';
       _timer.round = 0;
       _timer.remaining = timerGetWorkSec();
       _timer.total = _timer.remaining;
     }
+
     _timer.paused = false;
     _timer.t = setInterval(timerTick, 1000);
     timerUpdate();
   }
+
   function timerPause() {
     if (!_timer.t) return;
-    playTimerSignal('pause_start'); // manual pause
+    // Unlock audio on user gesture
+    ensureAudio();
+    playTimerSignal('pause_start');
+
     clearInterval(_timer.t);
     _timer.t = null;
     _timer.paused = true;
     timerUpdate();
   }
+
   function timerReset() {
     timerStopInternal();
     _timer.mode = 'work';
@@ -1842,11 +1828,36 @@
     _timer.total = _timer.remaining;
     timerUpdate();
   }
+
   function timerInit() {
     let conf = timerLoad();
     if (typeof conf.work === 'number') document.getElementById('timer-workSec').value = conf.work;
     if (typeof conf.rest === 'number') document.getElementById('timer-restSec').value = conf.rest;
     if (typeof conf.rounds === 'number') document.getElementById('timer-rounds').value = conf.rounds;
+
+    // Volume UI
+    var volEl = document.getElementById('timer-volume');
+    var volValEl = document.getElementById('timer-volumeVal');
+    if (volEl) {
+      var vv = (typeof conf.volume === 'number') ? conf.volume : timerGetVolume();
+      vv = isNaN(vv) ? 0.25 : vv;
+      vv = Math.max(0, Math.min(1, vv));
+      volEl.value = String(Math.round(vv * 100));
+      if (volValEl) volValEl.textContent = String(Math.round(vv * 100)) + '%';
+
+      var updVol = function(){
+        var v = parseInt(volEl.value || '25', 10);
+        if (isNaN(v)) v = 25;
+        v = clamp(v, 0, 100);
+        volEl.value = String(v);
+        if (volValEl) volValEl.textContent = String(v) + '%';
+        try { if (_timerSound.master) _timerSound.master.gain.value = v/100; } catch(e){}
+        timerSave();
+      };
+      volEl.addEventListener('input', updVol);
+      volEl.addEventListener('change', updVol);
+      updVol();
+    }
 
     document.getElementById('timer-start').addEventListener('click', timerStart);
     document.getElementById('timer-pause').addEventListener('click', timerPause);
@@ -1871,6 +1882,7 @@
     timerRingInit();
     timerUpdate();
   }
+
 
   // ========= Reset =========
   function resetAll() {
