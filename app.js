@@ -1625,6 +1625,22 @@
       return v / 100;
     } catch(e){ return 0.25; }
   }
+  function timerGetSoundMode(){
+    try {
+      var rText = document.getElementById('timer-mode-text');
+      var rSignal = document.getElementById('timer-mode-signal');
+      if (rText && rText.checked) return 'text';
+      if (rSignal && rSignal.checked) return 'signal';
+      return 'signal';
+    } catch(e){ return 'signal'; }
+  }
+  function timerGetTtsWord(){
+    try {
+      var el = document.getElementById('timer-ttsWord');
+      var v = (el && el.value) ? String(el.value) : 'Kick!';
+      return v;
+    } catch(e){ return 'Kick!'; }
+  }
 
   // ===== Timer Sounds (WebAudio, no files) =====
   var _timerSound = { ctx: null, master: null };
@@ -1656,7 +1672,7 @@
       var g = ctx.createGain();
       o.type = wave || 'sine';
       o.frequency.value = freq || 880;
-      var a = (typeof amp === 'number') ? amp : 0.35; // per-beep amplitude (master volume is separate)
+      var a = (typeof amp === 'number') ? amp : 0.35; // per-beep amplitude
       g.gain.setValueAtTime(0.0001, ctx.currentTime);
       g.gain.exponentialRampToValueAtTime(Math.max(0.0001, a), ctx.currentTime + 0.01);
       g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + (durMs/1000));
@@ -1668,15 +1684,28 @@
   }
 
   function playTimerSignal(kind){
-    // Rules:
-    // - Round completed => 'round' beep (N rounds => N beeps)
-    // - If pause time > 0: beep at pause start and pause end
-    // - Timer finished => long beep
+    // Only in Signal mode
+    if (timerGetSoundMode() !== 'signal') return;
     try {
       if (kind === 'round') { beep(880, 140, 'square', 0.35); return; }
       if (kind === 'pause_start') { beep(330, 120, 'sine', 0.30); beep(330, 120, 'sine', 0.30); return; }
       if (kind === 'pause_end') { beep(660, 120, 'sine', 0.30); beep(660, 120, 'sine', 0.30); return; }
       if (kind === 'finished') { beep(523.25, 900, 'sawtooth', 0.38); return; }
+    } catch(e){}
+  }
+
+  function speakWord(word){
+    try {
+      if (!('speechSynthesis' in window)) return;
+      var text = String(word || '').trim();
+      if (!text) return;
+      try { window.speechSynthesis.cancel(); } catch(e2){}
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 1.0;
+      u.pitch = 1.0;
+      u.volume = 1.0;
+      window.speechSynthesis.speak(u);
     } catch(e){}
   }
 
@@ -1708,7 +1737,9 @@
         work: Number((document.getElementById('timer-workSec') || {}).value),
         rest: Number((document.getElementById('timer-restSec') || {}).value),
         rounds: Number((document.getElementById('timer-rounds') || {}).value),
-        volume: timerGetVolume()
+        volume: timerGetVolume(),
+        soundMode: timerGetSoundMode(),
+        ttsWord: timerGetTtsWord()
       }));
     } catch (e) { }
   }
@@ -1746,7 +1777,7 @@
 
       if (_timer.mode === 'work') {
         if (restSec > 0) {
-          // Work -> Pause (sound at pause start)
+          // Work -> Pause (sound at pause start when Signal mode)
           _timer.mode = 'rest';
           playTimerSignal('pause_start');
           _timer.remaining = restSec;
@@ -1754,7 +1785,7 @@
         } else {
           // Pause=0: round completes immediately at end of work
           _timer.round++;
-          playTimerSignal('round');
+          if (timerGetSoundMode() === 'text') speakWord(timerGetTtsWord()); else playTimerSignal('round');
           if (_timer.round >= rounds) {
             timerStopInternal();
             playTimerSignal('finished');
@@ -1767,10 +1798,11 @@
         }
 
       } else {
-        // Pause finished -> round completes here (sound at pause end + round)
+        // Pause finished -> round completes here
         _timer.round++;
+        // Pause end beep (Signal mode) + round completion (Signal or Text)
         playTimerSignal('pause_end');
-        playTimerSignal('round');
+        if (timerGetSoundMode() === 'text') speakWord(timerGetTtsWord()); else playTimerSignal('round');
 
         if (_timer.round >= rounds) {
           timerStopInternal();
@@ -1791,8 +1823,9 @@
 
   function timerStart() {
     timerSave();
-    // Unlock audio on user gesture
+    // Unlock audio/tts on user gesture
     ensureAudio();
+    try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch(e){}
 
     if (_timer.t) return;
 
@@ -1810,7 +1843,7 @@
 
   function timerPause() {
     if (!_timer.t) return;
-    // Unlock audio on user gesture
+    // Unlock audio/tts on user gesture
     ensureAudio();
 
     clearInterval(_timer.t);
@@ -1857,6 +1890,34 @@
       volEl.addEventListener('change', updVol);
       updVol();
     }
+
+    // Sound/Text mode UI
+    var mSig = document.getElementById('timer-mode-signal');
+    var mTxt = document.getElementById('timer-mode-text');
+    var ttsWrap = document.getElementById('timer-ttsWrap');
+    var ttsSel = document.getElementById('timer-ttsWord');
+    if (mSig && mTxt) {
+      var sm = (typeof conf.soundMode === 'string') ? conf.soundMode : 'signal';
+      sm = (sm === 'text') ? 'text' : 'signal';
+      mSig.checked = (sm === 'signal');
+      mTxt.checked = (sm === 'text');
+    }
+    if (ttsSel && typeof conf.ttsWord === 'string') {
+      ttsSel.value = conf.ttsWord;
+    }
+
+    var applyModeUi = function(){
+      var mode = timerGetSoundMode();
+      if (ttsWrap) ttsWrap.style.display = (mode === 'text') ? '' : 'none';
+      var volWrap = document.getElementById('timer-volWrap');
+      if (volWrap) volWrap.style.display = (mode === 'signal') ? '' : 'none';
+      timerSave();
+    };
+
+    if (mSig) mSig.addEventListener('change', applyModeUi);
+    if (mTxt) mTxt.addEventListener('change', applyModeUi);
+    if (ttsSel) ttsSel.addEventListener('change', function(){ timerSave(); });
+    applyModeUi();
 
     document.getElementById('timer-start').addEventListener('click', timerStart);
     document.getElementById('timer-pause').addEventListener('click', timerPause);

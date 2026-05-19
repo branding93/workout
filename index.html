@@ -15,7 +15,7 @@
 
   <!-- manifest conditional (avoid CORS on file://) -->
   <script>
-    (function(){
+    (function () {
       try {
         if (location.protocol === 'http:' || location.protocol === 'https:') {
           var l = document.createElement('link');
@@ -23,7 +23,7 @@
           l.href = 'manifest.json';
           document.head.appendChild(l);
         }
-      } catch(e) {}
+      } catch (e) { }
     })();
   </script>
 
@@ -298,10 +298,29 @@
                 <label class="pill" style="background:#fff">Intervalle
                   <input id="timer-rounds" type="number" min="1" value="8" style="width:90px;margin-left:8px" />
                 </label>
-                <label class="pill" style="background:#fff">Ton (%)
-                  <input id="timer-volume" type="range" min="0" max="100" step="1" value="25" style="width:110px;margin-left:8px" />
+                <label class="pill" style="background:#fff" id="timer-volWrap">Ton
+                  <input id="timer-volume" type="range" min="0" max="100" step="1" value="25"
+                    style="width:110px;margin-left:8px" />
                   <span id="timer-volumeVal" class="desc" style="margin-left:8px;font-weight:900">25%\</span>
                 </label>
+                <span class="pill" style="background:#fff" id="timer-modeWrap">Modus
+                  <label style="margin-left:10px; font-weight:900;">
+                    <input type="radio" name="timer-soundMode" id="timer-mode-signal" value="signal" checked /> Signal
+                  </label>
+                  <label style="margin-left:10px; font-weight:900;">
+                    <input type="radio" name="timer-soundMode" id="timer-mode-text" value="text" /> Text
+                  </label>
+                </span>
+                <label class="pill" style="background:#fff" id="timer-ttsWrap">Wort
+                  <select id="timer-ttsWord"
+                    style="margin-left:8px; padding:6px 8px; border-radius:12px; border:1px solid rgba(15,23,42,.12); font-weight:900;">
+                    <option value="Kick!">Kick!</option>
+                    <option value="Go!">Go!</option>
+                  </select>
+                </label>
+
+
+
                 <button id="timer-start" class="btn primary" type="button">Start</button>
                 <button id="timer-pause" class="btn" type="button">Pause</button>
                 <button id="timer-reset" class="btn" type="button">Reset</button>
