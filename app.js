@@ -1698,19 +1698,69 @@
     } catch(e){}
   }
 
+  // ===== Text-to-Speech (SpeechSynthesis) helpers =====
+  var _ttsState = { ready: false, voices: [], tries: 0 };
+
+  function ttsRefreshVoices(){
+    try {
+      if (!('speechSynthesis' in window)) return;
+      var synth = window.speechSynthesis;
+      var v = synth.getVoices();
+      if (v && v.length) {
+        _ttsState.voices = v;
+        _ttsState.ready = true;
+      }
+    } catch(e){}
+  }
+
+  function ttsWarmup(){
+    // iOS/Safari often needs a user gesture 'unlock' for later speaks.
+    try {
+      if (!('speechSynthesis' in window)) return;
+      ttsRefreshVoices();
+      var synth = window.speechSynthesis;
+      // create a near-silent utterance to unlock
+      var u = new SpeechSynthesisUtterance(' ');
+      u.lang = 'en-US';
+      u.volume = 0;
+      u.rate = 1.0;
+      u.pitch = 1.0;
+      try { synth.cancel(); } catch(e2){}
+      synth.speak(u);
+    } catch(e){}
+  }
+
+  try { if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = ttsRefreshVoices; } catch(e){}
+
+
   function speakWord(word){
     try {
       if (!('speechSynthesis' in window)) return;
       var text = String(word || '').trim();
       if (!text) return;
-      // prevent queue buildup
-      try { window.speechSynthesis.cancel(); } catch(e2){}
+
+      // Make sure voices are loaded (Safari iOS may return empty initially)
+      if (!_ttsState.ready) {
+        ttsRefreshVoices();
+      }
+      if (!_ttsState.ready && _ttsState.tries < 6) {
+        _ttsState.tries++;
+        setTimeout(function(){ speakWord(text); }, 200);
+        return;
+      }
+      _ttsState.tries = 0;
+
+      var synth = window.speechSynthesis;
+      // Avoid killing iOS playback by cancelling every time; cancel only if something is queued
+      try { if (synth.speaking || synth.pending) synth.cancel(); } catch(e2){}
+
       var u = new SpeechSynthesisUtterance(text);
       u.lang = 'en-US';
       u.rate = 1.0;
       u.pitch = 1.0;
       u.volume = 1.0;
-      window.speechSynthesis.speak(u);
+      u.onerror = function(){ try { toast('🔇 TTS Fehler (iOS): bitte einmal Start erneut tippen'); } catch(e){} };
+      synth.speak(u);
     } catch(e){}
   }
 
@@ -1828,6 +1878,8 @@
     timerSave();
     // Unlock audio/tts on user gesture
     ensureAudio();
+    // Warm up TTS on iOS (user gesture)
+    if (timerGetSoundMode && timerGetSoundMode() === 'text') ttsWarmup();
     try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch(e){}
 
     if (_timer.t) return;
