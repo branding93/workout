@@ -669,6 +669,7 @@
       start: document.getElementById('quiz-start'),
       pickTkd: document.getElementById('quiz-pick-tkd'),
       pickWc: document.getElementById('quiz-pick-wc'),
+      pickMa: document.getElementById('quiz-pick-ma'),
       restart: document.getElementById('quiz-restart'),
       again: document.getElementById('quiz-again'),
       resultText: document.getElementById('quiz-resultText'),
@@ -679,7 +680,7 @@
     let el = quizEls();
     if (!el.mode) return;
     if (!quizState.discipline) el.mode.textContent = 'Modus: Auswahl';
-    else el.mode.textContent = 'Modus: ' + (quizState.discipline === 'tkd' ? 'Taekwondo' : 'Wing Chun');
+    else { var _lbl = (quizState.discipline === 'tkd') ? 'Taekwondo' : ((quizState.discipline === 'wc') ? 'Wing Chun' : 'Martial Arts'); el.mode.textContent = 'Modus: ' + _lbl; }
   }
 
   function quizUpdateMeta() {
@@ -708,11 +709,12 @@
 
   function quizPick(d) {
     quizState.discipline = d;
-    quizState.bank = (typeof QUIZ_BANKS !== 'undefined' && QUIZ_BANKS) ? (d === 'tkd' ? QUIZ_BANKS.tkd : QUIZ_BANKS.wc) : [];
+    quizState.bank = (typeof QUIZ_BANKS !== 'undefined' && QUIZ_BANKS) ? (d === 'tkd' ? QUIZ_BANKS.tkd : (d === 'wc' ? QUIZ_BANKS.wc : QUIZ_BANKS.ma)) : [];
     let el = quizEls();
     if (el.start) el.start.disabled = !(quizState.bank && quizState.bank.length >= 10);
     if (el.pickTkd) el.pickTkd.classList.toggle('primary', d === 'tkd');
     if (el.pickWc) el.pickWc.classList.toggle('primary', d === 'wc');
+    if (el.pickMa) el.pickMa.classList.toggle('primary', d === 'ma');
     quizSetModeLabel();
   }
 
@@ -797,6 +799,7 @@
     if (!el.start) return;
     if (el.pickTkd) el.pickTkd.addEventListener('click', function () { quizPick('tkd'); });
     if (el.pickWc) el.pickWc.addEventListener('click', function () { quizPick('wc'); });
+    if (el.pickMa) el.pickMa.addEventListener('click', function () { quizPick('ma'); });
     if (el.start) el.start.addEventListener('click', quizStart);
     if (el.next) el.next.addEventListener('click', quizNext);
     if (el.restart) el.restart.addEventListener('click', function () { quizReset(true); });
@@ -1698,69 +1701,19 @@
     } catch(e){}
   }
 
-  // ===== Text-to-Speech (SpeechSynthesis) helpers =====
-  var _ttsState = { ready: false, voices: [], tries: 0 };
-
-  function ttsRefreshVoices(){
-    try {
-      if (!('speechSynthesis' in window)) return;
-      var synth = window.speechSynthesis;
-      var v = synth.getVoices();
-      if (v && v.length) {
-        _ttsState.voices = v;
-        _ttsState.ready = true;
-      }
-    } catch(e){}
-  }
-
-  function ttsWarmup(){
-    // iOS/Safari often needs a user gesture 'unlock' for later speaks.
-    try {
-      if (!('speechSynthesis' in window)) return;
-      ttsRefreshVoices();
-      var synth = window.speechSynthesis;
-      // create a near-silent utterance to unlock
-      var u = new SpeechSynthesisUtterance(' ');
-      u.lang = 'en-US';
-      u.volume = 0;
-      u.rate = 1.0;
-      u.pitch = 1.0;
-      try { synth.cancel(); } catch(e2){}
-      synth.speak(u);
-    } catch(e){}
-  }
-
-  try { if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = ttsRefreshVoices; } catch(e){}
-
-
   function speakWord(word){
     try {
       if (!('speechSynthesis' in window)) return;
       var text = String(word || '').trim();
       if (!text) return;
-
-      // Make sure voices are loaded (Safari iOS may return empty initially)
-      if (!_ttsState.ready) {
-        ttsRefreshVoices();
-      }
-      if (!_ttsState.ready && _ttsState.tries < 6) {
-        _ttsState.tries++;
-        setTimeout(function(){ speakWord(text); }, 200);
-        return;
-      }
-      _ttsState.tries = 0;
-
-      var synth = window.speechSynthesis;
-      // Avoid killing iOS playback by cancelling every time; cancel only if something is queued
-      try { if (synth.speaking || synth.pending) synth.cancel(); } catch(e2){}
-
+      // prevent queue buildup
+      try { window.speechSynthesis.cancel(); } catch(e2){}
       var u = new SpeechSynthesisUtterance(text);
       u.lang = 'en-US';
       u.rate = 1.0;
       u.pitch = 1.0;
       u.volume = 1.0;
-      u.onerror = function(){ try { toast('🔇 TTS Fehler (iOS): bitte einmal Start erneut tippen'); } catch(e){} };
-      synth.speak(u);
+      window.speechSynthesis.speak(u);
     } catch(e){}
   }
 
@@ -1878,8 +1831,6 @@
     timerSave();
     // Unlock audio/tts on user gesture
     ensureAudio();
-    // Warm up TTS on iOS (user gesture)
-    if (timerGetSoundMode && timerGetSoundMode() === 'text') ttsWarmup();
     try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch(e){}
 
     if (_timer.t) return;

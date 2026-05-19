@@ -2,6 +2,7 @@
 
 - TKD: 200 (100 MCQ + 100 Lückentext)
 - Wing Chun: 200 (100 MCQ + 100 Lückentext)
+- Martial Arts: 200 (100 MCQ + 100 Lückentext)
 - Jede Frage (q) ist eindeutig und so formuliert, dass nur 1 Antwort logisch richtig ist.
 - Pro Frage genau 1 richtige Antwort (Index a).
 - Antwortpositionen sind gemischt (A/B/C/D).
@@ -4424,6 +4425,2214 @@
 ];
   const WC_QUESTIONS = WC_MCQ.concat(WC_CLOZE);
 
-  window.QUIZ_BANKS = { tkd: TKD_QUESTIONS, wc: WC_QUESTIONS };
+  // ===== Martial Arts (MA) =====
+  const MA_MCQ = [
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Kata“ am ehesten?",
+    "options": [
+      "Abklopfen als Zeichen der Aufgabe",
+      "richtiges Treffen des Moments",
+      "Partnerkampf/Sparring",
+      "festgelegte Bewegungsform (Formlauf)"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Savate typischerweise am ehesten verbunden?",
+    "options": [
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum",
+      "ist französisches Kickboxen mit betonter Fußarbeit"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Capoeira seinen Ursprung?",
+    "options": [
+      "Japan",
+      "Indonesien",
+      "Brasilien",
+      "Korea"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Savate?",
+    "options": [
+      "dient dem Anwenden von Technik unter Druck",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "fokussiert Submission-Techniken und Positionen am Boden"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Karate ursprünglich?",
+    "options": [
+      "Niederlande",
+      "China",
+      "Frankreich",
+      "Japan"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Kumite“ am ehesten?",
+    "options": [
+      "Training mit Pratzen/Schlagpolstern",
+      "Partnerkampf/Sparring",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Frontstoßtritt im Muay Thai"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird „Nunchaku“ am ehesten beschrieben?",
+    "options": [
+      "Dreizack-artige Metallwaffe",
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Bambusschwert (Kendo)",
+      "Kurz-/Mittelstock"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Krav Maga seinen Ursprung?",
+    "options": [
+      "Indonesien",
+      "Israel",
+      "Frankreich",
+      "Korea"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Guard“ am ehesten?",
+    "options": [
+      "Gürtel",
+      "Training mit Pratzen/Schlagpolstern",
+      "Schlagbrett/Pralltraining im Karate",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Capoeira?",
+    "options": [
+      "betont Selbstschutz und pragmatische Lösungen",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "verbindet Kampf, Tanz und Musik",
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Submission“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Konditionierung/Belastungstraining",
+      "Trainingsanzug/Uniform",
+      "Aufgabegriff/-technik (z. B. im Grappling)",
+      "freies Üben (variabel, ohne feste Abfolge)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Was ist ein(e) „Tonfa“?",
+    "options": [
+      "Seitengriffstock",
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Kurz-/Mittelstock",
+      "Bambusschwert (Kendo)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Kata“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "festgelegte Bewegungsform (Formlauf)",
+      "Training mit Pratzen/Schlagpolstern",
+      "Abklopfen als Zeichen der Aufgabe",
+      "freies Üben (variabel, ohne feste Abfolge)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird „Bokken“ am ehesten beschrieben?",
+    "options": [
+      "Bambusschwert (Kendo)",
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Holzschwert",
+      "Langstock"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Capoeira typischerweise am ehesten verbunden?",
+    "options": [
+      "verbindet Kampf, Tanz und Musik",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Submission“ am ehesten?",
+    "options": [
+      "Aufgabegriff/-technik (z. B. im Grappling)",
+      "Trainingsraum/Trainingshalle",
+      "Frontstoßtritt im Muay Thai",
+      "Gürtel"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Disziplin ist bekannt für Clinch, Knie und Ellbogen im Wettkampf?",
+    "options": [
+      "Aikido",
+      "Muay Thai",
+      "Krav Maga",
+      "Wushu"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Wushu seinen Ursprung?",
+    "options": [
+      "Großbritannien",
+      "China",
+      "Niederlande",
+      "USA"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Teep“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Frontstoßtritt im Muay Thai",
+      "Trainingsraum/Trainingshalle",
+      "Gürtel",
+      "Trainingsanzug/Uniform"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Was ist ein(e) „Bokken“?",
+    "options": [
+      "Kurz-/Mittelstock",
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Holzschwert",
+      "Seitengriffstock"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Sparring“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "voller Punkt / entscheidende Wertung",
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "freies Üben gegen Partner",
+      "richtiges Treffen des Moments"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Muay Thai typischerweise am ehesten verbunden?",
+    "options": [
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet",
+      "dient dem Anwenden von Technik unter Druck",
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Kata?",
+    "options": [
+      "dient dem Anwenden von Technik unter Druck",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Clinch“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Trainingsraum/Trainingshalle",
+      "Fall- und Abrolltechnik"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Teep“ am ehesten?",
+    "options": [
+      "richtiges Treffen des Moments",
+      "Schlagbrett/Pralltraining im Karate",
+      "Beinarbeit/Positionswechsel",
+      "Frontstoßtritt im Muay Thai"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Was ist ein(e) „Jo“?",
+    "options": [
+      "Kurz-/Mittelstock",
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Seitengriffstock",
+      "Bambusschwert (Kendo)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Kickboxen?",
+    "options": [
+      "fokussiert Submission-Techniken und Positionen am Boden",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "kombiniert Boxtechniken mit Tritten"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Ukemi“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)",
+      "Fall- und Abrolltechnik",
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "festgelegte Bewegungsform (Formlauf)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Sumo ursprünglich?",
+    "options": [
+      "China",
+      "Russland",
+      "Thailand",
+      "Japan"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Randori“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Fall- und Abrolltechnik",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Partnerkampf/Sparring",
+      "freies Üben (variabel, ohne feste Abfolge)"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Sanda seinen Ursprung?",
+    "options": [
+      "Frankreich",
+      "Korea",
+      "China",
+      "Indonesien"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird „Jo“ am ehesten beschrieben?",
+    "options": [
+      "Langstock",
+      "Holzschwert",
+      "Kurz-/Mittelstock",
+      "Bambusschwert (Kendo)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Boxen seinen Ursprung?",
+    "options": [
+      "Thailand",
+      "Frankreich",
+      "Großbritannien",
+      "Brasilien"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Ippon“ am ehesten?",
+    "options": [
+      "voller Punkt / entscheidende Wertung",
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "Fall- und Abrolltechnik",
+      "Abklopfen als Zeichen der Aufgabe"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welcher Begriff beschreibt Abstands- und Reichweitenkontrolle?",
+    "options": [
+      "Distanz",
+      "Ippon",
+      "Gi",
+      "Shinai"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Shaolin Kung Fu ursprünglich?",
+    "options": [
+      "Japan",
+      "Thailand",
+      "Frankreich",
+      "China"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Tap-out“ am ehesten?",
+    "options": [
+      "Abklopfen als Zeichen der Aufgabe",
+      "Trainingsanzug/Uniform",
+      "Beinarbeit/Positionswechsel",
+      "Gürtel"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Wushu?",
+    "options": [
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet",
+      "fokussiert Submission-Techniken und Positionen am Boden",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Muay Thai ursprünglich?",
+    "options": [
+      "Japan",
+      "Israel",
+      "China",
+      "Thailand"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Judo seinen Ursprung?",
+    "options": [
+      "China",
+      "Japan",
+      "Korea",
+      "Russland"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Pencak Silat seinen Ursprung?",
+    "options": [
+      "Korea",
+      "Israel",
+      "Niederlande",
+      "Indonesien"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Obi“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Trainingsraum/Trainingshalle",
+      "Beinarbeit/Positionswechsel",
+      "richtiges Treffen des Moments",
+      "Gürtel"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Distanz“ am ehesten?",
+    "options": [
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Abstands- und Reichweitenkontrolle",
+      "Trainingsanzug/Uniform",
+      "freies Üben gegen Partner"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Karate seinen Ursprung?",
+    "options": [
+      "Indonesien",
+      "Niederlande",
+      "Korea",
+      "Japan"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Timing“ am ehesten?",
+    "options": [
+      "Beinarbeit/Positionswechsel",
+      "Aufgabegriff/-technik (z. B. im Grappling)",
+      "Trainingsanzug/Uniform",
+      "richtiges Treffen des Moments"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Was ist ein(e) „Shinai“?",
+    "options": [
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Langstock",
+      "Bambusschwert (Kendo)",
+      "Kurz-/Mittelstock"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Footwork“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Schlagbrett/Pralltraining im Karate",
+      "Beinarbeit/Positionswechsel",
+      "Trainingsraum/Trainingshalle",
+      "festgelegte Bewegungsform (Formlauf)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Savate ursprünglich?",
+    "options": [
+      "Großbritannien",
+      "Korea",
+      "Frankreich",
+      "Niederlande"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Sambo ursprünglich?",
+    "options": [
+      "Brasilien",
+      "Thailand",
+      "Russland",
+      "China"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Wushu ursprünglich?",
+    "options": [
+      "Russland",
+      "USA",
+      "Indonesien",
+      "China"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Guard“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "voller Punkt / entscheidende Wertung",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "festgelegte Bewegungsform (Formlauf)",
+      "Konditionierung/Belastungstraining"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Pencak Silat ursprünglich?",
+    "options": [
+      "Indonesien",
+      "Russland",
+      "Frankreich",
+      "Großbritannien"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Ukemi“ am ehesten?",
+    "options": [
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "richtiges Treffen des Moments",
+      "voller Punkt / entscheidende Wertung",
+      "Fall- und Abrolltechnik"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Sanda typischerweise am ehesten verbunden?",
+    "options": [
+      "betont Selbstschutz und pragmatische Lösungen",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "ist französisches Kickboxen mit betonter Fußarbeit"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Kickboxen ursprünglich?",
+    "options": [
+      "Russland",
+      "Japan",
+      "Indonesien",
+      "USA"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Aikido seinen Ursprung?",
+    "options": [
+      "Frankreich",
+      "USA",
+      "Japan",
+      "Korea"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Tap-out“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Konditionierung/Belastungstraining",
+      "Gürtel",
+      "Abklopfen als Zeichen der Aufgabe",
+      "voller Punkt / entscheidende Wertung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Muay Thai seinen Ursprung?",
+    "options": [
+      "Frankreich",
+      "China",
+      "Thailand",
+      "Brasilien"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht bei Muay Thai die Bezeichnung „8 Gliedmaßen“?",
+    "options": [
+      "Nur Knie und Ellbogen",
+      "Nur Hände und Füße",
+      "Nur Würfe und Bodentechniken",
+      "Fäuste, Ellbogen, Knie und Schienbeine/Füße"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Gi“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Fall- und Abrolltechnik",
+      "Trainingsanzug/Uniform",
+      "Trainingsraum/Trainingshalle",
+      "Aufgabegriff/-technik (z. B. im Grappling)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Randori“ am ehesten?",
+    "options": [
+      "freies Üben gegen Partner",
+      "Abstands- und Reichweitenkontrolle",
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "Training mit Pratzen/Schlagpolstern"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Clinch“ am ehesten?",
+    "options": [
+      "Training mit Pratzen/Schlagpolstern",
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)",
+      "Partnerkampf/Sparring"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Silat seinen Ursprung?",
+    "options": [
+      "Russland",
+      "Großbritannien",
+      "Indonesien",
+      "Brasilien"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Makiwara“ am ehesten?",
+    "options": [
+      "Trainingsanzug/Uniform",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Abklopfen als Zeichen der Aufgabe",
+      "Schlagbrett/Pralltraining im Karate"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Brazilian Jiu-Jitsu (BJJ) ursprünglich?",
+    "options": [
+      "China",
+      "Brasilien",
+      "Israel",
+      "Niederlande"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Clinch typischerweise am ehesten verbunden?",
+    "options": [
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "betont Selbstschutz und pragmatische Lösungen",
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Dojo“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Schlagbrett/Pralltraining im Karate",
+      "Training mit Pratzen/Schlagpolstern",
+      "Trainingsraum/Trainingshalle",
+      "richtiges Treffen des Moments"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Judo ursprünglich?",
+    "options": [
+      "Thailand",
+      "Japan",
+      "Großbritannien",
+      "Korea"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird „Shinai“ am ehesten beschrieben?",
+    "options": [
+      "Kurz-/Mittelstock",
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Bambusschwert (Kendo)",
+      "Dreizack-artige Metallwaffe"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Sambo typischerweise am ehesten verbunden?",
+    "options": [
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Kickboxen typischerweise am ehesten verbunden?",
+    "options": [
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "kombiniert Boxtechniken mit Tritten"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Sparring?",
+    "options": [
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "dient dem Anwenden von Technik unter Druck"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Sparring typischerweise am ehesten verbunden?",
+    "options": [
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum",
+      "dient dem Anwenden von Technik unter Druck"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Aikido ursprünglich?",
+    "options": [
+      "China",
+      "Japan",
+      "Frankreich",
+      "USA"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Krav Maga typischerweise am ehesten verbunden?",
+    "options": [
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "betont Selbstschutz und pragmatische Lösungen",
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet",
+      "fokussiert Submission-Techniken und Positionen am Boden"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Boxen ursprünglich?",
+    "options": [
+      "Großbritannien",
+      "Japan",
+      "Indonesien",
+      "China"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Kata typischerweise am ehesten verbunden?",
+    "options": [
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen",
+      "verbindet Kampf, Tanz und Musik",
+      "fokussiert Submission-Techniken und Positionen am Boden"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Sparring“ am ehesten?",
+    "options": [
+      "festgelegte Bewegungsform (Formlauf)",
+      "richtiges Treffen des Moments",
+      "Frontstoßtritt im Muay Thai",
+      "freies Üben gegen Partner"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Kendo ursprünglich?",
+    "options": [
+      "Thailand",
+      "Japan",
+      "Großbritannien",
+      "Korea"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird Boxen typischerweise am ehesten verbunden?",
+    "options": [
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "fokussiert Submission-Techniken und Positionen am Boden",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Was ist ein(e) „Sai“?",
+    "options": [
+      "Dreizack-artige Metallwaffe",
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Seitengriffstock",
+      "Bambusschwert (Kendo)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "mcq",
+    "q": "Aus welchem Land stammt Capoeira ursprünglich?",
+    "options": [
+      "Großbritannien",
+      "Brasilien",
+      "Korea",
+      "Russland"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird „Bo“ am ehesten beschrieben?",
+    "options": [
+      "Seitengriffstock",
+      "Langstock",
+      "Kurz-/Mittelstock",
+      "Kurzstock mit Verbindung (Kette/Seil)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Clinch?",
+    "options": [
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen",
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Trainingsform arbeitet typischerweise mit Pratzen/Schlagpolstern?",
+    "options": [
+      "Ukemi",
+      "Padwork",
+      "Kata",
+      "Obi"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Footwork“ am ehesten?",
+    "options": [
+      "richtiges Treffen des Moments",
+      "Beinarbeit/Positionswechsel",
+      "Fall- und Abrolltechnik",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Was ist ein(e) „Bo“?",
+    "options": [
+      "Holzschwert",
+      "Langstock",
+      "Kurz-/Mittelstock",
+      "Bambusschwert (Kendo)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Distanz“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Beinarbeit/Positionswechsel",
+      "Abstands- und Reichweitenkontrolle",
+      "Konditionierung/Belastungstraining"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Muay Thai?",
+    "options": [
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen",
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet",
+      "betont Selbstschutz und pragmatische Lösungen"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Was bedeutet „Ippon“ im Kontext von Kampfkünsten am ehesten?",
+    "options": [
+      "Schlagbrett/Pralltraining im Karate",
+      "Abstands- und Reichweitenkontrolle",
+      "Partnerkampf/Sparring",
+      "voller Punkt / entscheidende Wertung"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Muay Boran seinen Ursprung?",
+    "options": [
+      "Korea",
+      "Thailand",
+      "Japan",
+      "Großbritannien"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Womit wird „Tonfa“ am ehesten beschrieben?",
+    "options": [
+      "Kurz-/Mittelstock",
+      "Seitengriffstock",
+      "Dreizack-artige Metallwaffe",
+      "Bambusschwert (Kendo)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Sanda?",
+    "options": [
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen",
+      "verbindet Kampf, Tanz und Musik",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Sambo?",
+    "options": [
+      "kombiniert Boxtechniken mit Tritten",
+      "verbindet Kampf, Tanz und Musik",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Brazilian Jiu-Jitsu (BJJ)?",
+    "options": [
+      "verbindet Kampf, Tanz und Musik",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "fokussiert Submission-Techniken und Positionen am Boden",
+      "kombiniert Boxtechniken mit Tritten"
+    ],
+    "a": 2
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Savate seinen Ursprung?",
+    "options": [
+      "Japan",
+      "Israel",
+      "Korea",
+      "Frankreich"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Sambo seinen Ursprung?",
+    "options": [
+      "Großbritannien",
+      "Russland",
+      "USA",
+      "China"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "In welchem Land hat Kickboxen seinen Ursprung?",
+    "options": [
+      "Indonesien",
+      "Thailand",
+      "Israel",
+      "USA"
+    ],
+    "a": 3
+  },
+  {
+    "type": "mcq",
+    "q": "Wofür steht der Begriff „Gi“ am ehesten?",
+    "options": [
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Trainingsanzug/Uniform",
+      "Training mit Pratzen/Schlagpolstern",
+      "festgelegte Bewegungsform (Formlauf)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "mcq",
+    "q": "Welche Aussage passt am besten zu Krav Maga?",
+    "options": [
+      "betont Selbstschutz und pragmatische Lösungen",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "dient dem Anwenden von Technik unter Druck"
+    ],
+    "a": 0
+  }
+];
+  const MA_CLOZE = [
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Sparring: ____",
+    "options": [
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "dient dem Anwenden von Technik unter Druck",
+      "verbindet Kampf, Tanz und Musik"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "„Padwork“ bedeutet am ehesten: ____",
+    "options": [
+      "Schlagbrett/Pralltraining im Karate",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)",
+      "Training mit Pratzen/Schlagpolstern"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Sanda: ____",
+    "options": [
+      "Brasilien",
+      "Niederlande",
+      "Frankreich",
+      "China"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Ukemi“ bedeutet am ehesten: ____",
+    "options": [
+      "Aufgabegriff/-technik (z. B. im Grappling)",
+      "Fall- und Abrolltechnik",
+      "festgelegte Bewegungsform (Formlauf)",
+      "Gürtel"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "„Footwork“ bedeutet am ehesten: ____",
+    "options": [
+      "Trainingsanzug/Uniform",
+      "Schlagbrett/Pralltraining im Karate",
+      "Partnerkampf/Sparring",
+      "Beinarbeit/Positionswechsel"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Obi“ bedeutet am ehesten: ____",
+    "options": [
+      "Konditionierung/Belastungstraining",
+      "Gürtel",
+      "Aufgabegriff/-technik (z. B. im Grappling)",
+      "Abstands- und Reichweitenkontrolle"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Muay Boran stammt ursprünglich aus ____.",
+    "options": [
+      "Russland",
+      "USA",
+      "Niederlande",
+      "Thailand"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Wushu stammt ursprünglich aus ____.",
+    "options": [
+      "China",
+      "Brasilien",
+      "Korea",
+      "Niederlande"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "„Submission“ bedeutet am ehesten: ____",
+    "options": [
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Fall- und Abrolltechnik",
+      "Aufgabegriff/-technik (z. B. im Grappling)",
+      "voller Punkt / entscheidende Wertung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Capoeira: ____",
+    "options": [
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "verbindet Kampf, Tanz und Musik",
+      "ist französisches Kickboxen mit betonter Fußarbeit"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Beim Tap-out signalisiert man durch ____ die Aufgabe.",
+    "options": [
+      "Ausholen",
+      "Abklopfen",
+      "Gürtel binden",
+      "Kata laufen"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "„Dojo“ bedeutet am ehesten: ____",
+    "options": [
+      "Gürtel",
+      "voller Punkt / entscheidende Wertung",
+      "Trainingsraum/Trainingshalle",
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Krav Maga stammt ursprünglich aus ____.",
+    "options": [
+      "Frankreich",
+      "Israel",
+      "USA",
+      "Korea"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Kickboxen: ____",
+    "options": [
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "kombiniert Boxtechniken mit Tritten",
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Karate: ____",
+    "options": [
+      "Japan",
+      "Korea",
+      "Großbritannien",
+      "China"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Kendo: ____",
+    "options": [
+      "Frankreich",
+      "Japan",
+      "Brasilien",
+      "Großbritannien"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Sparring gilt häufig: ____",
+    "options": [
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "verbindet Kampf, Tanz und Musik",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "dient dem Anwenden von Technik unter Druck"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Shaolin Kung Fu stammt ursprünglich aus ____.",
+    "options": [
+      "Israel",
+      "USA",
+      "Russland",
+      "China"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Kickboxen gilt häufig: ____",
+    "options": [
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum",
+      "kombiniert Boxtechniken mit Tritten",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Sambo gilt häufig: ____",
+    "options": [
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Brazilian Jiu-Jitsu (BJJ) stammt ursprünglich aus ____.",
+    "options": [
+      "Niederlande",
+      "USA",
+      "Korea",
+      "Brasilien"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Bokken“ ist ein(e) ____.",
+    "options": [
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Holzschwert",
+      "Langstock",
+      "Kurz-/Mittelstock"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Tap-out“ bezeichnet ____.",
+    "options": [
+      "Gürtel",
+      "Abstands- und Reichweitenkontrolle",
+      "Schlagbrett/Pralltraining im Karate",
+      "Abklopfen als Zeichen der Aufgabe"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Sumo stammt ursprünglich aus ____.",
+    "options": [
+      "USA",
+      "Japan",
+      "Indonesien",
+      "Russland"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "„Sai“ ist ein(e) ____.",
+    "options": [
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Holzschwert",
+      "Dreizack-artige Metallwaffe",
+      "Bambusschwert (Kendo)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "„Tonfa“ ist ein(e) ____.",
+    "options": [
+      "Seitengriffstock",
+      "Bambusschwert (Kendo)",
+      "Kurz-/Mittelstock",
+      "Kurzstock mit Verbindung (Kette/Seil)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "„Teep“ bedeutet am ehesten: ____",
+    "options": [
+      "Trainingsraum/Trainingshalle",
+      "Frontstoßtritt im Muay Thai",
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "Schlagbrett/Pralltraining im Karate"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Teep“ bezeichnet ____.",
+    "options": [
+      "Abstands- und Reichweitenkontrolle",
+      "Frontstoßtritt im Muay Thai",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Trainingsanzug/Uniform"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Clinch“ bezeichnet ____.",
+    "options": [
+      "Trainingsraum/Trainingshalle",
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)",
+      "Partnerkampf/Sparring",
+      "freies Üben gegen Partner"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Guard“ bezeichnet ____.",
+    "options": [
+      "Aufgabegriff/-technik (z. B. im Grappling)",
+      "festgelegte Bewegungsform (Formlauf)",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Sanda: ____",
+    "options": [
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "fokussiert Submission-Techniken und Positionen am Boden",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Distanz“ bedeutet am ehesten: ____",
+    "options": [
+      "Abstands- und Reichweitenkontrolle",
+      "freies Üben gegen Partner",
+      "Trainingsraum/Trainingshalle",
+      "freies Üben (variabel, ohne feste Abfolge)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Capoeira stammt ursprünglich aus ____.",
+    "options": [
+      "Israel",
+      "Frankreich",
+      "Niederlande",
+      "Brasilien"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Tap-out“ bedeutet am ehesten: ____",
+    "options": [
+      "Abklopfen als Zeichen der Aufgabe",
+      "Training mit Pratzen/Schlagpolstern",
+      "Fall- und Abrolltechnik",
+      "Schlagbrett/Pralltraining im Karate"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Sanda gilt häufig: ____",
+    "options": [
+      "dient dem Anwenden von Technik unter Druck",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Silat: ____",
+    "options": [
+      "Russland",
+      "Indonesien",
+      "Frankreich",
+      "Brasilien"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Ukemi“ bezeichnet ____.",
+    "options": [
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "Fall- und Abrolltechnik",
+      "Aufgabegriff/-technik (z. B. im Grappling)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Sparring“ bezeichnet ____.",
+    "options": [
+      "freies Üben gegen Partner",
+      "Partnerkampf/Sparring",
+      "voller Punkt / entscheidende Wertung",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "„Guard“ bedeutet am ehesten: ____",
+    "options": [
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Trainingsraum/Trainingshalle",
+      "Frontstoßtritt im Muay Thai",
+      "richtiges Treffen des Moments"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Krav Maga: ____",
+    "options": [
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum",
+      "betont Selbstschutz und pragmatische Lösungen",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "ist französisches Kickboxen mit betonter Fußarbeit"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "„Makiwara“ bedeutet am ehesten: ____",
+    "options": [
+      "Schlagbrett/Pralltraining im Karate",
+      "Training mit Pratzen/Schlagpolstern",
+      "Gürtel",
+      "Trainingsanzug/Uniform"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Pencak Silat: ____",
+    "options": [
+      "USA",
+      "Indonesien",
+      "Russland",
+      "Korea"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Boxen gilt häufig: ____",
+    "options": [
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "betont Selbstschutz und pragmatische Lösungen"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Sumo: ____",
+    "options": [
+      "Niederlande",
+      "Japan",
+      "USA",
+      "Korea"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Muay Thai: ____",
+    "options": [
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen",
+      "dient dem Anwenden von Technik unter Druck"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Makiwara“ bezeichnet ____.",
+    "options": [
+      "freies Üben gegen Partner",
+      "Schlagbrett/Pralltraining im Karate",
+      "Frontstoßtritt im Muay Thai",
+      "Fall- und Abrolltechnik"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "„Randori“ bedeutet am ehesten: ____",
+    "options": [
+      "festgelegte Bewegungsform (Formlauf)",
+      "voller Punkt / entscheidende Wertung",
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)",
+      "freies Üben (variabel, ohne feste Abfolge)"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Gi“ bedeutet am ehesten: ____",
+    "options": [
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)",
+      "Beinarbeit/Positionswechsel",
+      "richtiges Treffen des Moments",
+      "Trainingsanzug/Uniform"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Wushu gilt häufig: ____",
+    "options": [
+      "verbindet Kampf, Tanz und Musik",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen",
+      "fokussiert Submission-Techniken und Positionen am Boden",
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Karate stammt ursprünglich aus ____.",
+    "options": [
+      "Indonesien",
+      "Großbritannien",
+      "Japan",
+      "Frankreich"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Kickboxen stammt ursprünglich aus ____.",
+    "options": [
+      "Korea",
+      "Niederlande",
+      "USA",
+      "Frankreich"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Kata gilt häufig: ____",
+    "options": [
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum",
+      "betont Selbstschutz und pragmatische Lösungen"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "„Jo“ ist ein(e) ____.",
+    "options": [
+      "Seitengriffstock",
+      "Kurz-/Mittelstock",
+      "Langstock",
+      "Bambusschwert (Kendo)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Clinch gilt häufig: ____",
+    "options": [
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "fokussiert Submission-Techniken und Positionen am Boden",
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen",
+      "trainieren Präzision, Rhythmus und feste Abläufe"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Kendo stammt ursprünglich aus ____.",
+    "options": [
+      "USA",
+      "Japan",
+      "Brasilien",
+      "Israel"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Gi“ bezeichnet ____.",
+    "options": [
+      "Trainingsanzug/Uniform",
+      "richtiges Treffen des Moments",
+      "Partnerkampf/Sparring",
+      "freies Üben gegen Partner"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "„Sparring“ bedeutet am ehesten: ____",
+    "options": [
+      "Beinarbeit/Positionswechsel",
+      "freies Üben gegen Partner",
+      "Schlagbrett/Pralltraining im Karate",
+      "Konditionierung/Belastungstraining"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Sanda stammt ursprünglich aus ____.",
+    "options": [
+      "Großbritannien",
+      "Frankreich",
+      "Niederlande",
+      "China"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Sambo: ____",
+    "options": [
+      "betont Selbstschutz und pragmatische Lösungen",
+      "fokussiert Submission-Techniken und Positionen am Boden",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Aikido: ____",
+    "options": [
+      "Niederlande",
+      "Thailand",
+      "Großbritannien",
+      "Japan"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Submission“ bezeichnet ____.",
+    "options": [
+      "Trainingsraum/Trainingshalle",
+      "Trainingsanzug/Uniform",
+      "Schlagbrett/Pralltraining im Karate",
+      "Aufgabegriff/-technik (z. B. im Grappling)"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Judo: ____",
+    "options": [
+      "Korea",
+      "Japan",
+      "Brasilien",
+      "Russland"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "„Ippon“ bedeutet am ehesten: ____",
+    "options": [
+      "festgelegte Bewegungsform (Formlauf)",
+      "voller Punkt / entscheidende Wertung",
+      "Aufgabegriff/-technik (z. B. im Grappling)",
+      "Schlagbrett/Pralltraining im Karate"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "„Bo“ ist ein(e) ____.",
+    "options": [
+      "Langstock",
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Bambusschwert (Kendo)",
+      "Seitengriffstock"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "„Conditioning“ bedeutet am ehesten: ____",
+    "options": [
+      "Partnerkampf/Sparring",
+      "Trainingsanzug/Uniform",
+      "Konditionierung/Belastungstraining",
+      "freies Üben gegen Partner"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Savate stammt ursprünglich aus ____.",
+    "options": [
+      "Frankreich",
+      "Niederlande",
+      "Großbritannien",
+      "Korea"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Obi“ bezeichnet ____.",
+    "options": [
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)",
+      "Gürtel",
+      "Trainingsanzug/Uniform"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "„Kumite“ bedeutet am ehesten: ____",
+    "options": [
+      "Frontstoßtritt im Muay Thai",
+      "Konditionierung/Belastungstraining",
+      "Abstands- und Reichweitenkontrolle",
+      "Partnerkampf/Sparring"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Capoeira gilt häufig: ____",
+    "options": [
+      "kombiniert Boxtechniken mit Tritten",
+      "verbindet Kampf, Tanz und Musik",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Brazilian Jiu-Jitsu (BJJ) gilt häufig: ____",
+    "options": [
+      "fokussiert Submission-Techniken und Positionen am Boden",
+      "verbindet Kampf, Tanz und Musik",
+      "betont Selbstschutz und pragmatische Lösungen",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "„Kata“ bedeutet am ehesten: ____",
+    "options": [
+      "Frontstoßtritt im Muay Thai",
+      "Trainingsraum/Trainingshalle",
+      "festgelegte Bewegungsform (Formlauf)",
+      "Aufgabegriff/-technik (z. B. im Grappling)"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Muay Thai gilt häufig: ____",
+    "options": [
+      "wird oft als „Sport der acht Gliedmaßen“ bezeichnet",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "verbindet Kampf, Tanz und Musik"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Randori“ bezeichnet ____.",
+    "options": [
+      "Fall- und Abrolltechnik",
+      "Gürtel",
+      "festgelegte Bewegungsform (Formlauf)",
+      "freies Üben (variabel, ohne feste Abfolge)"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Timing“ bedeutet am ehesten: ____",
+    "options": [
+      "Partnerkampf/Sparring",
+      "Schlagbrett/Pralltraining im Karate",
+      "Gürtel",
+      "richtiges Treffen des Moments"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Savate gilt häufig: ____",
+    "options": [
+      "ist französisches Kickboxen mit betonter Fußarbeit",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen",
+      "betont Selbstschutz und pragmatische Lösungen"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "„Clinch“ bedeutet am ehesten: ____",
+    "options": [
+      "voller Punkt / entscheidende Wertung",
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "Nahkampf-Haltearbeit (Greifen/Positionieren)",
+      "freies Üben gegen Partner"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Boxen: ____",
+    "options": [
+      "ist Vollkontakt-Kampf mit Würfen und Schlägen/Tritten",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz",
+      "dient dem Anwenden von Technik unter Druck",
+      "ist ein Grappling-/Wurfsystem aus dem postsowjetischen Raum"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Clinch: ____",
+    "options": [
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "betont Selbstschutz und pragmatische Lösungen",
+      "arbeitet mit Schlägen, Deckung, Timing und Distanz"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Conditioning“ bezeichnet ____.",
+    "options": [
+      "Fall- und Abrolltechnik",
+      "Konditionierung/Belastungstraining",
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Shaolin Kung Fu: ____",
+    "options": [
+      "Japan",
+      "Russland",
+      "China",
+      "Frankreich"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Ergänze: Bei Krav Maga gilt häufig: ____",
+    "options": [
+      "betont Selbstschutz und pragmatische Lösungen",
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "verbindet Kampf, Tanz und Musik",
+      "ist ein Sammelbegriff für chinesische Kampfkunst-Disziplinen"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Savate: ____",
+    "options": [
+      "Israel",
+      "Thailand",
+      "Korea",
+      "Frankreich"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "„Nunchaku“ ist ein(e) ____.",
+    "options": [
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Holzschwert",
+      "Dreizack-artige Metallwaffe",
+      "Langstock"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Beinarbeit und Winkelwechsel nennt man oft: ____",
+    "options": [
+      "Obi",
+      "Gi",
+      "Makiwara",
+      "Footwork"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Kata“ bezeichnet ____.",
+    "options": [
+      "Fall- und Abrolltechnik",
+      "Abstands- und Reichweitenkontrolle",
+      "festgelegte Bewegungsform (Formlauf)",
+      "voller Punkt / entscheidende Wertung"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Krav Maga: ____",
+    "options": [
+      "Japan",
+      "Thailand",
+      "Indonesien",
+      "Israel"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Passende Aussage zu Kata: ____",
+    "options": [
+      "trainieren Präzision, Rhythmus und feste Abläufe",
+      "betont Selbstschutz und pragmatische Lösungen",
+      "ist typisch für Muay Thai und verbindet Halten + Knie/Ellbogen",
+      "fokussiert Submission-Techniken und Positionen am Boden"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Wushu: ____",
+    "options": [
+      "Großbritannien",
+      "Japan",
+      "China",
+      "USA"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Brazilian Jiu-Jitsu (BJJ): ____",
+    "options": [
+      "Thailand",
+      "Israel",
+      "Brasilien",
+      "Japan"
+    ],
+    "a": 2
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Muay Boran: ____",
+    "options": [
+      "Israel",
+      "Korea",
+      "Russland",
+      "Thailand"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Sambo stammt ursprünglich aus ____.",
+    "options": [
+      "Russland",
+      "Niederlande",
+      "Großbritannien",
+      "Indonesien"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Dojo“ bezeichnet ____.",
+    "options": [
+      "freies Üben (variabel, ohne feste Abfolge)",
+      "Trainingsraum/Trainingshalle",
+      "Schlagbrett/Pralltraining im Karate",
+      "Bein-/Hüftkontrolle aus Rückenlage (BJJ)"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Boxen stammt ursprünglich aus ____.",
+    "options": [
+      "Großbritannien",
+      "Korea",
+      "Thailand",
+      "USA"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Capoeira: ____",
+    "options": [
+      "Brasilien",
+      "Russland",
+      "Frankreich",
+      "Niederlande"
+    ],
+    "a": 0
+  },
+  {
+    "type": "cloze",
+    "q": "„Shinai“ ist ein(e) ____.",
+    "options": [
+      "Kurzstock mit Verbindung (Kette/Seil)",
+      "Bambusschwert (Kendo)",
+      "Langstock",
+      "Dreizack-artige Metallwaffe"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Boxen: ____",
+    "options": [
+      "USA",
+      "Großbritannien",
+      "Korea",
+      "Thailand"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Der Begriff „Timing“ bezeichnet ____.",
+    "options": [
+      "Partnerkampf/Sparring",
+      "Frontstoßtritt im Muay Thai",
+      "Abklopfen als Zeichen der Aufgabe",
+      "richtiges Treffen des Moments"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Ursprungsland von Sambo: ____",
+    "options": [
+      "Korea",
+      "Brasilien",
+      "Großbritannien",
+      "Russland"
+    ],
+    "a": 3
+  },
+  {
+    "type": "cloze",
+    "q": "Aikido stammt ursprünglich aus ____.",
+    "options": [
+      "Niederlande",
+      "Japan",
+      "Großbritannien",
+      "Thailand"
+    ],
+    "a": 1
+  },
+  {
+    "type": "cloze",
+    "q": "Judo stammt ursprünglich aus ____.",
+    "options": [
+      "Japan",
+      "Indonesien",
+      "Israel",
+      "Thailand"
+    ],
+    "a": 0
+  }
+];
+  const MA_QUESTIONS = MA_MCQ.concat(MA_CLOZE);
+
+
+  window.QUIZ_BANKS = { tkd: TKD_QUESTIONS, wc: WC_QUESTIONS, ma: MA_QUESTIONS };
   try { var QUIZ_BANKS = window.QUIZ_BANKS; } catch(e) {}
 })();
