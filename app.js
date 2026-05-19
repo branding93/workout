@@ -1638,6 +1638,10 @@
     try {
       var el = document.getElementById('timer-ttsWord');
       var v = (el && el.value) ? String(el.value) : 'Kick!';
+      if (v === 'shadow') {
+        var words = ['Kick!','Block!','Step!','Hit!'];
+        return words[Math.floor(Math.random() * words.length)];
+      }
       return v;
     } catch(e){ return 'Kick!'; }
   }
@@ -1699,6 +1703,7 @@
       if (!('speechSynthesis' in window)) return;
       var text = String(word || '').trim();
       if (!text) return;
+      // prevent queue buildup
       try { window.speechSynthesis.cancel(); } catch(e2){}
       var u = new SpeechSynthesisUtterance(text);
       u.lang = 'en-US';
@@ -1739,7 +1744,7 @@
         rounds: Number((document.getElementById('timer-rounds') || {}).value),
         volume: timerGetVolume(),
         soundMode: timerGetSoundMode(),
-        ttsWord: timerGetTtsWord()
+        ttsWord: (document.getElementById('timer-ttsWord') || {}).value || 'Kick!'
       }));
     } catch (e) { }
   }
@@ -1777,13 +1782,13 @@
 
       if (_timer.mode === 'work') {
         if (restSec > 0) {
-          // Work -> Pause (sound at pause start when Signal mode)
+          // Work -> Pause
           _timer.mode = 'rest';
           playTimerSignal('pause_start');
           _timer.remaining = restSec;
           _timer.total = _timer.remaining;
         } else {
-          // Pause=0: round completes immediately at end of work
+          // Pause=0: round completes at end of work
           _timer.round++;
           if (timerGetSoundMode() === 'text') speakWord(timerGetTtsWord()); else playTimerSignal('round');
           if (_timer.round >= rounds) {
@@ -1796,11 +1801,9 @@
           _timer.remaining = timerGetWorkSec();
           _timer.total = _timer.remaining;
         }
-
       } else {
-        // Pause finished -> round completes here
+        // Pause finished -> round completes
         _timer.round++;
-        // Pause end beep (Signal mode) + round completion (Signal or Text)
         playTimerSignal('pause_end');
         if (timerGetSoundMode() === 'text') speakWord(timerGetTtsWord()); else playTimerSignal('round');
 
@@ -1843,7 +1846,6 @@
 
   function timerPause() {
     if (!_timer.t) return;
-    // Unlock audio/tts on user gesture
     ensureAudio();
 
     clearInterval(_timer.t);
