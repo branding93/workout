@@ -15,7 +15,7 @@
 
   <!-- manifest conditional (avoid CORS on file://) -->
   <script>
-    (function(){
+    (function () {
       try {
         if (location.protocol === 'http:' || location.protocol === 'https:') {
           var l = document.createElement('link');
@@ -23,7 +23,7 @@
           l.href = 'manifest.json';
           document.head.appendChild(l);
         }
-      } catch(e) {}
+      } catch (e) { }
     })();
   </script>
 
@@ -290,16 +290,17 @@
 
               <div class="row" style="margin-top:10px; gap:10px">
                 <label class="pill" style="background:#fff">Work (Sek)
-                  <input id="timer-workSec" type="number" min="1" value="60" style="width:90px;margin-left:8px" />
+                  <input id="timer-workSec" type="number" min="1" value="2" style="width:90px;margin-left:8px" />
                 </label>
                 <label class="pill" style="background:#fff">Pause (Sek)
-                  <input id="timer-restSec" type="number" min="0" value="30" style="width:90px;margin-left:8px" />
+                  <input id="timer-restSec" type="number" min="0" value="0" style="width:90px;margin-left:8px" />
                 </label>
                 <label class="pill" style="background:#fff">Intervalle
-                  <input id="timer-rounds" type="number" min="1" value="8" style="width:90px;margin-left:8px" />
+                  <input id="timer-rounds" type="number" min="1" value="30" style="width:90px;margin-left:8px" />
                 </label>
                 <label class="pill" style="background:#fff" id="timer-volWrap">Ton
-                  <input id="timer-volume" type="range" min="0" max="100" step="1" value="25" style="width:110px;margin-left:8px" />
+                  <input id="timer-volume" type="range" min="0" max="100" step="1" value="50"
+                    style="width:110px;margin-left:8px" />
                   <span id="timer-volumeVal" class="desc" style="margin-left:8px;font-weight:900">25%\</span>
                 </label>
                 <span class="pill" style="background:#fff" id="timer-modeWrap">Modus
@@ -311,7 +312,8 @@
                   </label>
                 </span>
                 <label class="pill" style="background:#fff" id="timer-ttsWrap">Wort
-                  <select id="timer-ttsWord" style="margin-left:8px; padding:6px 8px; border-radius:12px; border:1px solid rgba(15,23,42,.12); font-weight:900;">
+                  <select id="timer-ttsWord"
+                    style="margin-left:8px; padding:6px 8px; border-radius:12px; border:1px solid rgba(15,23,42,.12); font-weight:900;">
                     <option value="Kick!">Kick!</option>
                     <option value="Go!">Go!</option>
                     <option value="shadow">Shadowboxing</option>
@@ -348,7 +350,8 @@
               <h2>🧠 Quiz – Wissen testen</h2>
               <span class="pill">Quiz</span>
             </div>
-            <p class="desc">Wähle ein Quiz (Taekwondo, Wing Chun oder Martial Arts). Danach bekommst du 10 zufällige Fragen. Jede
+            <p class="desc">Wähle ein Quiz (Taekwondo, Wing Chun oder Martial Arts). Danach bekommst du 10 zufällige
+              Fragen. Jede
               korrekt beantwortete Frage gibt 1 Punkt. Jede Frage kommt pro Durchlauf nur einmal vor.</p>
             <div class="sep"></div>
 
