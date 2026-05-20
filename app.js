@@ -1717,6 +1717,55 @@
     } catch(e){}
   }
 
+
+  // ===== Visual Callout (Fallback for iOS where TTS can be unreliable) =====
+  function showTimerCallout(text){
+    try {
+      var t = String(text || '').trim();
+      if (!t) return;
+      var el = document.getElementById('timer-callout');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'timer-callout';
+        el.setAttribute('aria-live', 'polite');
+        el.style.position = 'fixed';
+        el.style.left = '50%';
+        el.style.top = '18%';
+        el.style.transform = 'translateX(-50%)';
+        el.style.zIndex = '99999';
+        el.style.padding = '14px 18px';
+        el.style.borderRadius = '18px';
+        el.style.background = 'rgba(15,23,42,0.92)';
+        el.style.color = '#fff';
+        el.style.fontWeight = '900';
+        el.style.fontSize = '28px';
+        el.style.letterSpacing = '0.5px';
+        el.style.boxShadow = '0 14px 40px rgba(0,0,0,0.25)';
+        el.style.maxWidth = '86vw';
+        el.style.textAlign = 'center';
+        el.style.opacity = '0';
+        el.style.transition = 'opacity 160ms ease, transform 160ms ease';
+        document.body.appendChild(el);
+      }
+      el.textContent = t;
+      el.style.opacity = '1';
+      el.style.transform = 'translateX(-50%) scale(1.02)';
+      clearTimeout(el._hideT);
+      el._hideT = setTimeout(function(){
+        try {
+          el.style.opacity = '0';
+          el.style.transform = 'translateX(-50%) scale(0.98)';
+        } catch(e2){}
+      }, 900);
+    } catch(e){}
+  }
+
+  function timerTextCue(word){
+    // Always show visually; try TTS best-effort
+    showTimerCallout(word);
+    try { speakWord(word); } catch(e){}
+  }
+
   // Timer – Fortschrittsring (visuell)
   const _timerRing = { prog: null, C: 0 };
   function timerRingInit() {
@@ -1793,7 +1842,7 @@
         } else {
           // Pause=0: round completes at end of work
           _timer.round++;
-          if (timerGetSoundMode() === 'text') speakWord(timerGetTtsWord()); else playTimerSignal('round');
+          if (timerGetSoundMode() === 'text') timerTextCue(timerGetTtsWord()); else playTimerSignal('round');
           if (_timer.round >= rounds) {
             timerStopInternal();
             playTimerSignal('finished');
@@ -1808,7 +1857,7 @@
         // Pause finished -> round completes
         _timer.round++;
         playTimerSignal('pause_end');
-        if (timerGetSoundMode() === 'text') speakWord(timerGetTtsWord()); else playTimerSignal('round');
+        if (timerGetSoundMode() === 'text') timerTextCue(timerGetTtsWord()); else playTimerSignal('round');
 
         if (_timer.round >= rounds) {
           timerStopInternal();
