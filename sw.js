@@ -14,6 +14,12 @@ const PRECACHE_URLS = [
   "./icons/icon-512-maskable.png"
   ,
   "./pics/default.png",
+  "./audio/Kick!.mp3",
+  "./audio/Hit!.mp3",
+  "./audio/Step!.mp3",
+  "./audio/Block!.mp3",
+  "./audio/Go!.mp3",
+
 ];
 
 self.addEventListener('install', (event) => {

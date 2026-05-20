@@ -1702,23 +1702,86 @@
   }
 
   function speakWord(word){
+    // Plays MP3 from ./audio instead of SpeechSynthesis (more reliable on iPhone/PWA)
     try {
-      if (!('speechSynthesis' in window)) return;
-      var text = String(word || '').trim();
-      if (!text) return;
-      // prevent queue buildup
-      try { window.speechSynthesis.cancel(); } catch(e2){}
-      var u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-US';
-      u.rate = 1.0;
-      u.pitch = 1.0;
-      u.volume = 1.0;
-      window.speechSynthesis.speak(u);
+      var w = String(word || '').trim();
+      if (!w) return;
+
+      var map = {
+        'Kick!': 'Kick!.mp3',
+        'Hit!': 'Hit!.mp3',
+        'Step!': 'Step!.mp3',
+        'Block!': 'Block!.mp3',
+        'Go!': 'Go!.mp3'
+      };
+      var file = map[w] || (w + '.mp3');
+
+      // Support both raw and encoded URLs (because filenames contain '!')
+      var rawSrc = 'audio/' + file;
+      var encSrc = 'audio/' + file.replace('!', '%21');
+
+      var a = null;
+      a = _wordAudioCache[rawSrc] || _wordAudioCache[encSrc];
+      if (!a) {
+        a = new Audio(rawSrc);
+        a.preload = 'auto';
+        a.addEventListener('error', function(){
+          try {
+            // fallback to encoded path
+            if (a.src.indexOf('%21') === -1) {
+              a.src = encSrc;
+              a.load();
+              a.play().catch(function(){});
+            }
+          } catch(e2){}
+        });
+        _wordAudioCache[rawSrc] = a;
+        _wordAudioCache[encSrc] = a;
+      }
+
+      // allow overlap by cloning if currently playing
+      if (!a.paused && !a.ended) {
+        var b = new Audio(a.src);
+        b.volume = 1.0;
+        b.play().catch(function(){});
+        return;
+      }
+
+      a.currentTime = 0;
+      a.volume = 1.0;
+      var p = a.play();
+      if (p && p.catch) p.catch(function(){});
     } catch(e){}
   }
 
+  var _wordAudioCache = (typeof _wordAudioCache !== 'undefined' && _wordAudioCache) ? _wordAudioCache : {};
 
-  // ===== Visual Callout (Fallback for iOS where TTS can be unreliable) =====
+  function unlockWordAudio(){
+    // iOS requires a user gesture before audio can autoplay from timer ticks
+    try {
+      if (unlockWordAudio._done) return;
+      unlockWordAudio._done = true;
+      var words = ['Kick!','Hit!','Step!','Block!','Go!'];
+      words.forEach(function(w){
+        try {
+          var file = (w + '.mp3');
+          var a = _wordAudioCache['audio/' + file] || new Audio('audio/' + file);
+          a.preload = 'auto';
+          a.muted = true;
+          a.volume = 0;
+          var pr = a.play();
+          if (pr && pr.then) {
+            pr.then(function(){
+              setTimeout(function(){ try { a.pause(); a.currentTime = 0; a.muted = false; a.volume = 1.0; } catch(e2){} }, 50);
+            }).catch(function(){ try { a.muted = false; a.volume = 1.0; } catch(e3){} });
+          }
+          _wordAudioCache['audio/' + file] = a;
+        } catch(e1){}
+      });
+    } catch(e){}
+  }
+
+  // ===== Visual Callout / Overlay =====
   function showTimerCallout(text){
     try {
       var t = String(text || '').trim();
@@ -1760,11 +1823,6 @@
     } catch(e){}
   }
 
-  function timerTextCue(word){
-    // Always show visually; try TTS best-effort
-    showTimerCallout(word);
-    try { speakWord(word); } catch(e){}
-  }
 
   // Timer – Fortschrittsring (visuell)
   const _timerRing = { prog: null, C: 0 };
@@ -1842,7 +1900,7 @@
         } else {
           // Pause=0: round completes at end of work
           _timer.round++;
-          if (timerGetSoundMode() === 'text') timerTextCue(timerGetTtsWord()); else playTimerSignal('round');
+          if (timerGetSoundMode() === 'text') { var __w = timerGetTtsWord(); showTimerCallout(__w); speakWord(__w); } else playTimerSignal('round');
           if (_timer.round >= rounds) {
             timerStopInternal();
             playTimerSignal('finished');
@@ -1857,7 +1915,7 @@
         // Pause finished -> round completes
         _timer.round++;
         playTimerSignal('pause_end');
-        if (timerGetSoundMode() === 'text') timerTextCue(timerGetTtsWord()); else playTimerSignal('round');
+        if (timerGetSoundMode() === 'text') { var __w = timerGetTtsWord(); showTimerCallout(__w); speakWord(__w); } else playTimerSignal('round');
 
         if (_timer.round >= rounds) {
           timerStopInternal();
@@ -1878,6 +1936,7 @@
 
   function timerStart() {
     timerSave();
+    if (timerGetSoundMode && timerGetSoundMode() === 'text') unlockWordAudio();
     // Unlock audio/tts on user gesture
     ensureAudio();
     try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch(e){}
