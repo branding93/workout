@@ -1198,3 +1198,13 @@
   .menuPanel{ min-width: 220px; }
   .menuItem{ padding:12px 10px; }
 }
+
+
+/* ===== Glossary: Audio im Info-Popup ===== */
+.glossAudioWrap{
+  margin: 10px 0 0;
+}
+.glossAudioWrap audio{
+  width: 100%;
+  max-width: 520px;
+}
