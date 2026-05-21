@@ -1200,6 +1200,16 @@
 }
 
 
+/* ===== Glossary: Audio im Info-Popup ===== */
+.glossAudioWrap{
+  margin: 10px 0 0;
+}
+.glossAudioWrap audio{
+  width: 100%;
+  max-width: 520px;
+}
+
+
 /* ===== Glossary: Collapsible Sections (Mobile-friendly) ===== */
 details.miniCard{
   padding: 0;
@@ -1212,7 +1222,6 @@ details.miniCard > summary.k{
 details.miniCard > summary.k::-webkit-details-marker{
   display: none;
 }
-/* kleiner Chevron rechts */
 details.miniCard > summary.k{
   display:flex;
   align-items:center;
@@ -1229,7 +1238,44 @@ details.miniCard > summary.k::after{
 details.miniCard[open] > summary.k::after{
   transform: rotate(0deg);
 }
-/* etwas Abstand zum Inhalt */
 details.miniCard > .v{
   padding-top: 8px;
+}
+
+
+/* ===== Glossary: Modal polish (ohne Layout-Umbau) ===== */
+#glossaryBack .modal{
+  border-radius: 22px;
+  box-shadow: 0 22px 80px rgba(2,6,23,.22);
+  border: 1px solid rgba(15,23,42,.10);
+}
+#glossaryBack .modalHead{
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(15,23,42,.10);
+  z-index: 2;
+}
+#glossaryBack .modalBody{
+  padding-top: 10px;
+}
+#glossaryBack details.miniCard{
+  background: rgba(2,6,23,.03);
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 18px;
+  padding: 12px 14px;
+}
+#glossaryBack details.miniCard[open]{
+  background: rgba(0,95,120,.08);
+  border-color: rgba(0,95,120,.22);
+}
+#glossaryBack details.miniCard > summary.k{
+  font-weight: 1000;
+}
+@media (max-width:480px){
+  #glossaryBack .modal{
+    width: min(96vw, 520px);
+    max-height: 88vh;
+  }
 }

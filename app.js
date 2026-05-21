@@ -238,6 +238,16 @@
     // 3) Fallback
     return DEFAULT_INFO_IMAGE;
   }
+  function termAudioUrl(term) {
+    // Analog zum Bild: nutzt slugifyForPic(term) -> ./audio/<slug>.mp3
+    try {
+      const raw = String(term || '').trim();
+      const slug = slugifyForPic(raw);
+      if (!slug) return null;
+      return './audio/' + slug + '.mp3';
+    } catch(e){ return null; }
+  }
+
 
 
   function addGloss(term, entry) { glossary[canonicalTerm(term)] = entry; }
@@ -450,6 +460,29 @@
       imgEl.onerror = function () { this.onerror = null; this.src = DEFAULT_INFO_IMAGE; };
       imgEl.src = src;
       imgEl.alt = 'Erklärungsbild: ' + raw;
+
+    // Audio (optional): wenn ./audio/<slug>.mp3 existiert, im Popup als Player anzeigen
+    const audioWrap = document.getElementById('glossAudioWrap');
+    const audioEl = document.getElementById('glossAudio');
+    if (audioWrap && audioEl) {
+      try { audioEl.pause(); } catch(e){}
+      try { audioEl.currentTime = 0; } catch(e){}
+      try { audioEl.onloadedmetadata = null; audioEl.onerror = null; } catch(e){}
+      audioWrap.style.display = 'none';
+      try { audioEl.removeAttribute('src'); if (audioEl.load) audioEl.load(); } catch(e){}
+
+      const aSrc = termAudioUrl(raw);
+      if (aSrc) {
+        audioEl.onloadedmetadata = function(){
+          try { audioWrap.style.display = ''; } catch(e){}
+        };
+        audioEl.onerror = function(){
+          try { audioWrap.style.display = 'none'; } catch(e){}
+          try { audioEl.pause(); audioEl.currentTime = 0; audioEl.removeAttribute('src'); if (audioEl.load) audioEl.load(); } catch(e){}
+        };
+        try { audioEl.src = aSrc; if (audioEl.load) audioEl.load(); } catch(e){}
+      }
+    }
     }
 
     back.classList.add('show');
@@ -457,6 +490,18 @@
     glossary[canon] = entry;
   }
   function closeGlossary() {
+    // stoppe Popup-Audio (falls vorhanden)
+    try {
+      const aw = document.getElementById('glossAudioWrap');
+      const ae = document.getElementById('glossAudio');
+      if (ae) {
+        try { ae.pause(); } catch(e){}
+        try { ae.currentTime = 0; } catch(e){}
+        try { ae.removeAttribute('src'); if (ae.load) ae.load(); } catch(e){}
+      }
+      if (aw) aw.style.display = 'none';
+    } catch(e){}
+
     let back = document.getElementById('glossaryBack');
     back.classList.remove('show');
     back.setAttribute('aria-hidden', 'true');

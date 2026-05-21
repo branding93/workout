@@ -1,6 +1,6 @@
 /* Einfacher Service Worker für Offline-Nutzung (Cache-First). */
 
-const CACHE_NAME = 'martial-repertoire-pwa-v35';
+const CACHE_NAME = 'martial-repertoire-pwa-v36';
 const PRECACHE_URLS = [
   "./",
   "./index.html",
