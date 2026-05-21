@@ -1200,11 +1200,36 @@
 }
 
 
-/* ===== Glossary: Audio im Info-Popup ===== */
-.glossAudioWrap{
-  margin: 10px 0 0;
+/* ===== Glossary: Collapsible Sections (Mobile-friendly) ===== */
+details.miniCard{
+  padding: 0;
 }
-.glossAudioWrap audio{
-  width: 100%;
-  max-width: 520px;
+details.miniCard > summary.k{
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+details.miniCard > summary.k::-webkit-details-marker{
+  display: none;
+}
+/* kleiner Chevron rechts */
+details.miniCard > summary.k{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+details.miniCard > summary.k::after{
+  content: '▾';
+  font-weight: 900;
+  opacity: .65;
+  transform: rotate(-90deg);
+  transition: transform .18s ease;
+}
+details.miniCard[open] > summary.k::after{
+  transform: rotate(0deg);
+}
+/* etwas Abstand zum Inhalt */
+details.miniCard > .v{
+  padding-top: 8px;
 }
