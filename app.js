@@ -26,7 +26,71 @@
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
   }
-  function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
+  
+  // ========= TKD Glossar (sehr robust: global verfügbar, unabhängig von Scope/Hoisting) =========
+  // Rendert die Kategorien aus TKD_GLOSSAR in #tkd-glossarList.
+  // Funktioniert auch unter file:// (keine externen Loads erforderlich).
+  window.tkdRenderGlossar = function (filter) {
+    try {
+      var host = document.getElementById('tkd-glossarList');
+      if (!host) return;
+      host.innerHTML = '';
+      var q = String(filter || '').toLowerCase().trim();
+      var data = (typeof TKD_GLOSSAR !== 'undefined' && TKD_GLOSSAR) ? TKD_GLOSSAR : [];
+      var anyShown = false;
+
+      function matchRow(row) {
+        if (!q) return true;
+        var hay = [row.k, row.u, row.d].map(function (x) { return String(x || '').toLowerCase(); }).join(' ');
+        return hay.indexOf(q) !== -1;
+      }
+
+      (data || []).forEach(function (group) {
+        var items = (group && group.items) ? group.items.slice() : [];
+        if (q) items = items.filter(matchRow);
+        if (!items.length) return;
+        anyShown = true;
+
+        var box = document.createElement('div');
+        box.className = 'item';
+        box.innerHTML = (
+          '<div class="groupHead">' +
+            '<div class="groupTitle">' +
+              '<span class="pill">📚</span>' +
+              escapeHtml(String(group.cat || 'Glossar')) +
+              ' <span class="pill">' + items.length + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="sep" style="margin:10px 0"></div>' +
+          '<div class="list" style="gap:10px"></div>'
+        );
+
+        var list = box.querySelector('.list');
+        items.forEach(function (row) {
+          var r = document.createElement('div');
+          r.className = 'summaryBox';
+          r.style.borderStyle = 'solid';
+          r.innerHTML = (
+            '<div class="row" style="gap:10px; align-items:center; flex-wrap:wrap">' +
+              '<div class="title" style="font-weight:1000">' + escapeHtml(String(row.k || '')) + '</div>' +
+              (row.u ? ('<span class="pill">' + escapeHtml(String(row.u)) + '</span>') : '') +
+            '</div>' +
+            (row.d ? ('<div class="desc" style="margin-top:6px">' + escapeHtml(String(row.d)) + '</div>') : '')
+          );
+          list.appendChild(r);
+        });
+
+        host.appendChild(box);
+      });
+
+      var empty = document.getElementById('tkd-glossarEmpty');
+      if (empty) empty.classList.toggle('hidden', anyShown);
+    } catch (e) {
+      // nie crashen
+    }
+  };
+
+function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
 
   function defaultHyongSelection() {
     let v = {}; TKD_VARIATIONS.forEach(function (x) { v[x] = false; });
@@ -908,9 +972,12 @@
     Array.prototype.slice.call(document.querySelectorAll('[data-tkd-tab]')).forEach(function (t) {
       t.classList.toggle('active', t.getAttribute('data-tkd-tab') === name);
     });
-    ['hyongs', 'kombos', 'ilbo', 'basics'].forEach(function (k) {
+    ['hyongs', 'kombos', 'ilbo', 'basics', 'glossar'].forEach(function (k) {
       document.getElementById('tkd-tab-' + k).classList.toggle('hidden', k !== name);
     });
+    if (name === 'glossar') {
+      try { window.tkdRenderGlossar((document.getElementById('tkd-searchInput') || {}).value || ''); } catch(e){}
+    }
   }
   Array.prototype.slice.call(document.querySelectorAll('[data-tkd-tab]')).forEach(function (btn) {
     btn.addEventListener('click', function () { tkdSetActiveTab(btn.getAttribute('data-tkd-tab')); });
@@ -1205,12 +1272,71 @@
           items.forEach(function (i) { state.tkd.basics[i] = true; });
           save();
           tkdRenderBasics(document.getElementById('tkd-searchInput').value);
+          tkdRenderGlossar(document.getElementById('tkd-searchInput').value);
           setBadge();
         }
+
+  function tkdRenderGlossar(filter) {
+    var host = document.getElementById('tkd-glossarList');
+    if (!host) return;
+    host.innerHTML = '';
+    var q = String(filter || '').toLowerCase().trim();
+    var data = (typeof TKD_GLOSSAR !== 'undefined' && TKD_GLOSSAR) ? TKD_GLOSSAR : [];
+    var anyShown = false;
+
+    function matchRow(row){
+      if (!q) return true;
+      var hay = [row.k, row.u, row.d].map(function(x){ return String(x||'').toLowerCase(); }).join(' ');
+      return hay.indexOf(q) !== -1;
+    }
+
+    (data || []).forEach(function(group){
+      var items = (group && group.items) ? group.items.slice() : [];
+      if (q) items = items.filter(matchRow);
+      if (!items.length) return;
+      anyShown = true;
+
+      var box = document.createElement('div');
+      box.className = 'item';
+      box.innerHTML = (
+        '<div class="groupHead">' +
+          '<div class="groupTitle">' +
+            '<span class="pill">📚</span>' +
+            escapeHtml(String(group.cat || 'Glossar')) +
+            ' <span class="pill">' + items.length + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="sep" style="margin:10px 0"></div>' +
+        '<div class="list" style="gap:10px"></div>'
+      );
+
+      var list = box.querySelector('.list');
+      items.forEach(function(row){
+        var r = document.createElement('div');
+        r.className = 'summaryBox';
+        r.style.borderStyle = 'solid';
+        r.innerHTML = (
+          '<div class="row" style="gap:10px; align-items:center; flex-wrap:wrap">' +
+            '<div class="title" style="font-weight:1000">' + escapeHtml(String(row.k || '')) + '</div>' +
+            (row.u ? ('<span class="pill">' + escapeHtml(String(row.u)) + '</span>') : '') +
+          '</div>' +
+          (row.d ? ('<div class="desc" style="margin-top:6px">' + escapeHtml(String(row.d)) + '</div>') : '')
+        );
+        list.appendChild(r);
+      });
+
+      host.appendChild(box);
+    });
+
+    var empty = document.getElementById('tkd-glossarEmpty');
+    if (empty) empty.classList.toggle('hidden', anyShown);
+  }
+
         if (gact === 'none') {
           items.forEach(function (i) { state.tkd.basics[i] = false; });
           save();
           tkdRenderBasics(document.getElementById('tkd-searchInput').value);
+          tkdRenderGlossar(document.getElementById('tkd-searchInput').value);
           setBadge();
         }
       });
@@ -1628,7 +1754,7 @@
 
     let text = lines.join('\n');
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { toast('📋 Training kopiert'); }).catch(function () { toast('Kopieren nicht möglich'); console.log(text); });
+      navigator.clipboard.writeText(text).then(function () { toast('📋 Training kopiert'); })['catch'](function () { toast('Kopieren nicht möglich'); console.log(text); });
     } else {
       try {
         let ta = document.createElement('textarea');
@@ -1710,7 +1836,7 @@
         try { _timerSound.master.gain.value = timerGetVolume(); } catch(e){}
       }
       if (_timerSound.ctx.state === 'suspended') {
-        _timerSound.ctx.resume().catch(function(){});
+        _timerSound.ctx.resume()['catch'](function(){});
       }
       return _timerSound.ctx;
     } catch(e){ return null; }
@@ -1776,7 +1902,7 @@
             if (a.src.indexOf('%21') === -1) {
               a.src = encSrc;
               a.load();
-              a.play().catch(function(){});
+              a.play()['catch'](function(){});
             }
           } catch(e2){}
         });
@@ -1788,14 +1914,14 @@
       if (!a.paused && !a.ended) {
         var b = new Audio(a.src);
         b.volume = 1.0;
-        b.play().catch(function(){});
+        b.play()['catch'](function(){});
         return;
       }
 
       a.currentTime = 0;
       a.volume = 1.0;
       var p = a.play();
-      if (p && p.catch) p.catch(function(){});
+      if (p && p['catch']) p['catch'](function(){});
     } catch(e){}
   }
 
@@ -1818,7 +1944,7 @@
           if (pr && pr.then) {
             pr.then(function(){
               setTimeout(function(){ try { a.pause(); a.currentTime = 0; a.muted = false; a.volume = 1.0; } catch(e2){} }, 50);
-            }).catch(function(){ try { a.muted = false; a.volume = 1.0; } catch(e3){} });
+            })['catch'](function(){ try { a.muted = false; a.volume = 1.0; } catch(e3){} });
           }
           _wordAudioCache['audio/' + file] = a;
         } catch(e1){}
@@ -2145,6 +2271,7 @@
     tkdRenderHyongs(q);
     tkdRenderCombos(q);
     tkdRenderBasics(q);
+    window.tkdRenderGlossar(q);
   });
   document.getElementById('wc-searchInput').addEventListener('input', function () {
     let q = this.value;
@@ -2215,6 +2342,7 @@
     tkdRenderCombos(tq);
     tkdRenderIlbo();
     tkdRenderBasics(tq);
+      window.tkdRenderGlossar(tq);
 
     let wq = document.getElementById('wc-searchInput').value;
     wcRenderForms(wq);
@@ -2245,7 +2373,7 @@
   // ========= PWA: Service Worker Registrierung =========
   if ((location.protocol === 'http:' || location.protocol === 'https:') && 'serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js').catch(function (err) {
+      navigator.serviceWorker.register('sw.js')['catch'](function (err) {
         console.warn('Service Worker Registrierung fehlgeschlagen:', err);
       });
     });

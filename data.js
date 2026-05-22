@@ -107,6 +107,84 @@ const TKD_SPARRING_GROUPS = [
         'Heute 1% besser – reicht völlig.'
       ];
 
+      // =========================
+      // TKD: Glossar – wichtige Begriffe (Dojang)
+      // Hinweis: Reine Daten. Darstellung/Logik liegt in app.js (TKD Tab "Glossar").
+      // =========================
+      const TKD_GLOSSAR = [
+        {
+          cat: 'Kommandos (Kuryong)',
+          items: [
+            { k: 'Charyot', u: 'Achtung / Habt acht', d: 'Kommando zum Stillstehen mit geschlossenen Füßen (Fersen zusammen) und den Händen an der Seite. Wird vor der Begrüßung genutzt.' },
+            { k: 'Kyong-ne', u: 'Verbeugen', d: 'Aufforderung zum Verbeugen als Zeichen des Respekts vor dem Meister, dem Partner oder den Flaggen.' },
+            { k: 'Junbi', u: 'Bereit machen', d: 'Kommando, um die Grundstellung (meist paralleler Stand mit Fäusten vor dem Gürtel) einzunehmen.' },
+            { k: 'Sijak', u: 'Los / Start', d: 'Startkommando für eine Übung, einen Formenlauf oder einen Kampf.' },
+            { k: 'Kallyo', u: 'Trennen / Unterbrechen', d: 'Kommando des Kampfrichters oder Trainers, um die Kämpfer zu trennen.' },
+            { k: 'Kuman', u: 'Ende / Stopp', d: 'Kommando zum Beenden der aktuellen Übung oder des Kampfes.' },
+            { k: 'Dwiro-dora', u: 'Umdrehen', d: 'Kommando zum Wechseln der Blickrichtung (180-Grad-Drehung).' },
+            { k: 'Swio', u: 'Entspannen / Ausruhen', d: 'Aufforderung, eine lockere Haltung einzunehmen, den Dobok zu richten und sich kurz zu erholen.' },
+          ]
+        },
+        {
+          cat: 'Training, Personen & Ausrüstung',
+          items: [
+            { k: 'Dojang', u: 'Trainingsraum', d: 'Die Halle oder der Raum, in dem das Taekwondo-Training stattfindet. Wörtlich: "Ort des Weges".' },
+            { k: 'Dobok', u: 'Taekwondo-Anzug', d: 'Die traditionelle (meist weiße) Trainingskleidung im Taekwondo.' },
+            { k: 'Ti', u: 'Gürtel', d: 'Der Gürtel, dessen Farbe den Schüler- (Kup) oder Meistergrad (Dan) anzeigt.' },
+            { k: 'Sabum-nim', u: 'Meister / Lehrer', d: 'Respektvolle Anrede für den Taekwondo-Lehrer (meist ab dem 4. Dan).' },
+            { k: 'Kyosa-nim', u: 'Trainer', d: 'Anrede für einen Trainer mit einem niedrigeren Dan-Grad (meist 1. bis 3. Dan).' },
+            { k: 'Sunbae-nim', u: 'Fortgeschrittener', d: 'Respektvolle Anrede für einen Schüler, der einen höheren Grad hat als man selbst.' },
+          ]
+        },
+        {
+          cat: 'Zahlen (Zählen im Training)',
+          items: [
+            { k: 'Hana', u: 'Eins', d: 'Wird beim gemeinsamen Zählen von Techniken (z. B. Dehnen, Schläge) verwendet.' },
+            { k: 'Dul', u: 'Zwei', d: 'Zählwort für 2.' },
+            { k: 'Set', u: 'Drei', d: 'Zählwort für 3.' },
+            { k: 'Net', u: 'Vier', d: 'Zählwort für 4.' },
+            { k: 'Dasot', u: 'Fünf', d: 'Zählwort für 5.' },
+            { k: 'Yasot', u: 'Sechs', d: 'Zählwort für 6.' },
+            { k: 'Ilgop', u: 'Sieben', d: 'Zählwort für 7.' },
+            { k: 'Yodol', u: 'Acht', d: 'Zählwort für 8.' },
+            { k: 'Ahop', u: 'Neun', d: 'Zählwort für 9.' },
+            { k: 'Yol', u: 'Zehn', d: 'Zählwort für 10.' },
+          ]
+        },
+        {
+          cat: 'Körperzonen (Kupso)',
+          items: [
+            { k: 'Olgul', u: 'Oben / Gesicht', d: 'Zielbereich, der Kopf und Hals umfasst.' },
+            { k: 'Momtong', u: 'Mitte / Rumpf', d: 'Zielbereich, der den gesamten Oberkörper vom Hals bis zum Bauchnabel umfasst.' },
+            { k: 'Arae', u: 'Unten / Unterleib', d: 'Zielbereich unterhalb des Bauchnabels.' },
+          ]
+        },
+        {
+          cat: 'Techniken & Disziplinen',
+          items: [
+            { k: 'Kihap', u: 'Kampfschrei', d: 'Wörtlich "Vereinigung der Energie". Ein kurzer, lauter Schrei bei Ausführung einer Technik, um die Kraft zu bündeln und Körperspannung aufzubauen.' },
+            { k: 'Poomsae', u: 'Formenlauf', d: 'Ein festgelegter Ablauf von Angriffs- und Verteidigungstechniken gegen imaginäre Gegner.' },
+            { k: 'Kyorugi', u: 'Freikampf', d: 'Der sportliche Zweikampf nach festgelegten Regeln.' },
+            { k: 'Kyokpa', u: 'Bruchtest', d: 'Das Zerschlagen von Brettern oder Steinen zur Demonstration von Technik, Schnelligkeit und Kraft.' },
+            { k: 'Chagi', u: 'Tritt', d: 'Allgemeiner Begriff für alle Fußtechniken (z. B. Ap-Chagi = Vorwärtstritt).' },
+            { k: 'Makki', u: 'Block', d: 'Allgemeiner Begriff für alle Abwehrtechniken.' },
+            { k: 'Jirugi', u: 'Fauststoß', d: 'Gerader Schlag mit der Faust.' },
+            { k: 'Chigi', u: 'Schlag', d: 'Kreisförmiger oder peitschender Schlag (oft mit offener Hand oder Handkante).' },
+            { k: 'Sogi', u: 'Stellung', d: 'Allgemeiner Begriff für die Fußstellungen (z. B. Ap-Kubi = lange Vorwärtsstellung).' },
+          ]
+        },
+        {
+          cat: 'Richtungen & Bewegungsarten',
+          items: [
+            { k: 'Ap', u: 'Vorwärts', d: 'Bewegung oder Technik direkt nach vorne (z. B. Ap-Chagi).' },
+            { k: 'Yop', u: 'Seitwärts', d: 'Bewegung oder Technik zur Seite (z. B. Yop-Chagi).' },
+            { k: 'Dwi', u: 'Rückwärts', d: 'Bewegung oder Technik nach hinten (z. B. Dwi-Chagi).' },
+            { k: 'Naeryo', u: 'Abwärts', d: 'Bewegung von oben nach unten (z. B. Naeryo-Chagi / Axttritt).' },
+            { k: 'Dollyo', u: 'Halbkreisförmig', d: 'Dreh- oder Kreisbewegung (z. B. Dollyo-Chagi / Halbkreisfußtritt).' },
+          ]
+        }
+      ];
+
       // WC
       const WC_VARIATIONS = ['normal', 'langsam', 'Struktur', 'Power', 'Mittellinie', 'Timing'];
       const WC_LEVELS = {
