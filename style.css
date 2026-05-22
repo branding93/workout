@@ -1279,3 +1279,7 @@ details.miniCard > .v{
     max-height: 88vh;
   }
 }
+
+
+/* ===== TKD Glossar: Category Accordion (polish) ===== */
+#tkd-glossarList details.miniCard{margin:10px 0;}

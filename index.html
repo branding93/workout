@@ -4,9 +4,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#005F78" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <title>Workout 🥋</title>
 
   <link rel="stylesheet" href="style.css" />
+
+
+  <!-- manifest conditional (avoid CORS on file://) -->
+  <script>
+    (function () {
+      try {
+        if (location.protocol === 'http:' || location.protocol === 'https:') {
+          var l = document.createElement('link');
+          l.rel = 'manifest';
+          l.href = 'manifest.json';
+          document.head.appendChild(l);
+        }
+      } catch (e) { }
+    })();
+  </script>
+
 </head>
 
 <body>
@@ -497,6 +517,7 @@
       </div>
     </div>
   </div>
+
 
   <script src="data.js"></script>
   <script src="quiz.js"></script>

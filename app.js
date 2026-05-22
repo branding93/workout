@@ -51,21 +51,24 @@
         if (!items.length) return;
         anyShown = true;
 
-        var box = document.createElement('div');
-        box.className = 'item';
-        box.innerHTML = (
-          '<div class="groupHead">' +
-            '<div class="groupTitle">' +
-              '<span class="pill">📚</span>' +
-              escapeHtml(String(group.cat || 'Glossar')) +
-              ' <span class="pill">' + items.length + '</span>' +
-            '</div>' +
-          '</div>' +
-          '<div class="sep" style="margin:10px 0"></div>' +
-          '<div class="list" style="gap:10px"></div>'
-        );
+        // Kategorie als <details> (collapsible). Default: geschlossen.
+        var det = document.createElement('details');
+        det.className = 'miniCard';
+        try { det.open = false; } catch(e){}
+        try { det.removeAttribute('open'); } catch(e){}
 
-        var list = box.querySelector('.list');
+        var sum = document.createElement('summary');
+        sum.className = 'k';
+        sum.innerHTML = '📚 ' + escapeHtml(String((group && group.cat) || 'Glossar')) +
+          ' <span class="menuHint">(' + items.length + ')</span>';
+        det.appendChild(sum);
+
+        var body = document.createElement('div');
+        body.className = 'v';
+        var list = document.createElement('div');
+        list.className = 'list';
+        body.appendChild(list);
+
         items.forEach(function (row) {
           var r = document.createElement('div');
           r.className = 'summaryBox';
@@ -80,7 +83,8 @@
           list.appendChild(r);
         });
 
-        host.appendChild(box);
+        det.appendChild(body);
+        host.appendChild(det);
       });
 
       var empty = document.getElementById('tkd-glossarEmpty');
@@ -2371,4 +2375,13 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
   showView('tkd');
   setBadge();
   // ========= PWA: Service Worker Registrierung =========
-  })();
+  if ((location.protocol === 'http:' || location.protocol === 'https:') && 'serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js')['catch'](function (err) {
+        console.warn('Service Worker Registrierung fehlgeschlagen:', err);
+      });
+    });
+  }
+
+
+})();
