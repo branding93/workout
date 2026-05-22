@@ -8,6 +8,7 @@ Stabile KI Änderungen ohne Breaking Changes
 - keine Refactorings
 - keine IDs ändern
 - Struktur beibehalten
+- wenn Änderungen, dann auch ARCHITECTURE.md entsprechend anpassen (falls erforderlich)
 
 ## Änderungsanforderung
 [HIER BESCHREIBEN]
