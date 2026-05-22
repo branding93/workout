@@ -1,7 +1,7 @@
 # Martial Repertoire App – Architektur & Dokumentation
 
 ## 1. Ziel & Zweck der App
-Die App ist eine webbasierte Progressive Web App (PWA) zur Unterstützung von Training und Lernen im Bereich Martial Arts (Taekwondo & Wing Chun).
+Die App ist eine webbasierte Anwendung zur Unterstützung von Training und Lernen im Bereich Martial Arts (Taekwondo & Wing Chun).
 
 ### Hauptfunktionen
 - Anzeige von Techniken, Begriffen und Übungen
@@ -13,7 +13,6 @@ Die App ist eine webbasierte Progressive Web App (PWA) zur Unterstützung von Tr
 ## 2. Architekturprinzipien
 - Trennung von HTML/CSS/JS
 - Keine Frameworks
-- PWA-fähig
 - Modular & erweiterbar
 
 ## 3. Ordnerstruktur
@@ -23,8 +22,6 @@ Die App ist eine webbasierte Progressive Web App (PWA) zur Unterstützung von Tr
 ├── app.js
 ├── data.js
 ├── quiz.js
-├── manifest.json
-├── sw.js
 ├── /audio
 ├── /pics
 

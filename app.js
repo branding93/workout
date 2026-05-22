@@ -2371,13 +2371,4 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
   showView('tkd');
   setBadge();
   // ========= PWA: Service Worker Registrierung =========
-  if ((location.protocol === 'http:' || location.protocol === 'https:') && 'serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js')['catch'](function (err) {
-        console.warn('Service Worker Registrierung fehlgeschlagen:', err);
-      });
-    });
-  }
-
-
-})();
+  })();
