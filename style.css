@@ -1283,3 +1283,14 @@ details.miniCard > .v{
 
 /* ===== TKD Glossar: Category Accordion (polish) ===== */
 #tkd-glossarList details.miniCard{margin:10px 0;}
+
+/* ===== Fix: TKD header/tabs overflow on iPhone (mobile) ===== */
+@media (max-width:480px){
+  /* Only Taekwondo view: prevent horizontal overflow caused by long tab labels (e.g., 'Einschrittkampf') */
+  #view-tkd .tabs{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  #view-tkd .tab{
+    min-width: 0;
+  }
+}
