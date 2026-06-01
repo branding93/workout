@@ -1824,6 +1824,73 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     } catch(e){ return 'Kick!'; }
   }
 
+
+  // ===== Shadowboxing Silhouette =====
+  var _shadowboxState = { enabled: false, kind: '', zone: '' };
+
+  function timerIsShadowboxingEnabled(){
+    try {
+      var mode = timerGetSoundMode();
+      var el = document.getElementById('timer-ttsWord');
+      var v = (el && el.value) ? String(el.value) : '';
+      return mode === 'text' && v === 'shadow';
+    } catch(e){ return false; }
+  }
+
+  function shadowboxSupportedZones(word){
+    if (word === 'Hit!') return ['oben', 'mitte', 'unten'];
+    if (word === 'Kick!' || word === 'Block!') return ['oben', 'mitte', 'unten', 'bein'];
+    return [];
+  }
+
+  function shadowboxCommandKind(word){
+    if (word === 'Block!') return 'block';
+    if (word === 'Hit!') return 'hit';
+    if (word === 'Kick!') return 'kick';
+    return '';
+  }
+
+  function shadowboxPickZone(word){
+    var zones = shadowboxSupportedZones(word);
+    if (!zones.length) return '';
+    return zones[Math.floor(Math.random() * zones.length)];
+  }
+
+  function shadowboxRender(){
+    try {
+      var wrap = document.getElementById('shadowbox-silhouette-wrap');
+      var marker = document.getElementById('shadowbox-targetMarker');
+      if (!wrap || !marker) return;
+      _shadowboxState.enabled = timerIsShadowboxingEnabled();
+      wrap.classList.toggle('hidden', !_shadowboxState.enabled);
+      wrap.setAttribute('aria-hidden', _shadowboxState.enabled ? 'false' : 'true');
+      marker.className = 'shadowboxTargetMarker';
+      if (!_shadowboxState.enabled || !_shadowboxState.kind || !_shadowboxState.zone) return;
+      marker.classList.add('is-visible', 'sb-zone-' + _shadowboxState.zone, 'sb-kind-' + _shadowboxState.kind);
+    } catch(e){}
+  }
+
+  function shadowboxClearMarker(){
+    _shadowboxState.kind = '';
+    _shadowboxState.zone = '';
+    shadowboxRender();
+  }
+
+  function shadowboxApplyCommand(word){
+    if (!timerIsShadowboxingEnabled()) {
+      shadowboxClearMarker();
+      return;
+    }
+    var kind = shadowboxCommandKind(word);
+    if (!kind) {
+      shadowboxClearMarker();
+      return;
+    }
+    _shadowboxState.kind = kind;
+    _shadowboxState.zone = shadowboxPickZone(word);
+    shadowboxRender();
+  }
+
   // ===== Timer Sounds (WebAudio, no files) =====
   var _timerSound = { ctx: null, master: null };
 
@@ -2052,6 +2119,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
   function timerStopInternal() {
     if (_timer.t) { clearInterval(_timer.t); _timer.t = null; }
     _timer.paused = true;
+    shadowboxClearMarker();
     timerUpdate();
   }
 
@@ -2075,7 +2143,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
         } else {
           // Pause=0: round completes at end of work
           _timer.round++;
-          if (timerGetSoundMode() === 'text') { var __w = timerGetTtsWord(); showTimerCallout(__w); speakWord(__w); } else playTimerSignal('round');
+          if (timerGetSoundMode() === 'text') { var __w = timerGetTtsWord(); shadowboxApplyCommand(__w); showTimerCallout(__w); speakWord(__w); } else { shadowboxClearMarker(); playTimerSignal('round'); }
           if (_timer.round >= rounds) {
             timerStopInternal();
             playTimerSignal('finished');
@@ -2090,7 +2158,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
         // Pause finished -> round completes
         _timer.round++;
         playTimerSignal('pause_end');
-        if (timerGetSoundMode() === 'text') { var __w = timerGetTtsWord(); showTimerCallout(__w); speakWord(__w); } else playTimerSignal('round');
+        if (timerGetSoundMode() === 'text') { var __w = timerGetTtsWord(); shadowboxApplyCommand(__w); showTimerCallout(__w); speakWord(__w); } else { shadowboxClearMarker(); playTimerSignal('round'); }
 
         if (_timer.round >= rounds) {
           timerStopInternal();
@@ -2111,6 +2179,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
 
   function timerStart() {
     timerSave();
+    shadowboxRender();
     if (timerGetSoundMode && timerGetSoundMode() === 'text') unlockWordAudio();
     // Unlock audio/tts on user gesture
     ensureAudio();
@@ -2137,6 +2206,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     clearInterval(_timer.t);
     _timer.t = null;
     _timer.paused = true;
+    shadowboxClearMarker();
     timerUpdate();
   }
 
@@ -2199,12 +2269,13 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
       if (ttsWrap) ttsWrap.style.display = (mode === 'text') ? '' : 'none';
       var volWrap = document.getElementById('timer-volWrap');
       if (volWrap) volWrap.style.display = (mode === 'signal') ? '' : 'none';
+      if (mode !== 'text') shadowboxClearMarker(); else shadowboxRender();
       timerSave();
     };
 
     if (mSig) mSig.addEventListener('change', applyModeUi);
     if (mTxt) mTxt.addEventListener('change', applyModeUi);
-    if (ttsSel) ttsSel.addEventListener('change', function(){ timerSave(); });
+    if (ttsSel) ttsSel.addEventListener('change', function(){ shadowboxClearMarker(); timerSave(); });
     applyModeUi();
 
     document.getElementById('timer-start').addEventListener('click', timerStart);
@@ -2228,6 +2299,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     _timer.remaining = timerGetWorkSec();
     _timer.total = _timer.remaining;
     timerRingInit();
+    shadowboxRender();
     timerUpdate();
   }
 

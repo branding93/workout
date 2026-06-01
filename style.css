@@ -1294,3 +1294,130 @@ details.miniCard > .v{
     min-width: 0;
   }
 }
+
+/* ===== Shadowboxing Timer: dauerhafte Silhouette ===== */
+.shadowboxSilhouetteWrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  margin-left:auto;
+  min-width:92px;
+}
+.shadowboxSilhouetteWrap.hidden{ display:none !important; }
+.shadowboxSilhouette{
+  position:relative;
+  width:72px;
+  height:164px;
+  flex:0 0 auto;
+  filter: drop-shadow(0 10px 24px rgba(15,23,42,.16));
+}
+.shadowboxHead,
+.shadowboxTorso,
+.shadowboxArm,
+.shadowboxHip,
+.shadowboxLeg{
+  position:absolute;
+  display:block;
+  background: linear-gradient(180deg, rgba(15,23,42,.92) 0%, rgba(15,23,42,.74) 100%);
+}
+.shadowboxHead{
+  top:6px;
+  left:50%;
+  width:22px;
+  height:22px;
+  margin-left:-11px;
+  border-radius:999px;
+}
+.shadowboxTorso{
+  top:31px;
+  left:50%;
+  width:26px;
+  height:54px;
+  margin-left:-13px;
+  border-radius:16px;
+}
+.shadowboxArm{
+  top:38px;
+  width:10px;
+  height:54px;
+  border-radius:999px;
+  transform-origin: top center;
+}
+.shadowboxArmLeft{ left:17px; transform: rotate(18deg); }
+.shadowboxArmRight{ right:17px; transform: rotate(-18deg); }
+.shadowboxHip{
+  top:79px;
+  left:50%;
+  width:32px;
+  height:14px;
+  margin-left:-16px;
+  border-radius:999px;
+}
+.shadowboxLeg{
+  top:90px;
+  width:11px;
+  height:62px;
+  border-radius:999px;
+}
+.shadowboxLegLeft{ left:26px; transform: rotate(8deg); }
+.shadowboxLegRight{ right:26px; transform: rotate(-8deg); }
+.shadowboxTargetMarker{
+  position:absolute;
+  left:50%;
+  width:28px;
+  height:28px;
+  margin-left:-14px;
+  margin-top:-14px;
+  border-radius:999px;
+  border:3px solid transparent;
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 0 0 0 rgba(59,130,246,.18);
+  opacity:0;
+  pointer-events:none;
+  transition: opacity .14s ease, top .14s ease, border-color .14s ease, box-shadow .14s ease, background-color .14s ease;
+}
+.shadowboxTargetMarker.is-visible{ opacity:1; }
+.shadowboxTargetMarker.sb-zone-oben{ top:18px; }
+.shadowboxTargetMarker.sb-zone-mitte{ top:56px; }
+.shadowboxTargetMarker.sb-zone-unten{ top:91px; }
+.shadowboxTargetMarker.sb-zone-bein{ top:132px; }
+.shadowboxTargetMarker.sb-kind-block{
+  border-color: rgba(34,197,94,.96);
+  background: rgba(34,197,94,.14);
+  box-shadow: 0 0 0 4px rgba(34,197,94,.18);
+}
+.shadowboxTargetMarker.sb-kind-hit,
+.shadowboxTargetMarker.sb-kind-kick{
+  border-color: rgba(239,68,68,.96);
+  background: rgba(239,68,68,.14);
+  box-shadow: 0 0 0 4px rgba(239,68,68,.18);
+}
+@media (prefers-reduced-motion: no-preference){
+  .shadowboxTargetMarker.is-visible{ animation: shadowboxPulse 1.8s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce){
+  .shadowboxTargetMarker{ transition:none; }
+}
+@keyframes shadowboxPulse{
+  0%,100%{ transform: translateX(-50%) scale(1); }
+  50%{ transform: translateX(-50%) scale(1.08); }
+}
+@media (max-width:680px){
+  .shadowboxSilhouetteWrap{ margin-left:0; }
+  .shadowboxSilhouette{ width:64px; height:152px; }
+  .shadowboxHead{ top:7px; width:20px; height:20px; margin-left:-10px; }
+  .shadowboxTorso{ top:29px; width:24px; height:49px; margin-left:-12px; }
+  .shadowboxArm{ top:35px; height:50px; }
+  .shadowboxArmLeft{ left:14px; }
+  .shadowboxArmRight{ right:14px; }
+  .shadowboxHip{ top:74px; width:28px; height:12px; margin-left:-14px; }
+  .shadowboxLeg{ top:84px; height:58px; }
+  .shadowboxLegLeft{ left:22px; }
+  .shadowboxLegRight{ right:22px; }
+  .shadowboxTargetMarker{ width:24px; height:24px; margin-left:-12px; margin-top:-12px; }
+  .shadowboxTargetMarker.sb-zone-oben{ top:18px; }
+  .shadowboxTargetMarker.sb-zone-mitte{ top:53px; }
+  .shadowboxTargetMarker.sb-zone-unten{ top:84px; }
+  .shadowboxTargetMarker.sb-zone-bein{ top:121px; }
+}
