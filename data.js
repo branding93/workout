@@ -272,6 +272,11 @@ const TKD_SPARRING_GROUPS = [
         { t: 'Seilspringen', d: 'Warm-up · Kondition' },
         { t: 'Dehnen (Cooldown)', d: 'Regeneration · Range' }
       ];
+      const OTHER_KICKBOXEN = [
+        { t: 'Flow 1', d: 'Front-Kick → High-Roundhouse → Seitenwechsel → Repeat' },
+        { t: 'Flow 2', d: 'Jab (links) → Hook (rechts) → Roundhouse (links) → Seitenwechsel → Repeat' },
+        { t: 'Flow 3', d: 'Schienbein-Check (links) → Low-kick (links) → Low-kick (rechts) → Jab-Cross-Jab (rechts-links-rechts) → Seitenwechsel → Repeat' }
+      ];
       const OTHER_MOTIVATION = [
         'Stabiler Körper = bessere Technik.',
         'Kleine Ergänzung, großer Effekt.',

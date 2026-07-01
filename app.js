@@ -117,7 +117,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
         })(), note: ''
       },
       wc: { forms: wcFo, grundlagen: mapForItems(GRUNDLAGEN), armhand: mapForItems(ARM_HAND), beine: mapForItems(BEINE), weitere: mapForItems(WEITERE_HAND), weapon: mapForItems(WEAPON), note: '' },
-      other: { kraft: mapForItems(OTHER_KRAFT), boxen: mapForItems(OTHER_BOXEN), sonstiges: mapForItems(OTHER_SONST), note: '' }
+      other: { kraft: mapForItems(OTHER_KRAFT), boxen: mapForItems(OTHER_BOXEN), sonstiges: mapForItems(OTHER_SONST), kickboxen: mapForItems(OTHER_KICKBOXEN), note: '' }
     };
   }
 
@@ -155,6 +155,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
         kraft: mergeBoolMap(base.other.kraft, parsed.other && parsed.other.kraft),
         boxen: mergeBoolMap(base.other.boxen, parsed.other && parsed.other.boxen),
         sonstiges: mergeBoolMap(base.other.sonstiges, parsed.other && parsed.other.sonstiges),
+        kickboxen: mergeBoolMap(base.other.kickboxen, parsed.other && parsed.other.kickboxen),
         note: (parsed.other && typeof parsed.other.note === 'string') ? parsed.other.note : ''
       }
     };
@@ -243,6 +244,11 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     'Siu Nim Tao': { f: 'Zu viel Spannung; Schultern hoch; Bewegungen zu groß; Atmung fehlt.', c: 'Zeitlupe: Ellenbogenlinie, entspannte Handgelenke, ruhige Atmung. Stopps helfen.' },
     'Chum Kiu': { f: 'Drehung aus Schultern; Stand verliert Struktur; Arme entkoppeln.', c: 'Drehung aus Stand/Hüfte. Arme werden mitgenommen. Langsam mit Stopps üben.' },
     'Biu Tze': { f: 'Hektik; Struktur bricht; große Wege.', c: 'Kompakt und strukturiert. Sequenzen sauber üben, dann verbinden.' },
+
+    // --- Kickboxen Flows ---
+    'Flow 1': { f: 'Front-Kick zu tief/ohne Kammer; Roundhouse ohne Hüftdrehung; Seitenwechsel mit Stolpern; Atmung aus; kein Recoil.', c: 'Starte langsam: Kammer → strecken → Recoil pro Kick. Seitenwechsel bewusst als Schritt setzen. Erst sauber, dann Tempo.' },
+    'Flow 2': { f: 'Jab zu weit ausgeholt; Hook ohne Hüfte; Roundhouse zu früh/zu tief; Seitenwechsel unsauber; Deckung vergessen.', c: 'Jab nur aus Schulter. Hook mit Hüftrotation einleiten. Roundhouse erst nach Hüftdrehung. Kombination fließend verbinden.' },
+    'Flow 3': { f: 'Check zu spät/zu weich; Low-Kick ohne Hüfte; Jab-Cross-Jab zu langsam; Seitenwechsel mit Lücke in der Deckung.', c: 'Check aktiv und früh setzen. Low-Kick mit Hüfteindrehung für Power. Handkombination schnell und kompakt. Nach Abschluss Deckung schließen.' },
   };
 
 
@@ -469,6 +475,9 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
       if (/Seilspringen/i.test(canon)) return { ctx: 'Weiteres', t: 'Rope skipping', m: 'Gleichmäßige Sprünge, Rhythmus halten.', z: 'Warm-up, Fußarbeit, Kondition.', p: 'Leicht, elastisch.' };
       if (/Dehnen/i.test(canon) || /Cooldown/i.test(canon)) return { ctx: 'Weiteres', t: 'Dehnen / Cooldown', m: 'Sanftes Dehnen, Range ohne Schmerz erweitern.', z: 'Regeneration, Beweglichkeit.', p: 'Ruhig atmen, nicht reißen.' };
       if (/Mobility/i.test(canon)) return { ctx: 'Weiteres', t: 'Mobilität', m: 'Kontrollierte Gelenkbewegungen für Hüfte/Schulter.', z: 'Bewegungsqualität, Range.', p: 'Kontrolle, langsam steigern.' };
+      if (/Flow 1/i.test(canon)) return { ctx: 'Weiteres', t: 'Kickboxen Flow 1 – Front-Kick → High-Roundhouse', m: 'Auftakt mit Front-Kick (hinteres Bein), direkt High-Roundhouse mit demselben Bein nachziehen, dann Seitenwechsel (Standbein wechseln) und Repeat auf der anderen Seite.', z: 'Kombinationsfluss, Beinwechsel, Hüftrotation beim Roundhouse, Timing und Rhythmus.', p: 'Kammer vor jedem Kick · Hüfte voll durchdrehen beim Roundhouse · Seitenwechsel explosiv · Atmung nicht anhalten · Recoil nicht vergessen.' };
+      if (/Flow 2/i.test(canon)) return { ctx: 'Weiteres', t: 'Kickboxen Flow 2 – Jab → Hook → Roundhouse', m: 'Jab mit der Führhand (links), Hook mit der Schlaghand (rechts), dann Roundhouse mit dem vorderen Bein (links) – Hüfte voll mitdrehen. Danach Seitenwechsel und Repeat.', z: 'Hand-Fuß-Kombinationen, Gewichtsverlagerung, Rotation aus Hüfte und Stand, fließende Übergänge.', p: 'Jab kurz und präzise · Hook aus der Hüfte drehen · Roundhouse mit Körperrotation · Seitenwechsel sauber · Deckung nie fallen lassen.' };
+      if (/Flow 3/i.test(canon)) return { ctx: 'Weiteres', t: 'Kickboxen Flow 3 – Check → Low-Kicks → Jab-Cross-Jab', m: 'Schienbein-Check mit links gegen tiefen Angriff, Low-Kick mit links, Low-Kick mit rechts, dann Jab-Cross-Jab (rechts-links-rechts) als Handkombination zum Abschluss. Seitenwechsel, Repeat.', z: 'Defensive (Check) in Kombination, Bein- und Handtechniken verbinden, Seitenwechsel, Rhythmus und Druckaufbau.', p: 'Check kompakt und früh · Low-Kick mit Hüfteindrehung · Jab-Cross-Jab sauberer Rhythmus · Nach der Handkombi nicht zu lang absetzen · Stand stabil halten.' };
     }
 
     return { ctx: ctx, t: '—', m: 'Kurze Übungsbeschreibung.', z: 'Technik, Kontrolle und Wiederholungsqualität verbessern.', p: 'Saubere Struktur, Timing und dosierte Spannung.' };
@@ -950,6 +959,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     other += countMap(state.other.kraft);
     other += countMap(state.other.boxen);
     other += countMap(state.other.sonstiges);
+    other += countMap(state.other.kickboxen);
 
     return { tkd: tkd, wc: wc, other: other, all: (tkd + wc + other) };
   }
@@ -1478,7 +1488,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     Array.prototype.slice.call(document.querySelectorAll('[data-other-tab]')).forEach(function (t) {
       t.classList.toggle('active', t.getAttribute('data-other-tab') === name);
     });
-    ['kraft', 'boxen', 'sonst'].forEach(function (k) {
+    ['kraft', 'boxen', 'sonst', 'kickboxen'].forEach(function (k) {
       document.getElementById('other-tab-' + k).classList.toggle('hidden', k !== name);
     });
   }
@@ -1587,6 +1597,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     selFromMap(state.other.kraft, 'OTHER|Kraft|', out.other.kraft);
     selFromMap(state.other.boxen, 'OTHER|Boxen|', out.other.boxen);
     selFromMap(state.other.sonstiges, 'OTHER|Sonstiges|', out.other.sonstiges);
+    selFromMap(state.other.kickboxen, 'OTHER|Kickboxen|', out.other.kickboxen);
     out.other.note = (state.other.note || '').trim();
 
     return out;
@@ -2363,6 +2374,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     otherRenderList('other-kraftList', 'other-kraftEmpty', OTHER_KRAFT, state.other.kraft, q, '🏋️', 'Kraft');
     otherRenderList('other-boxenList', 'other-boxenEmpty', OTHER_BOXEN, state.other.boxen, q, '🥊', 'Boxen');
     otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, q, '🧘', 'Sonstiges');
+    otherRenderList('other-kickboxenList', 'other-kickboxenEmpty', OTHER_KICKBOXEN, state.other.kickboxen, q, '🥊', 'Kickboxen');
   });
 
   document.getElementById('train-copyBtn').addEventListener('click', copyTrainingText);
@@ -2410,6 +2422,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     OTHER_KRAFT.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
     OTHER_BOXEN.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
     OTHER_SONST.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
+    OTHER_KICKBOXEN.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
   })();
 
   function rerenderAll() {
@@ -2432,6 +2445,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     otherRenderList('other-kraftList', 'other-kraftEmpty', OTHER_KRAFT, state.other.kraft, oq, '🏋️', 'Kraft');
     otherRenderList('other-boxenList', 'other-boxenEmpty', OTHER_BOXEN, state.other.boxen, oq, '🥊', 'Boxen');
     otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, oq, '🧘', 'Sonstiges');
+    otherRenderList('other-kickboxenList', 'other-kickboxenEmpty', OTHER_KICKBOXEN, state.other.kickboxen, oq, '🥊', 'Kickboxen');
 
     document.getElementById('train-dateNow').textContent = prettyDateDE(new Date());
     setBadge();
