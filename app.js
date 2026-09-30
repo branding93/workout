@@ -117,7 +117,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
         })(), note: ''
       },
       wc: { forms: wcFo, grundlagen: mapForItems(GRUNDLAGEN), armhand: mapForItems(ARM_HAND), beine: mapForItems(BEINE), weitere: mapForItems(WEITERE_HAND), weapon: mapForItems(WEAPON), note: '' },
-      other: { kraft: mapForItems(OTHER_KRAFT), boxen: mapForItems(OTHER_BOXEN), sonstiges: mapForItems(OTHER_SONST), kickboxen: mapForItems(OTHER_KICKBOXEN), note: '' }
+      other: { kraft: mapForItems(OTHER_KRAFT), boxen: mapForItems(OTHER_BOXEN), sonstiges: mapForItems(OTHER_SONST), kickboxen: mapForItems(OTHER_KICKBOXEN), animals: mapForItems(OTHER_ANIMALS), note: '' }
     };
   }
 
@@ -156,6 +156,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
         boxen: mergeBoolMap(base.other.boxen, parsed.other && parsed.other.boxen),
         sonstiges: mergeBoolMap(base.other.sonstiges, parsed.other && parsed.other.sonstiges),
         kickboxen: mergeBoolMap(base.other.kickboxen, parsed.other && parsed.other.kickboxen),
+        animals: mergeBoolMap(base.other.animals, parsed.other && parsed.other.animals),
         note: (parsed.other && typeof parsed.other.note === 'string') ? parsed.other.note : ''
       }
     };
@@ -249,6 +250,16 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     'Flow 1': { f: 'Front-Kick zu tief/ohne Kammer; Roundhouse ohne Hüftdrehung; Seitenwechsel mit Stolpern; Atmung aus; kein Recoil.', c: 'Starte langsam: Kammer → strecken → Recoil pro Kick. Seitenwechsel bewusst als Schritt setzen. Erst sauber, dann Tempo.' },
     'Flow 2': { f: 'Jab zu weit ausgeholt; Hook ohne Hüfte; Roundhouse zu früh/zu tief; Seitenwechsel unsauber; Deckung vergessen.', c: 'Jab nur aus Schulter. Hook mit Hüftrotation einleiten. Roundhouse erst nach Hüftdrehung. Kombination fließend verbinden.' },
     'Flow 3': { f: 'Check zu spät/zu weich; Low-Kick ohne Hüfte; Jab-Cross-Jab zu langsam; Seitenwechsel mit Lücke in der Deckung.', c: 'Check aktiv und früh setzen. Low-Kick mit Hüfteindrehung für Power. Handkombination schnell und kompakt. Nach Abschluss Deckung schließen.' },
+
+    // --- Animal Movements ---
+    'Cat': { f: 'Kreuzgang schief (Arm und Bein auf derselben Seite); Hände/Füße schleifen am Boden; Rücken durchgedrückt oder zu stark gewölbt; Kopf schaut nach unten; Tempo zu hoch, Koordination geht verloren.', c: 'Erst 5-10 m langsam, Qualität vor Distanz. Knie 2-3 cm über dem Boden. Hände flach und breit aufstellen, Fersen Richtung Po. Blick nach vorn-unten, Nacken ruhig. Tempo erst steigern, wenn der diagonale Rhythmus sitzt.' },
+    'Frog': { f: 'In der Hocke zu hoch, kein Stretch; mit gestreckten Beinen landen; nicht mit den Händen abfedern (Handgelenke und Schulter zahlen); Hüfte zu hoch, der Dehnverlust fehlt.', c: 'Federn statt abbremsen: Energie vorab speichern und in der Landung zurückgeben. 5-8 saubere Reps mit voller Erholung. Als Aufwärmübung vor dem Techniktraining. Landung zuerst mit den Händen, dann die Füße.' },
+    'Bear': { f: 'Hüfte zu hoch oder durchsackend; Knie kippen über die Handgelenke nach innen; Hohlkreuz statt neutralem Rücken; nur "Kriechen" ohne Lastübernahme auf den Händen.', c: 'Erst langsam, 10 m hin und zurück. Knie 2-3 cm über dem Boden, Gewicht deutlich auf den Händen spüren. Rückwärts crouchen als zweite Runde (Hamstrings). Handgelenke vorher mobilisieren.' },
+    'Monkey': { f: 'Gewicht bleibt an den Beinen statt komplett auf den Händen; Hüfte schiebt sich nach vorn statt zu rotieren; Beine stampfen, statt sich zu entlasten und nachzuziehen; Nacken- und Schulterspannung steigt mit dem Tempo.', c: 'Das Gefühl "60 % Last auf den Händen" ist das Ziel. Hüfte pro Schritt 180° mitdrehen, ohne Anlauf. Langsam starten und Tempo nur erhöhen, wenn die Rotation sauber bleibt. Bewusst entspannt arbeiten.' },
+    'Crab': { f: 'Becken zu tief, dadurch runder Rücken; Ellbogen durchgedrückt/locked; Gewicht nur auf den Händen oder nur auf den Füßen; Hüfte dreht mit nach vorn; Schultern schieben sich zu den Ohren.', c: 'Becken so hoch wie möglich, Rücken lang wie ein Tisch. Ellbogen leicht gebeugt in Richtung Rippen. Erst diagonal, dann seitlich als Variante. Guter Ausgleich zu den Bär-Bewegungen.' },
+    'Horse': { f: 'Knie kippen nach innen; Gesäß zu weit nach hinten, Vorderfuß unbelastet; Rücken rund und Schultern einfallend; Knie über die Zehen hinaus; flache Knie und Ächzen statt Struktur.', c: 'Korrekt heißt: die Position 1-2 Minuten ruhig halten, nicht maximal. Knie aktiv nach vorn über die Zehen drücken. Gesäß leicht zurück, Fersen belasten, Vorderfuß bleibt voll. Bauchnabel zur Lende, Brust offen, Genick lang. Atmen, nicht anhalten.' },
+    'Duck': { f: 'Fersen heben ab (die Bewegung wird aus dem Fuß "gestohlt"); Rücken rund, Schultern nach vorn; Hüfte hebt und senkt bei jedem Schritt; zu flach, obwohl die Beine es könnten; Knie zusammenfallen lassen.', c: 'Erst Mobilität aufbauen (Hüfte, Knöchel), dann die Übung. Fersen müssen am Boden bleiben, sonst langsamer und höher arbeiten. Hüfthöhe konstant halten, Blick nach vorn. 2x 10-15 kontrollierte Schritte je Richtung oder 20-30 s. Gewicht erst, wenn die Position sauber hält.' },
+    'Crocodile': { f: 'Hüfte zu hoch, daraus wird ein Bär; Rumpf durchsackt mit Schmerz in der Lende; Ellbogen zu weit außen gespreizt; Knie nicht zum Ellbogen, also kein echtes Krokodil; Tempo zu schnell, es wird ein Sprint statt einer Bewegung.', c: 'Härteste Übung des Sets - erst wenn Cat und Bear sitzen. 30 s langsam vorwärts oder rückwärts, zunächst nicht seitlich. Ellbogen nah am Rumpf, Körper parallel zum Boden. 2-3 Runden à 20-30 s mit 30-60 s Pause. Bei Handgelenk- oder Schulterproblemen mit Bear/Monkey überbrücken.' },
   };
 
 
@@ -354,6 +365,16 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
   addGloss('Struktur: fest', { ctx: 'Taekwondo', t: 'fest', m: 'Vorgegeben (Angriff/Abwehr/Konter).', z: 'Wiederholbarkeit.', p: 'Basics automatisieren.' });
   addGloss('Struktur: semi-free', { ctx: 'Taekwondo', t: 'semi-free', m: 'Teil vorgegeben, Teil variiert.', z: 'Anpassung im Rahmen.', p: 'Erkennen -> wählen -> sauber.' });
   addGloss('Struktur: free-attack', { ctx: 'Taekwondo', t: 'free-attack', m: 'Freier Angriff (kontrolliert) + strukturierte Reaktion.', z: 'Reaktion/Distanzlesen.', p: 'Safety + Reset.' });
+
+  // --- Animal Movements (Weiteres) ---
+  addGloss('Cat', { ctx: 'Weiteres', t: 'Katze (Cat Crawl)', m: 'Vierfüßler-Gehgang mit diagonalem Kreuzmuster: rechter Arm + linkes Bein, dann Seite wechseln. Knie bleiben 2-3 cm über dem Boden, Rücken ist lang und neutral, der Blick geht nach vorn-unten.', z: 'Wirbelsäulenmobilität und koordinative Basis für alle Vierfüßler- und Bodengangsformen.', p: 'Diagonaler Rhythmus, gleichmäßige Gewichtsverteilung, Blick voraus. Je schneller, desto sauberer die Diagonalen.' });
+  addGloss('Frog', { ctx: 'Weiteres', t: 'Frosch (Frog Jump / Frogger)', m: 'Aus der tiefen Hocke explosiv abspringen und flach weit nach vorn springen; mit den Händen und dann den Füßen abfedern (Frogger-Variante), ohne zu stoppen.', z: 'Explosive Beinkraft, Landungsfähigkeit und Aufwärmen vor dem Training.', p: 'Feder statt Bremse - Energie abspeichern und in der Landung zurückgeben. Vollständige Erholung zwischen den Reps.' });
+  addGloss('Bear', { ctx: 'Weiteres', t: 'Bär (Bear Crawl)', m: 'Boden naher Vierfüßler-Gang mit entgegengesetzten Armen und Beinen (echter, kein diagonaler Kreuzgang), Knie knapp über dem Boden, Hüfte ruhig und tief.', z: 'Schulter-, Rumpf- und Gesamtbein-Kraft, Kernstabilität und Körperkontrolle.', p: 'Gewicht spürbar auf den Händen, Rücken neutral. Rückwärts aus der Position crouchen als Zusatzlast für die Beinachse.' });
+  addGloss('Monkey', { ctx: 'Weiteres', t: 'Affe (Monkey Walk)', m: 'Handgestützter Seitwärtsgang, bei dem die Hüfte pro Schritt um 180° mitrotiert und die Beine nur kurz nachziehen; das Gewicht liegt vorwiegend auf den Händen.', z: 'Agilität, Hüftmobilität und die Fähigkeit, das Gewicht schnell zu verlagern.', p: 'Aus dem Kreuzgang der Katze entsteht eine Drehung. Agilität braucht eine tiefe, stabile Wurzel - nicht nur Schnelligkeit.' });
+  addGloss('Crab', { ctx: 'Weiteres', t: 'Krabbe (Crab Walk / Reverse Tabletop)', m: 'Position mit Händen hinter dem Körper, Fingern zum Po, Becken zur Decke gedrückt und Füße als Dreifüßpunkt: das Becken wandert seitlich, diagonal oder nach vorn, der Rücken bleibt lang.', z: 'Rumpfextension, hintere Kette (Gesäß, Beinrückseite) und Schulterstabilität.', p: 'Becken hoch, Rücken lang, Gewicht zwischen Händen und Füßen pendeln lassen. Der Rücken bleibt aktiv, nicht passiv.' });
+  addGloss('Horse', { ctx: 'Weiteres', t: 'Pferd (Horse Stance & Gangarten)', m: 'Tiefe, breite Ausfallstellung mit gebeugten Knien und Fersen Richtung Boden, dann in der Position Schrittfolgen ausführen: vor, seitlich oder rückwärts, ohne dass die Hüfte aufsteigt.', z: 'Beinkraft und Wurzel aus der unteren Körperhälfte, Ausdauer, Haltung im Alltag.', p: 'Wurzel statt Höhe - tiefer und ruhiger ist wirksamer als hoch und wackelig. Knie über den Zehen, Rücken lang, Blick frei.' });
+  addGloss('Duck', { ctx: 'Weiteres', t: 'Ente (Duck Walk)', m: 'In der tiefen Hocke mit geschlossenen Knien und ganz am Boden bleibenden Fersen vorwärts gehen, Füße abwechselnd lösen, Hüfthöhe konstant halten.', z: 'Hüft- und Knöchelmobilität, Bein-Kontrolle und ein starker Übungseffekt für die Beinachse.', p: 'Ganz bleiben - Fersen am Boden. Die Hüfte ist das Lenkrad: eine Linie, ein Tempo, keine Störung.' });
+  addGloss('Crocodile', { ctx: 'Weiteres', t: 'Krokodil (Crocodile Crawl)', m: 'Sehr niedriger Vierfüßler-Gang, Rumpf und Beine bleiben nahezu parallel zum Boden, Ellbogen eng am Körper, das Knie wandert zum gegenüberliegenden Ellbogen.', z: 'Maximales Core- und Rumpfkrafttraining, Körperspannung und Ausdauer.', p: 'Die härteste Form im Set - Qualität vor Distanz. Erst queren, dann längs. Bei Schulter- oder Handgelenksproblemen mit Cat oder Bear überbrücken.' });
 
 
   function tkdKickEntry(term) {
@@ -960,6 +981,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     other += countMap(state.other.boxen);
     other += countMap(state.other.sonstiges);
     other += countMap(state.other.kickboxen);
+    other += countMap(state.other.animals);
 
     return { tkd: tkd, wc: wc, other: other, all: (tkd + wc + other) };
   }
@@ -1488,7 +1510,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     Array.prototype.slice.call(document.querySelectorAll('[data-other-tab]')).forEach(function (t) {
       t.classList.toggle('active', t.getAttribute('data-other-tab') === name);
     });
-    ['kraft', 'boxen', 'sonst', 'kickboxen'].forEach(function (k) {
+    ['kraft', 'boxen', 'sonst', 'kickboxen', 'animals'].forEach(function (k) {
       document.getElementById('other-tab-' + k).classList.toggle('hidden', k !== name);
     });
   }
@@ -1510,7 +1532,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
       el.className = 'item';
       el.innerHTML = `
 <div class="checkRow">
-  <label><input type="checkbox" ${stateMap[it.t] ? 'checked' : ''}> <span>${makeTermUI(it.t, 'Weiteres', icon)}</span></label>
+  <label><input type="checkbox" ${stateMap[it.t] ? 'checked' : ''}> <span>${makeTermUI(it.t, 'Weiteres', it.i || icon)}</span></label>
   <small>${escapeHtml(it.d || defaultSmall || '')}</small>
 </div>
 `.trim();
@@ -1548,7 +1570,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     let out = {
       tkd: { hyongs: [], combos: [], sparring: [], basics: [], note: '' },
       wc: { forms: [], grundlagen: [], armhand: [], beine: [], weitere: [], weapon: [], note: '' },
-      other: { kraft: [], boxen: [], sonstiges: [], note: '' }
+      other: { kraft: [], boxen: [], sonstiges: [], kickboxen: [], animals: [], note: '' }
     };
 
     HYONGS.forEach(function (h) {
@@ -1584,8 +1606,10 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
       });
     });
 
-    function selFromMap(map, prefix, arrOut) {
-      Object.keys(map).forEach(function (k) { if (map[k]) arrOut.push({ key: prefix + k, title: k, details: [] }); });
+    function selFromMap(map, prefix, arrOut, sourceItems) {
+      let iconByTerm = {};
+      (sourceItems || []).forEach(function (x) { if (x && x.i) iconByTerm[normTermKey(x.t)] = x.i; });
+      Object.keys(map).forEach(function (k) { if (map[k]) arrOut.push({ key: prefix + k, title: k, details: [], icon: iconByTerm[normTermKey(k)] || '' }); });
     }
     selFromMap(state.wc.grundlagen, 'WC|Grund|', out.wc.grundlagen);
     selFromMap(state.wc.armhand, 'WC|Arm|', out.wc.armhand);
@@ -1598,6 +1622,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     selFromMap(state.other.boxen, 'OTHER|Boxen|', out.other.boxen);
     selFromMap(state.other.sonstiges, 'OTHER|Sonstiges|', out.other.sonstiges);
     selFromMap(state.other.kickboxen, 'OTHER|Kickboxen|', out.other.kickboxen);
+    selFromMap(state.other.animals, 'OTHER|Animal|', out.other.animals, OTHER_ANIMALS);
     out.other.note = (state.other.note || '').trim();
 
     return out;
@@ -1656,7 +1681,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
         out += '<div class="summaryBox" style="border-style:solid">' +
           '<div class="doneRow">' +
           '<input type="checkbox" class="doneCb" data-key="' + safeKey + '">' +
-          '<div class="doneTitle">' + makeTermUI(it.title, ctxHint, icon || '') + '</div>' +
+          '<div class="doneTitle">' + makeTermUI(it.title, ctxHint, it.icon || icon || '') + '</div>' +
           '</div>' +
           '</div>';
       });
@@ -1688,12 +1713,14 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
       sections.push(sectionCard('Wing Chun', '🥋', wcCount, innerW));
     }
 
-    let otherCount = data.other.kraft.length + data.other.boxen.length + data.other.sonstiges.length;
+    let otherCount = data.other.kraft.length + data.other.boxen.length + data.other.sonstiges.length + data.other.kickboxen.length + data.other.animals.length;
     if (otherCount > 0) {
       let innerO = '';
       if (data.other.kraft.length) innerO += sectionCard('Krafttraining', '🏋️', data.other.kraft.length, simpleList(data.other.kraft, 'Weiteres', '🏋️'));
       if (data.other.boxen.length) innerO += sectionCard('Boxen/Drills', '🥊', data.other.boxen.length, simpleList(data.other.boxen, 'Weiteres', '🥊'));
       if (data.other.sonstiges.length) innerO += sectionCard('Sonstiges', '🧘', data.other.sonstiges.length, simpleList(data.other.sonstiges, 'Weiteres', '🧘'));
+      if (data.other.kickboxen.length) innerO += sectionCard('Kickboxen', '🥊', data.other.kickboxen.length, simpleList(data.other.kickboxen, 'Weiteres', '🥊'));
+      if (data.other.animals.length) innerO += sectionCard('Animal Movements', '🐾', data.other.animals.length, simpleList(data.other.animals, 'Weiteres', '🐾'));
       if (data.other.note) innerO += sectionCard('Notiz (Weiteres)', '📝', 1, '<div class="summaryBox" style="border-style:solid">' + escapeHtml(data.other.note) + '</div>');
       sections.push(sectionCard('Weiteres', '🏋️', otherCount, innerO));
     }
@@ -1759,11 +1786,13 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
       if (data.wc.weapon.length) addSimple('Weapon Self Defence', data.wc.weapon);
       if (data.wc.note) { lines.push('Notiz:'); lines.push(data.wc.note); lines.push(''); }
     }
-    if (data.other.kraft.length || data.other.boxen.length || data.other.sonstiges.length) {
+    if (data.other.kraft.length || data.other.boxen.length || data.other.sonstiges.length || data.other.kickboxen.length || data.other.animals.length) {
       lines.push('Weiteres:'); lines.push('');
       if (data.other.kraft.length) addSimple('Krafttraining', data.other.kraft);
       if (data.other.boxen.length) addSimple('Boxen/Drills', data.other.boxen);
       if (data.other.sonstiges.length) addSimple('Sonstiges', data.other.sonstiges);
+      if (data.other.kickboxen.length) addSimple('Kickboxen', data.other.kickboxen);
+      if (data.other.animals.length) addSimple('Animal Movements', data.other.animals);
       if (data.other.note) { lines.push('Notiz:'); lines.push(data.other.note); lines.push(''); }
     }
 
@@ -2375,6 +2404,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     otherRenderList('other-boxenList', 'other-boxenEmpty', OTHER_BOXEN, state.other.boxen, q, '🥊', 'Boxen');
     otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, q, '🧘', 'Sonstiges');
     otherRenderList('other-kickboxenList', 'other-kickboxenEmpty', OTHER_KICKBOXEN, state.other.kickboxen, q, '🥊', 'Kickboxen');
+    otherRenderList('other-animalsList', 'other-animalsEmpty', OTHER_ANIMALS, state.other.animals, q, '🐾', 'Animal');
   });
 
   document.getElementById('train-copyBtn').addEventListener('click', copyTrainingText);
@@ -2423,6 +2453,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     OTHER_BOXEN.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
     OTHER_SONST.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
     OTHER_KICKBOXEN.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
+    OTHER_ANIMALS.forEach(function (x) { ensureGlossary(x.t, 'Weiteres'); });
   })();
 
   function rerenderAll() {
@@ -2446,6 +2477,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     otherRenderList('other-boxenList', 'other-boxenEmpty', OTHER_BOXEN, state.other.boxen, oq, '🥊', 'Boxen');
     otherRenderList('other-sonstList', 'other-sonstEmpty', OTHER_SONST, state.other.sonstiges, oq, '🧘', 'Sonstiges');
     otherRenderList('other-kickboxenList', 'other-kickboxenEmpty', OTHER_KICKBOXEN, state.other.kickboxen, oq, '🥊', 'Kickboxen');
+    otherRenderList('other-animalsList', 'other-animalsEmpty', OTHER_ANIMALS, state.other.animals, oq, '🐾', 'Animal');
 
     document.getElementById('train-dateNow').textContent = prettyDateDE(new Date());
     setBadge();

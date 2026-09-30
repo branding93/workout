@@ -277,6 +277,16 @@ const TKD_SPARRING_GROUPS = [
         { t: 'Flow 2', d: 'Jab (links) → Hook (rechts) → Roundhouse (links) → Seitenwechsel → Repeat' },
         { t: 'Flow 3', d: 'Schienbein-Check (links) → Low-kick (links) → Low-kick (rechts) → Jab-Cross-Jab (rechts-links-rechts) → Seitenwechsel → Repeat' }
       ];
+      const OTHER_ANIMALS = [
+        { t: 'Cat', d: 'Katze · Katzen-Crawl · diagonal & leicht', i: '🐱' },
+        { t: 'Frog', d: 'Frosch · Sprung / Frogger · explosiv', i: '🐸' },
+        { t: 'Bear', d: 'Bär · Bear-Crawl · Knie tief & schwer', i: '🐻' },
+        { t: 'Monkey', d: 'Affe · Seitwärts-Gang · Hüft-Rotation', i: '🐒' },
+        { t: 'Crab', d: 'Krabbe · Rückseitiger Vierfüßler · Becken hoch', i: '🦀' },
+        { t: 'Horse', d: 'Pferd · Pferde-Stellung & Gangarten · Wurzel', i: '🐴' },
+        { t: 'Duck', d: 'Ente · Tiefkauer-Gehgang · Hüfte tief & ruhig', i: '🦆' },
+        { t: 'Crocodile', d: 'Krokodil · Alligator-Crawl · Körper parallel', i: '🐊' }
+      ];
       const OTHER_MOTIVATION = [
         'Stabiler Körper = bessere Technik.',
         'Kleine Ergänzung, großer Effekt.',
