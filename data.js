@@ -258,7 +258,13 @@ const TKD_SPARRING_GROUPS = [
         { t: 'Kniebeuge', d: 'Beine · Hüfte · Stabilität' },
         { t: 'Plank', d: 'Core · Struktur halten' },
         { t: 'Crunches', d: 'Bauch · kontrollierte Wiederholungen' },
-        { t: 'Klimmzüge (optional)', d: 'Rücken · Griffkraft' }
+        { t: 'Klimmzüge (optional)', d: 'Rücken · Griffkraft' },
+        { t: 'L-Sit', d: 'Core · Hüftbeuger · Compression' },
+        { t: 'Planche', d: 'Schultern · Arme · Hebelkraft' },
+        { t: 'Hängen (Klimmzugstange)', d: 'Griffkraft · Schultern · aktives Hängen' },
+        { t: 'Leg raises (Klimmzugstange)', d: 'Unterbauch · Hüftbeuger · Kontrolle' },
+        { t: 'Pike-Pushups', d: 'Schultern · Trizeps · Handstand-Vorstufe' },
+        { t: 'Compression-Slide (bridge, L-Sit, with heels on ground)', d: 'Hüfte · Core · Brücke & Compression' }
       ];
       const OTHER_BOXEN = [
         { t: 'Jab-Cross', d: 'Grundkombination · Rhythmus' },
