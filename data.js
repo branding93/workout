@@ -264,7 +264,8 @@ const TKD_SPARRING_GROUPS = [
         { t: 'Hängen (Klimmzugstange)', d: 'Griffkraft · Schultern · aktives Hängen' },
         { t: 'Leg raises (Klimmzugstange)', d: 'Unterbauch · Hüftbeuger · Kontrolle' },
         { t: 'Pike-Pushups', d: 'Schultern · Trizeps · Handstand-Vorstufe' },
-        { t: 'Compression-Slide (bridge, L-Sit, with heels on ground)', d: 'Hüfte · Core · Brücke & Compression' }
+        { t: 'Compression-Slide (bridge, L-Sit, with heels on ground)', d: 'Hüfte · Core · Brücke & Compression' },
+        { t: 'Farmers Carry', d: 'Griffkraft · Core · Rumpfspannung / Gang' }
       ];
       const OTHER_BOXEN = [
         { t: 'Jab-Cross', d: 'Grundkombination · Rhythmus' },
