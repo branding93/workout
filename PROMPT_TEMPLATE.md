@@ -16,4 +16,3 @@ Stabile KI Änderungen ohne Breaking Changes
 ## Beispiel
 Nutze ARCHITECTURE.md
 Ändere nur das Beschriebene
-Gib ZIP zurück

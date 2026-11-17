@@ -292,7 +292,7 @@ const TKD_SPARRING_GROUPS = [
       const OTHER_ANIMALS = [
         { t: 'Cat', d: 'Katze · Katzen-Crawl · diagonal & leicht', i: '🐱' },
         { t: 'Frog', d: 'Frosch · Sprung / Frogger · explosiv', i: '🐸' },
-        { t: 'Bear', d: 'Bär · Bear-Crawl · Knie tief & schwer', i: '🐻' },
+        { t: 'Bear', d: 'Bär · Herabschauender Hund · Hüfte hoch', i: '🐻' },
         { t: 'Monkey', d: 'Affe · Seitwärts-Gang · Hüft-Rotation', i: '🐒' },
         { t: 'Crab', d: 'Krabbe · Rückseitiger Vierfüßler · Becken hoch', i: '🦀' },
         { t: 'Horse', d: 'Pferd · Pferde-Stellung & Gangarten · Wurzel', i: '🐴' },
