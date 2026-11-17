@@ -161,6 +161,10 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
       }
     };
 
+    // Migration: frühere Bezeichnung "Klimmzüge (optional)" → "Klimmzüge"
+    if (merged.other.kraft['Klimmzüge (optional)']) merged.other.kraft['Klimmzüge'] = true;
+    delete merged.other.kraft['Klimmzüge (optional)'];
+
     HYONGS.forEach(function (h) {
       if (!merged.tkd.hyongs[h.id]) merged.tkd.hyongs[h.id] = defaultHyongSelection();
       if (!merged.tkd.hyongs[h.id].variations) merged.tkd.hyongs[h.id].variations = defaultHyongSelection().variations;
@@ -269,6 +273,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     'Pike-Pushups': { f: 'Hüfte sinkt nach unten; Ellbogen zu weit gespreizt; Kopf kippt nach vorn statt zwischen die Hände; Handgelenke überstreckt oder schmerzhaft belastet.', c: 'Hüfte hoch lassen, Blick zwischen die Hände, Ellenbogen leicht nach außen führen. Range klein beginnen und kontrolliert steigern, bei Bedarf Füße erhöht ablegen.' },
     'Compression-Slide (bridge, L-Sit, with heels on ground)': { f: 'Fersen verlieren Bodenkontakt; zu schnell und schwungvoll gleiten; Becken kippt unkontrolliert; Schultern einklappen, Atmung stockt.', c: 'Sehr langsam und bewusst arbeiten, Fersen kontinuierlich am Boden führen, Schultern aktiv halten. Kleine Wiederholungen mit Fokus auf Kompression aus der Hüfte.' },
     'Farmers Carry': { f: 'Schultern hochgezogen oder einfallend; Oberkörper kippt oder rotiert; zu große/ungleichmäßige Schritte; Gewichte ungleich getragen; Luft angehalten.', c: 'Schultern aktiv tief, Rippen über dem Becken, Blick gerade. Kurze kontrollierte Schritte, gleichmäßig atmen. Steigerung über Distanz/Zeit, dann über Last.' },
+    'Pistol Squat': { f: 'Ferse hebt ab oder das Knie kippt nach innen; das freie Bein sinkt ab; Schwung aus dem Oberkörper; das Standbein knickt ein; zu schnell in die Tiefe.', c: 'Mit Festhalten an einer Stange oder einem Türrahmen starten, das Standbein auf eine kleine Erhöhung stellen und die freie Ferse leicht anheben. Langsam ablassen (3–4 s), kurz unten halten, kontrolliert hochdrücken. Pro Seite 3–5 saubere Wiederholungen; bei Knieschmerzen abbrechen und eine Regression wählen.' },
   };
 
 
@@ -394,6 +399,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
   addGloss('Pike-Pushups', { ctx: 'Weiteres', t: 'Pike-Pushups (Pike Push-up)', m: 'Aus dem Vierfüßler in die nach unten gerichtete Hundesstellung: Hüfte hoch, Beine fast gestreckt, Hände etwas vor den Schultern. Ellenbogen leicht nach außen beugen, Kopf kontrolliert zwischen die Hände senken und hochdrücken.', z: 'Schulter- und Trizepskraft, Grundlage für Handstand und Pressbewegungen.', p: 'Hüfte bleibt hoch, Blick zwischen die Hände, Fersen Richtung Boden. Langsam senken, kraftvoll ausdrücken, Handgelenk nicht überstrecken.' });
   addGloss('Compression-Slide (bridge, L-Sit, with heels on ground)', { ctx: 'Weiteres', t: 'Compression-Slide (Brücke → L-Sit, Fersen am Boden)', m: 'Aus der Brücke mit Händen hinter den Schultern und Fersen am Boden das Becken hochdrücken, dann mit aktiver Hüftbeugung und nach vorn gleitenden Fersen in die L-Sit-Kompression gehen. Fersen bleiben am Boden, Beine geschlossen.', z: 'Verbindung von Extension und Flexion: Hüftbeuger, Core und hintere Kette, aktive Kompression und Übergangskontrolle.', p: 'Sehr langsam gleiten, Fersen bleiben in Kontakt, Becken kontrolliert kippen, Schultern aktiv, Atem gleichmäßig. Die Kompression kommt aus der Hüfte, nicht aus dem Oberkörper.' });
   addGloss('Farmers Carry', { ctx: 'Weiteres', t: 'Farmers Carry (Farmer\'s Walk)', m: 'Gewichte (z. B. Kettlebells oder Kurzhanteln) beidseitig greifen, aufrichten und mit aufrechtem Oberkörper kontrolliert gehen; Schultern tief, Rumpf gespannt, Arme gestreckt an den Seiten.', z: 'Griffkraft, Rumpf- und Schulterstabilität, Haltungskontrolle im Gehen und Ganzkörper-Spannung.', p: 'Kurze, gleichmäßige Schritte, Blick gerade, Rippen über dem Becken, gleichmäßig atmen. Last zuerst moderat wählen und Distanz/Zeit sauber steigern.' });
+  addGloss('Pistol Squat', { ctx: 'Weiteres', t: 'Pistol Squat (einseitige Kniebeuge)', m: 'Auf einem Bein stehen und das andere Bein gestreckt nach vorn anheben. Kontrolliert in die tiefe Hocke auf dem Standbein absenken – die Ferse bleibt am Boden, das Knie folgt der Fußachse – und ohne Schwung wieder aufrichten. Das freie Bein bleibt möglichst gestreckt und dient als Gegengewicht.', z: 'Einbeinige Beinkraft, Balance und Knöchel-/Hüftmobilität; verbessert Knie- und Hüftstabilität sowie die Kontrolle über die Körpermitte.', p: 'Qualität vor Tiefe: Ferse am Boden, Knie über dem Fuß, Rumpf aufrecht. Erst mit Zielhilfe (Stange/Türrahmen) oder auf einer Erhöhung arbeiten, dann Tiefe und freie Ausführung steigern.' });
 
   function tkdKickEntry(term) {
     let t = canonicalTerm(term);
@@ -677,6 +683,13 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
       e.stopPropagation();
       setMenuOpen();
     });
+    // Menüband ↔ Panel: Panel-Einträge wechseln denselben View (additiv, IDs bleiben in der Rail)
+    Array.prototype.slice.call(panel.querySelectorAll('[data-menu-view]')).forEach(function (item) {
+      item.addEventListener('click', function () {
+        var view = item.getAttribute('data-menu-view');
+        if (view) navGo(view);
+      });
+    });
     document.addEventListener('click', function (e) {
       if (panel.classList.contains('hidden')) return;
       var t = e.target;
@@ -693,16 +706,26 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     setMenuOpen(false);
   }
   function setNavActive(id) {
+    var map = { navTKD: 'tkd', navWC: 'wc', navOTHER: 'other', navTRAIN: 'training', navTIMER: 'timer', navQUIZ: 'quiz' };
     ['navTKD', 'navWC', 'navOTHER', 'navTRAIN', 'navTIMER', 'navQUIZ'].forEach(function (b) {
       let el = document.getElementById(b);
-      el.classList.toggle('active', b === id);
-      el.setAttribute('aria-selected', b === id ? 'true' : 'false');
+      if (!el) return;
+      let on = (b === id);
+      el.classList.toggle('active', on);
+      if (on) el.setAttribute('aria-current', 'page');
+      else el.removeAttribute('aria-current');
+    });
+    var view = map[id] || currentView;
+    Array.prototype.slice.call(document.querySelectorAll('#navMenuPanel [data-menu-view]')).forEach(function (item) {
+      let on = item.getAttribute('data-menu-view') === view;
+      item.classList.toggle('active', on);
+      item.setAttribute('aria-selected', on ? 'true' : 'false');
     });
   }
   function showView(name) {
     currentView = name;
     let _root = document.getElementById('appRoot');
-    if (_root) _root.setAttribute('data-theme', (name === 'tkd') ? 'tkd' : ((name === 'wc') ? 'wc' : ''));
+    if (_root) _root.setAttribute('data-theme', (name === 'tkd') ? 'tkd' : ((name === 'wc') ? 'wc' : 'neutral'));
     ['tkd', 'wc', 'other', 'training', 'timer', 'quiz'].forEach(function (v) {
       document.getElementById('view-' + v).classList.toggle('active', v === name);
     });
@@ -716,6 +739,7 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     if (name === 'timer') timerUpdate();
     updateNavCurrentLabel(name);
     setBadge();
+    try { window.scrollTo(0, 0); } catch (e) { }
   }
   document.getElementById('navTKD').addEventListener('click', () => { showView('tkd'); });
   document.getElementById('navWC').addEventListener('click', () => { showView('wc'); });
@@ -1541,11 +1565,19 @@ function escapeAttr(s) { return escapeHtml(s).replace(/"/g, '&quot;'); }
     host.innerHTML = '';
     let q = (filter || '').toLowerCase().trim();
     let shown = 0;
+    let lastGroup = '';
 
     items.forEach(function (it) {
       let text = (it.t + ' ' + (it.d || '')).toLowerCase();
       if (q && text.indexOf(q) === -1) return;
       shown++;
+      if (it.g && it.g !== lastGroup) {
+        let groupEl = document.createElement('div');
+        groupEl.className = 'listGroupTitle';
+        groupEl.textContent = it.g;
+        host.appendChild(groupEl);
+        lastGroup = it.g;
+      }
       let el = document.createElement('div');
       el.className = 'item';
       el.innerHTML = `

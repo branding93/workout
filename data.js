@@ -254,18 +254,23 @@ const TKD_SPARRING_GROUPS = [
 
       // OTHER
       const OTHER_KRAFT = [
-        { t: 'Liegestütz', d: 'Oberkörper · Rumpfspannung' },
-        { t: 'Kniebeuge', d: 'Beine · Hüfte · Stabilität' },
-        { t: 'Plank', d: 'Core · Struktur halten' },
-        { t: 'Crunches', d: 'Bauch · kontrollierte Wiederholungen' },
-        { t: 'Klimmzüge (optional)', d: 'Rücken · Griffkraft' },
-        { t: 'L-Sit', d: 'Core · Hüftbeuger · Compression' },
-        { t: 'Planche', d: 'Schultern · Arme · Hebelkraft' },
-        { t: 'Hängen (Klimmzugstange)', d: 'Griffkraft · Schultern · aktives Hängen' },
-        { t: 'Leg raises (Klimmzugstange)', d: 'Unterbauch · Hüftbeuger · Kontrolle' },
-        { t: 'Pike-Pushups', d: 'Schultern · Trizeps · Handstand-Vorstufe' },
-        { t: 'Compression-Slide (bridge, L-Sit, with heels on ground)', d: 'Hüfte · Core · Brücke & Compression' },
-        { t: 'Farmers Carry', d: 'Griffkraft · Core · Rumpfspannung / Gang' }
+        // Oberkörper – Druck
+        { t: 'Liegestütz', d: 'Oberkörper · Rumpfspannung', g: 'Oberkörper – Druck' },
+        { t: 'Pike-Pushups', d: 'Schultern · Trizeps · Handstand-Vorstufe', g: 'Oberkörper – Druck' },
+        { t: 'Planche', d: 'Schultern · Arme · Hebelkraft', g: 'Oberkörper – Druck' },
+        // Oberkörper – Zug & Griff
+        { t: 'Klimmzüge', d: 'Rücken · Griffkraft', g: 'Oberkörper – Zug & Griff' },
+        { t: 'Hängen (Klimmzugstange)', d: 'Griffkraft · Schultern · aktives Hängen', g: 'Oberkörper – Zug & Griff' },
+        { t: 'Farmers Carry', d: 'Griffkraft · Core · Rumpfspannung / Gang', g: 'Oberkörper – Zug & Griff' },
+        // Core / Rumpf
+        { t: 'Plank', d: 'Core · Struktur halten', g: 'Core / Rumpf' },
+        { t: 'Crunches', d: 'Bauch · kontrollierte Wiederholungen', g: 'Core / Rumpf' },
+        { t: 'L-Sit', d: 'Core · Hüftbeuger · Compression', g: 'Core / Rumpf' },
+        { t: 'Leg raises (Klimmzugstange)', d: 'Unterbauch · Hüftbeuger · Kontrolle', g: 'Core / Rumpf' },
+        { t: 'Compression-Slide (bridge, L-Sit, with heels on ground)', d: 'Hüfte · Core · Brücke & Compression', g: 'Core / Rumpf' },
+        // Beine
+        { t: 'Kniebeuge', d: 'Beine · Hüfte · Stabilität', g: 'Beine' },
+        { t: 'Pistol Squat', d: 'Beine · Balance · Mobilität', g: 'Beine' }
       ];
       const OTHER_BOXEN = [
         { t: 'Jab-Cross', d: 'Grundkombination · Rhythmus' },

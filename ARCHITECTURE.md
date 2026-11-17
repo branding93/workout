@@ -51,3 +51,21 @@ User → openGlossary → data → UI → Audio
 
 ## 8. Fazit
 Single Source of Truth für KI Änderungen (Struktur, nichts kaputt machen, stabil erweitern)
+
+## 9. Menüband / Navigation
+- Eine Liste (`.navRail`) mit sechs Einträgen, zwei Darstellungen:
+  - ≥ 901 px: linke, sticky Rail unter der AppBar (Icon + Label + Kurzhinweis).
+  - ≤ 900 px: fixierte Bottom-Tab-Bar (Icon + Label, Safe-Area-Padding).
+- IDs `#navTKD` … `#navQUIZ` liegen ausschließlich in der Rail (keine Dubletten).
+- Das Aufklapp-Menü (`#navMenuPanel`) bleibt dauerhaft verfügbar und nutzt `data-menu-view`.
+- Synchronisation: `setNavActive()` setzt `.active`, `aria-current="page"` (Rail) und
+  `aria-selected` (Panel). `updateNavCurrentLabel()` pflegt `#navCurrentLabel`.
+- `showView()` setzt `data-theme` (`tkd` | `wc` | `neutral`) und scrollt nach oben.
+- Keine Navigationseinstellungen im `localStorage`; Swipe und Tastatur bleiben unverändert.
+
+## 10. Krafttraining-Gruppierung
+- `OTHER_KRAFT` in `data.js` trägt pro Übung ein optionales Feld `g` (Körperbereich).
+- `otherRenderList()` zeigt beim Gruppenwechsel eine Zwischenüberschrift (`.listGroupTitle`).
+- Der Auswahlstatus bleibt eine flache Map (`state.other.kraft`) mit dem Übungsnamen als Schlüssel.
+- Umbenennung „Klimmzüge (optional)“ → „Klimmzüge“ wird in `safeLoad()` migriert.
+

@@ -50,24 +50,84 @@
             ☰ Menü <span id="navCurrentLabel" class="menuCurrent">TKD</span>
           </button>
           <div id="navMenuPanel" class="menuPanel hidden" role="menu" aria-label="Hauptseiten">
-            <button id="navTKD" type="button" class="menuItem active" role="menuitemradio" aria-selected="true">TKD
+            <button type="button" class="menuItem active" role="menuitemradio" aria-selected="true"
+              data-menu-view="tkd">TKD
               <span class="menuHint">Planung</span></button>
-            <button id="navWC" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Wing Chun <span
-                class="menuHint">Planung</span></button>
-            <button id="navOTHER" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Weiteres
+            <button type="button" class="menuItem" role="menuitemradio" aria-selected="false"
+              data-menu-view="wc">Wing Chun <span class="menuHint">Planung</span></button>
+            <button type="button" class="menuItem" role="menuitemradio" aria-selected="false"
+              data-menu-view="other">Weiteres
               <span class="menuHint">Planung</span></button>
-            <button id="navTRAIN" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Training
+            <button type="button" class="menuItem" role="menuitemradio" aria-selected="false"
+              data-menu-view="training">Training
               <span class="menuHint">Übersicht</span></button>
-            <button id="navTIMER" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Timer <span
-                class="menuHint">Intervall</span></button>
-            <button id="navQUIZ" type="button" class="menuItem" role="menuitemradio" aria-selected="false">Quiz <span
-                class="menuHint">10 Fragen</span></button>
+            <button type="button" class="menuItem" role="menuitemradio" aria-selected="false"
+              data-menu-view="timer">Timer <span class="menuHint">Intervall</span></button>
+            <button type="button" class="menuItem" role="menuitemradio" aria-selected="false"
+              data-menu-view="quiz">Quiz <span class="menuHint">10 Fragen</span></button>
           </div>
         </div>
         <span id="selectedBadge" class="badge">📋 0 Auswahlen</span>
         <button id="resetAllBtn" class="btn" type="button">↺ Reset</button>
       </div>
     </div>
+
+    <nav class="navRail" aria-label="Hauptnavigation">
+      <button id="navTKD" class="active" type="button" aria-current="page">
+        <svg class="navIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3l7 3v5c0 4.4-3 8.1-7 10-4-1.9-7-5.6-7-10V6l7-3z" />
+          <path d="M9.5 12l1.8 1.8L15 9.6" />
+        </svg>
+        <span class="navText">TKD</span>
+        <span class="menuHint">Planung</span>
+      </button>
+      <button id="navWC" type="button">
+        <svg class="navIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 8c1.8 0 1.8 1.6 3.6 1.6S8.4 8 10.2 8s1.8 1.6 3.6 1.6S15.6 8 17.4 8s1.8 1.6 3.6 1.6" />
+          <path d="M3 13c1.8 0 1.8 1.6 3.6 1.6S8.4 13 10.2 13s1.8 1.6 3.6 1.6S15.6 13 17.4 13s1.8 1.6 3.6 1.6" />
+          <path d="M3 18c1.8 0 1.8 1.6 3.6 1.6S8.4 18 10.2 18s1.8 1.6 3.6 1.6S15.6 18 17.4 18s1.8 1.6 3.6 1.6" />
+        </svg>
+        <span class="navText">Wing Chun</span>
+        <span class="menuHint">Planung</span>
+      </button>
+      <button id="navOTHER" type="button">
+        <svg class="navIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6.5 6.5v11M17.5 6.5v11M4 9v6M20 9v6M6.5 12h11" />
+        </svg>
+        <span class="navText">Weiteres</span>
+        <span class="menuHint">Planung</span>
+      </button>
+      <button id="navTRAIN" type="button">
+        <svg class="navIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="4" width="14" height="17" rx="2.5" />
+          <path d="M9 4.5V3.5h6v1M9 9h6M9 13h6M9 17h4" />
+        </svg>
+        <span class="navText">Training</span>
+        <span class="menuHint">Übersicht</span>
+      </button>
+      <button id="navTIMER" type="button">
+        <svg class="navIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="13" r="7" />
+          <path d="M12 10v3.5l2.2 1.6M9 2h6M12 2v3M18.5 6.5l1.2-1.2" />
+        </svg>
+        <span class="navText">Timer</span>
+        <span class="menuHint">Intervall</span>
+      </button>
+      <button id="navQUIZ" type="button">
+        <svg class="navIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M9.6 9.4a2.6 2.6 0 015.1.8c0 1.7-2.7 2-2.7 3.8M12 17.2h.01" />
+        </svg>
+        <span class="navText">Quiz</span>
+        <span class="menuHint">10 Fragen</span>
+      </button>
+    </nav>
 
     <div class="grid">
       <div class="card">
